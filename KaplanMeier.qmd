@@ -1,0 +1,115 @@
+# Kaplan Meier
+
+## Kaplan Meier Survival Estimate
+
+The Kaplan Meier survival estimate is how survival probabilities can be calculated while factoring in censored times. The Kaplan Meier survival estimate is used to calculate probability of survival at a given time where $S(t_j)$ is the probability of being alive at time $t_j$, $S(t_{j-1})$ is the probability of being alive at $t_{j-1}$, $n_j$ is the number of patients alive just before $t_j$, $d_j$ is the number of events at $t_j$, and $j$ is the time interval of interest. The equation is $S(t_j)=S(t\_{j-1})(1-\frac{d_j}{n_j})$ (@clark03). The equation essentially divides the surviving individuals by the individuals at risk, similar to the previous calculations shown. However, Kaplan Meier curves adjust for right-censored times by dropping observations from the total number of individuals at risk, $n_j$, after their censored time has been reached. This adjustment prevents overestimating the survival probability because it no longer assumes censored individuals are still alive or and at risk (@goel10).
+
+## Kaplan Meier Curve and Descriptive Statistics
+
+The Kaplan Meier curve is a graphical representation of survival analysis. Similar to the survival probabilities discussed previously, the Kaplan Meier curve shows the relationships between time, which is typically plotted on the x-axis, and probability of survival, which is typically on the y-axis. The curve always ranges from 0 to 1 and is right skewed. Useful summary statistics for a Kaplan Meier Survival curve include confidence intervals and the median. A 95% confidence interval for each point can be found by using the formula $S_t ± 1.96 * SE(S_t)$. The median value is typically reported rather than the mean because mean survival time cannot be reported reliably for those who have not experienced the outcome of interest yet. The median can be found by finding the time when probability of survival is equal to 0.5. Thus, the median can only be reported when at least half of the participants experienced the outcome of interest during the study (@rao23).
+
+## Kaplan Meier in R
+
+Luckily, modern software makes these calculations easy and fast, as well as plotting them with confidence intervals and risk tables. The `survival` package in `R` has a function called `Surv()` that takes input data and creates a response object recording survival time for each observation. The `survfit()` function can be used to calculate the Kaplan Meier survival estimate for each time that a new event occurs. This object can then be used for the response in the regression `functionSurvfit2()` in the `ggsurvfit` package, which plots the Kaplan Meier curve for the data. The function takes into account right censoring as well, marking censored times with a $+$ symbol in the object created and then editing the regression accordingly (@zabor23). A new data set with censored times will be created to demonstrate this process. To do this, a 0 will be recorded for some individuals at times before t = 10.
+
+```{r}
+# Load Packages
+library(tidyverse)
+library(knitr)
+library(survival)
+library(ggplot2)
+library(ggsurvfit)
+library(gt)
+```
+
+```{r}
+# Create data set
+id <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+time <- c(1, 2, 10, 4, 5, 6, 10, 8, 9, 10)
+status <- c(1, 1, 0, 0, 1, 0, 0, 1, 1, 0)
+censor <- data.frame(id, time, status)
+```
+
+```{r}
+#| label: tbl-censor
+#| tbl-cap: "Example Data Set with Censored Times"
+
+censor %>% gt(caption = "Example Data Set with Censored Times") %>%
+  cols_label(id = "ID", time = "Time", status = "Status") %>%
+  tab_source_note(source_note = "Table 3") 
+```
+
+@tbl-censor
+
+```{r}
+# Surv() Function shows the time of event or censored time for each observation
+times2 <- Surv(censor$time, censor$status)
+times2
+```
+
+```{r}
+# Calculate survival object
+s2 <- survfit(times2 ~ 1, data = censor)
+# See the structure of this object
+str(s2)
+```
+
+```{r}
+# View the survival estimate for each time an event occurs
+s2$time
+round(s2$surv, 2)
+```
+
+```{r}
+#| label: fig-survcurv
+#| tbl-cap: "Kaplan Meier Survival Curve"
+
+survfit2(Surv(time, status) ~ 1, data = censor) %>% 
+  ggsurvfit() +
+  labs(
+    x = "Time",
+    y = "Overall survival probability",
+    title = "Kaplan Meier Survival Curve"
+  ) + 
+  scale_x_continuous(breaks=seq(0,10,by=2)) + 
+  scale_y_continuous(breaks=seq(0,1,by=.2)) +
+  add_risktable()
+```
+
+@fig-survcurv
+
+## Log-Rank Test
+
+One of the most common applications of survival analysis and Kaplan Meier curves is for comparing survival statistics between two groups. One example of this might be if a study is comparing survival after two different treatment plans. The Log-Rank Test is a statistical test that tests the null hypothesis that there is no difference between the survival estimates of two groups at any point in time (@rich10). The only adjustment needed in R to factor in groups is to use the grouping variable as a predictor in the model (@zabor23).
+
+```{r}
+# Create a data set to compare to surv2
+id <- c(1:20)
+time <- c(8, 7, 10, 8, 5, 10, 10, 8, 9, 10, 1, 2, 1, 4, 5, 3, 4, 10, 8, 1)
+status <- c(0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1)
+group <- c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2 ,2 ,2, 2, 2)
+surv3 <- data.frame(id, time, status)
+```
+
+The `survdiff` function works similarly to the `survfit` function, but compares groups. The two curves are statistically different at the five percent level.
+
+```{r}
+survdiff(Surv(time, status) ~ group, data = surv3)
+```
+
+```{r}
+#| label: fig-survcurv2
+#| tbl-cap: "Kaplan Meier Survival Curve by Group"
+survfit2(Surv(time, status) ~ group, data = surv3) %>% 
+  ggsurvfit() +
+  labs(
+    x = "Days",
+    y = "Overall survival probability",
+    title = "Kaplan Meier Survival Curve by Group"
+  ) + 
+  scale_x_continuous(breaks=seq(0,10,by=2)) + 
+  scale_y_continuous(breaks=seq(0,1,by=.2)) +
+  add_risktable()
+```
+
+@fig-survcurv2

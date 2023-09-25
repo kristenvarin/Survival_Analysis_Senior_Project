@@ -8,16 +8,17 @@ book:
   date: "9/6/2023"
   chapters:
     - index.qmd
-    - Kaplan_Meier.qmd
-    - references.qmd
+    - KaplanMeier.qmd
 
 bibliography: references.bib
 
 format:
   html:
-    theme: cosmo
+    theme: 
+      light: cosmo
+      dark: darkly
   pdf:
     documentclass: scrreprt
-
+  
 editor: visual
 

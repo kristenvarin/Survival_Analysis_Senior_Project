@@ -54,7 +54,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -64,7 +83,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./references.html" rel="next">
 <link href="./index.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -112,7 +130,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Kaplan_Meier.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Kaplan Meier</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./KaplanMeier.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Kaplan Meier</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -143,19 +161,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./Kaplan_Meier.html" class="sidebar-item-text sidebar-link active">
+  <a href="./KaplanMeier.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Kaplan Meier</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
     </ul>
@@ -197,15 +209,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="kaplan-meier-survival-estimate" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="kaplan-meier-survival-estimate"><span class="header-section-number">2.1</span> Kaplan Meier Survival Estimate</h2>
-<p>The Kaplan Meier survival estimate is how survival probabilities can be calculated while factoring in censored times. The Kaplan Meier survival estimate is used to calculate probability of survival at a given time where <span class="math inline">\(S(t_j)\)</span> is the probability of being alive at time <span class="math inline">\(t_j\)</span>, <span class="math inline">\(S(t_{j-1})\)</span> is the probability of being alive at <span class="math inline">\(t_{j-1}\)</span>, <span class="math inline">\(n_j\)</span> is the number of patients alive just before <span class="math inline">\(t_j\)</span>, <span class="math inline">\(d_j\)</span> is the number of events at <span class="math inline">\(t_j\)</span>, and <span class="math inline">\(j\)</span> is the time interval of interest. The equation is <span class="math inline">\(S(t_j)=S(t\_{j-1})(1-\frac{d_j}{n_j})\)</span> (Clark et al.). The equation essentially divides the surviving individuals by the individuals at risk, similar to the previous calculations shown. However, Kaplan Meier curves adjust for right-censored times by dropping observations from the total number of individuals at risk, <span class="math inline">\(n_j\)</span>, after their censored time has been reached. This adjustment prevents overestimating the survival probability because it no longer assumes censored individuals are still alive or and at risk (Goel et al).</p>
+<p>The Kaplan Meier survival estimate is how survival probabilities can be calculated while factoring in censored times. The Kaplan Meier survival estimate is used to calculate probability of survival at a given time where <span class="math inline">\(S(t_j)\)</span> is the probability of being alive at time <span class="math inline">\(t_j\)</span>, <span class="math inline">\(S(t_{j-1})\)</span> is the probability of being alive at <span class="math inline">\(t_{j-1}\)</span>, <span class="math inline">\(n_j\)</span> is the number of patients alive just before <span class="math inline">\(t_j\)</span>, <span class="math inline">\(d_j\)</span> is the number of events at <span class="math inline">\(t_j\)</span>, and <span class="math inline">\(j\)</span> is the time interval of interest. The equation is <span class="math inline">\(S(t_j)=S(t\_{j-1})(1-\frac{d_j}{n_j})\)</span> (<span class="citation" data-cites="clark03">Clark (<a href="#ref-clark03" role="doc-biblioref">2003</a>)</span>). The equation essentially divides the surviving individuals by the individuals at risk, similar to the previous calculations shown. However, Kaplan Meier curves adjust for right-censored times by dropping observations from the total number of individuals at risk, <span class="math inline">\(n_j\)</span>, after their censored time has been reached. This adjustment prevents overestimating the survival probability because it no longer assumes censored individuals are still alive or and at risk (<span class="citation" data-cites="goel10">Goel (<a href="#ref-goel10" role="doc-biblioref">2010</a>)</span>).</p>
 </section>
 <section id="kaplan-meier-curve-and-descriptive-statistics" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="kaplan-meier-curve-and-descriptive-statistics"><span class="header-section-number">2.2</span> Kaplan Meier Curve and Descriptive Statistics</h2>
-<p>The Kaplan Meier curve is a graphical representation of survival analysis. Similar to the survival probabilities discussed previously, the Kaplan Meier curve shows the relationships between time, which is typically plotted on the x-axis, and probability of survival, which is typically on the y-axis. The curve always ranges from 0 to 1 and is right skewed. Useful summary statistics for a Kaplan Meier Survival curve include confidence intervals and the median. A 95% confidence interval for each point can be found by using the formula <span class="math inline">\(S_t ± 1.96 * SE(S_t)\)</span>. The median value is typically reported rather than the mean because mean survival time cannot be reported reliably for those who have not experienced the outcome of interest yet. The median can be found by finding the time when probability of survival is equal to 0.5. Thus, the median can only be reported when at least half of the participants experienced the outcome of interest during the study (Sowmya R. Rao, PhD; David A. Schoenfeld, PhD).</p>
+<p>The Kaplan Meier curve is a graphical representation of survival analysis. Similar to the survival probabilities discussed previously, the Kaplan Meier curve shows the relationships between time, which is typically plotted on the x-axis, and probability of survival, which is typically on the y-axis. The curve always ranges from 0 to 1 and is right skewed. Useful summary statistics for a Kaplan Meier Survival curve include confidence intervals and the median. A 95% confidence interval for each point can be found by using the formula <span class="math inline">\(S_t ± 1.96 * SE(S_t)\)</span>. The median value is typically reported rather than the mean because mean survival time cannot be reported reliably for those who have not experienced the outcome of interest yet. The median can be found by finding the time when probability of survival is equal to 0.5. Thus, the median can only be reported when at least half of the participants experienced the outcome of interest during the study (<span class="citation" data-cites="rao23">Rao (<a href="#ref-rao23" role="doc-biblioref">2023</a>)</span>).</p>
 </section>
 <section id="kaplan-meier-in-r" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="kaplan-meier-in-r"><span class="header-section-number">2.3</span> Kaplan Meier in R</h2>
-<p>Luckily, modern software makes these calculations easy and fast, as well as plotting them with confidence intervals and risk tables. The <code>survival</code> package in <code>R</code> has a function called <code>Surv()</code> that takes input data and creates a response object recording survival time for each observation. The <code>survfit()</code> function can be used to calculate the Kaplan Meier survival estimate for each time that a new event occurs. This object can then be used for the response in the regression <code>functionSurvfit2()</code> in the <code>ggsurvfit</code> package, which plots the Kaplan Meier curve for the data. The function takes into account right censoring as well, marking censored times with a <span class="math inline">\(+\)</span> symbol in the object created and then editing the regression accordingly (Zabor, E). A new data set with censored times will be created to demonstrate this process. To do this, a 0 will be recorded for some individuals at times before t = 10.</p>
+<p>Luckily, modern software makes these calculations easy and fast, as well as plotting them with confidence intervals and risk tables. The <code>survival</code> package in <code>R</code> has a function called <code>Surv()</code> that takes input data and creates a response object recording survival time for each observation. The <code>survfit()</code> function can be used to calculate the Kaplan Meier survival estimate for each time that a new event occurs. This object can then be used for the response in the regression <code>functionSurvfit2()</code> in the <code>ggsurvfit</code> package, which plots the Kaplan Meier curve for the data. The function takes into account right censoring as well, marking censored times with a <span class="math inline">\(+\)</span> symbol in the object created and then editing the regression accordingly (<span class="citation" data-cites="zabor23">Zabor (<a href="#ref-zabor23" role="doc-biblioref">2023</a>)</span>). A new data set with censored times will be created to demonstrate this process. To do this, a 0 will be recorded for some individuals at times before t = 10.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -235,32 +247,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>censor <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(id, time, status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View the Data Set with censored times</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: tbl-censor</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Example Data Set with Censored Times"</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>censor <span class="sc">%&gt;%</span> <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with Censored Times"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">id =</span> <span class="st">"ID"</span>, <span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_source_note</span>(<span class="at">source_note =</span> <span class="st">"Table 3"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>censor <span class="sc">%&gt;%</span> <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with Censored Times"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">id =</span> <span class="st">"ID"</span>, <span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_source_note</span>(<span class="at">source_note =</span> <span class="st">"Table 3"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+<div id="tbl-censor" class="anchored">
 
-<div id="ddkfjomgre" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ddkfjomgre table {
+<div id="dmdghxnxom" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#dmdghxnxom table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ddkfjomgre thead, #ddkfjomgre tbody, #ddkfjomgre tfoot, #ddkfjomgre tr, #ddkfjomgre td, #ddkfjomgre th {
+#dmdghxnxom thead, #dmdghxnxom tbody, #dmdghxnxom tfoot, #dmdghxnxom tr, #dmdghxnxom td, #dmdghxnxom th {
   border-style: none;
 }
 
-#ddkfjomgre p {
+#dmdghxnxom p {
   margin: 0;
   padding: 0;
 }
 
-#ddkfjomgre .gt_table {
+#dmdghxnxom .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -286,12 +295,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-left-color: #D3D3D3;
 }
 
-#ddkfjomgre .gt_caption {
+#dmdghxnxom .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ddkfjomgre .gt_title {
+#dmdghxnxom .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -303,7 +312,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-width: 0;
 }
 
-#ddkfjomgre .gt_subtitle {
+#dmdghxnxom .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -315,7 +324,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-width: 0;
 }
 
-#ddkfjomgre .gt_heading {
+#dmdghxnxom .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -327,13 +336,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#ddkfjomgre .gt_bottom_border {
+#dmdghxnxom .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ddkfjomgre .gt_col_headings {
+#dmdghxnxom .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -348,7 +357,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#ddkfjomgre .gt_col_heading {
+#dmdghxnxom .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -368,7 +377,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#ddkfjomgre .gt_column_spanner_outer {
+#dmdghxnxom .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -380,15 +389,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 4px;
 }
 
-#ddkfjomgre .gt_column_spanner_outer:first-child {
+#dmdghxnxom .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ddkfjomgre .gt_column_spanner_outer:last-child {
+#dmdghxnxom .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ddkfjomgre .gt_column_spanner {
+#dmdghxnxom .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -400,11 +409,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   width: 100%;
 }
 
-#ddkfjomgre .gt_spanner_row {
+#dmdghxnxom .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ddkfjomgre .gt_group_heading {
+#dmdghxnxom .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -430,7 +439,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   text-align: left;
 }
 
-#ddkfjomgre .gt_empty_group_heading {
+#dmdghxnxom .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -445,15 +454,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: middle;
 }
 
-#ddkfjomgre .gt_from_md > :first-child {
+#dmdghxnxom .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ddkfjomgre .gt_from_md > :last-child {
+#dmdghxnxom .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ddkfjomgre .gt_row {
+#dmdghxnxom .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -472,7 +481,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#ddkfjomgre .gt_stub {
+#dmdghxnxom .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -485,7 +494,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#ddkfjomgre .gt_stub_row_group {
+#dmdghxnxom .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -499,15 +508,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: top;
 }
 
-#ddkfjomgre .gt_row_group_first td {
+#dmdghxnxom .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ddkfjomgre .gt_row_group_first th {
+#dmdghxnxom .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ddkfjomgre .gt_summary_row {
+#dmdghxnxom .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -517,16 +526,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#ddkfjomgre .gt_first_summary_row {
+#dmdghxnxom .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ddkfjomgre .gt_first_summary_row.thick {
+#dmdghxnxom .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ddkfjomgre .gt_last_summary_row {
+#dmdghxnxom .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -536,7 +545,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#ddkfjomgre .gt_grand_summary_row {
+#dmdghxnxom .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -546,7 +555,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#ddkfjomgre .gt_first_grand_summary_row {
+#dmdghxnxom .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -556,7 +565,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-color: #D3D3D3;
 }
 
-#ddkfjomgre .gt_last_grand_summary_row_top {
+#dmdghxnxom .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -566,11 +575,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#ddkfjomgre .gt_striped {
+#dmdghxnxom .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ddkfjomgre .gt_table_body {
+#dmdghxnxom .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -579,7 +588,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#ddkfjomgre .gt_footnotes {
+#dmdghxnxom .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -593,7 +602,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#ddkfjomgre .gt_footnote {
+#dmdghxnxom .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -602,7 +611,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#ddkfjomgre .gt_sourcenotes {
+#dmdghxnxom .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -616,7 +625,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#ddkfjomgre .gt_sourcenote {
+#dmdghxnxom .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -624,68 +633,68 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#ddkfjomgre .gt_left {
+#dmdghxnxom .gt_left {
   text-align: left;
 }
 
-#ddkfjomgre .gt_center {
+#dmdghxnxom .gt_center {
   text-align: center;
 }
 
-#ddkfjomgre .gt_right {
+#dmdghxnxom .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ddkfjomgre .gt_font_normal {
+#dmdghxnxom .gt_font_normal {
   font-weight: normal;
 }
 
-#ddkfjomgre .gt_font_bold {
+#dmdghxnxom .gt_font_bold {
   font-weight: bold;
 }
 
-#ddkfjomgre .gt_font_italic {
+#dmdghxnxom .gt_font_italic {
   font-style: italic;
 }
 
-#ddkfjomgre .gt_super {
+#dmdghxnxom .gt_super {
   font-size: 65%;
 }
 
-#ddkfjomgre .gt_footnote_marks {
+#dmdghxnxom .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ddkfjomgre .gt_asterisk {
+#dmdghxnxom .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ddkfjomgre .gt_indent_1 {
+#dmdghxnxom .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ddkfjomgre .gt_indent_2 {
+#dmdghxnxom .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ddkfjomgre .gt_indent_3 {
+#dmdghxnxom .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ddkfjomgre .gt_indent_4 {
+#dmdghxnxom .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ddkfjomgre .gt_indent_5 {
+#dmdghxnxom .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
 <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-  <caption>Example Data Set with Censored Times</caption>
+  <caption>Table&nbsp;2.1:  <p>Example Data Set with Censored Times</p> </caption>
   <thead>
     
     <tr class="gt_col_headings">
@@ -736,7 +745,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>see <span class="quarto-unresolved-ref">?tbl-censor</span></p>
+</div>
+<p><a href="#tbl-censor">Table&nbsp;<span>2.1</span></a></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Surv() Function shows the time of event or censored time for each observation</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>times2 <span class="ot">&lt;-</span> <span class="fu">Surv</span>(censor<span class="sc">$</span>time, censor<span class="sc">$</span>status)</span>
@@ -782,30 +792,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] 0.90 0.80 0.80 0.69 0.69 0.55 0.41 0.41</code></pre>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the survival curve</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-survcurv</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Kaplan Meier Survival Curve"</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">survfit2</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> censor) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsurvfit</span>() <span class="sc">+</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Time"</span>,</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Overall survival probability"</span>,</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Kaplan Meier Survival Curve"</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="at">by=</span><span class="dv">2</span>)) <span class="sc">+</span> </span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">by=</span>.<span class="dv">2</span>)) <span class="sc">+</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_risktable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-tbl-cap="Kaplan Meier Survival Curve">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">survfit2</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> censor) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsurvfit</span>() <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Time"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Overall survival probability"</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Kaplan Meier Survival Curve"</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="at">by=</span><span class="dv">2</span>)) <span class="sc">+</span> </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">by=</span>.<span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_risktable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Kaplan_Meier_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<div id="fig-survcurv" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="KaplanMeier_files/figure-html/fig-survcurv-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.1: <strong>?(caption)</strong></figcaption>
+</figure>
 </div>
 </div>
-<p>see <span class="quarto-unresolved-ref">?fig-survcurv</span></p>
+</div>
+<p><a href="#fig-survcurv">Figure&nbsp;<span>2.1</span></a></p>
 </section>
 <section id="log-rank-test" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="log-rank-test"><span class="header-section-number">2.4</span> Log-Rank Test</h2>
-<p>One of the most common applications of survival analysis and Kaplan Meier curves is for comparing survival statistics between two groups. One example of this might be if a study is comparing survival after two different treatment plans. The Log-Rank Test is a statistical test that tests the null hypothesis that there is no difference between the survival estimates of two groups at any point in time (Rich et al.). The only adjustment needed in R to factor in groups is to use the grouping variable as a predictor in the model (Zabor, E).</p>
+<p>One of the most common applications of survival analysis and Kaplan Meier curves is for comparing survival statistics between two groups. One example of this might be if a study is comparing survival after two different treatment plans. The Log-Rank Test is a statistical test that tests the null hypothesis that there is no difference between the survival estimates of two groups at any point in time (<span class="citation" data-cites="rich10">Rich (<a href="#ref-rich10" role="doc-biblioref">2010</a>)</span>). The only adjustment needed in R to factor in groups is to use the grouping variable as a predictor in the model (<span class="citation" data-cites="zabor23">Zabor (<a href="#ref-zabor23" role="doc-biblioref">2023</a>)</span>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a data set to compare to surv2</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)</span>
@@ -828,29 +839,46 @@ group=2 10        6     3.09      2.75      4.81
  Chisq= 4.8  on 1 degrees of freedom, p= 0.03 </code></pre>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the two curves</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: fig-survcurv2</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| tbl-cap: "Kaplan Meier Survival Curve by Group"</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">survfit2</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> group, <span class="at">data =</span> surv3) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsurvfit</span>() <span class="sc">+</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Days"</span>,</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Overall survival probability"</span>,</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Kaplan Meier Survival Curve by Group"</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="at">by=</span><span class="dv">2</span>)) <span class="sc">+</span> </span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">by=</span>.<span class="dv">2</span>)) <span class="sc">+</span></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_risktable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-tbl-cap="Kaplan Meier Survival Curve by Group">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">survfit2</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> group, <span class="at">data =</span> surv3) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsurvfit</span>() <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Days"</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Overall survival probability"</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Kaplan Meier Survival Curve by Group"</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="at">by=</span><span class="dv">2</span>)) <span class="sc">+</span> </span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">by=</span>.<span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_risktable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Kaplan_Meier_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<div id="fig-survcurv2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="KaplanMeier_files/figure-html/fig-survcurv2-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;2.2: <strong>?(caption)</strong></figcaption>
+</figure>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># find quarto caption option; references and titles</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>see <span class="quarto-unresolved-ref">?fig-survcurv2</span></p>
+</div>
+<p><a href="#fig-survcurv2">Figure&nbsp;<span>2.2</span></a></p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-clark03" class="csl-entry" role="listitem">
+Clark, Bradburn, T. G. 2003. <span>“Survival Analysis Part i: Basic Concepts and First Analyses.”</span> <em>British Journal of Cancer</em>, May. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2394262/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2394262/</a>.
+</div>
+<div id="ref-goel10" class="csl-entry" role="listitem">
+Goel, Khanna, M. K. 2010. <span>“Understanding Survival Analysis: Kaplan-Meier Estimate.”</span> <em>International Journal of Ayurveda Research</em>. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3059453/#:~:text=may%20become%20small.-,The%20Kaplan%2DMeier%20estimate%20is%20the%20simplest%20way%20of%20computing,associated%20with%20subjects%20or%20situations.&amp;text=For%20each%20time%20interval%2C%20survival,number%20of%20patients%20at%20risk.">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3059453/#:~:text=may%20become%20small.-,The%20Kaplan%2DMeier%20estimate%20is%20the%20simplest%20way%20of%20computing,associated%20with%20subjects%20or%20situations.&amp;text=For%20each%20time%20interval%2C%20survival,number%20of%20patients%20at%20risk.</a>
+</div>
+<div id="ref-rao23" class="csl-entry" role="listitem">
+Rao, &amp; Schoenfeld, S. R. 2023. <span>“Statistical Primer for Cardiovascular Research.”</span> <em>AHA Journals</em>. <a href="https://www.ahajournals.org/doi/pdf/10.1161/circulationaha.106.614859">https://www.ahajournals.org/doi/pdf/10.1161/circulationaha.106.614859</a>.
+</div>
+<div id="ref-rich10" class="csl-entry" role="listitem">
+Rich, Neely, J. T. 2010. <span>“A Practical Guide to Understanding Kaplan-Meier Curves.”</span> <em>Otolaryngology–Head and Neck Surgery: Official Journal of American Academy of Otolaryngology-Head and Neck Surgery</em>. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3932959/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3932959/</a>.
+</div>
+<div id="ref-zabor23" class="csl-entry" role="listitem">
+Zabor, E. C. 2023. <span>“Survival Analysis in r.”</span> <a href="https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html">https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html</a>.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
@@ -1205,13 +1233,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./index.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">References</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
