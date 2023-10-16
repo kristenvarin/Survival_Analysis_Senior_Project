@@ -1,7 +1,3 @@
----
-title: "index"
----
-
 # Survival Analysis
 
 ## Survival Analysis Background
@@ -59,3 +55,5 @@ probabilities %>% gt(caption = "Probability of Survival Based on Time") %>%
 ## Censoring Background
 
 One issue with survival analysis data is the problem of an individual being lost-to-follow-up, meaning data could not be collected for them at some point during the study. This causes the outcome of interest to not be recorded for that individual, so the survival time for that individual can not be analyzed as it would not be accurate. When this happens, the survival times for those individuals are recorded as censored, causing standard analysis techniques to be inappropriate for these data. There are three types of censoring that can occur. The first type of censoring is called right censoring, which happens if an individual begins the study but then is lost-to-follow-up at some point during the study before it ends. The censored survival time for these individuals is thus equal to the total time they were known to be alive in the study's observation period before they were lost-to-follow-up. Some common examples of when right censoring is needed include: an individual moving away from the study and not being able to participate or when an individual dies due to a non-related event after the study begins. Another type of censoring is called left censoring. In this type, the individual experiences lost-to-follow-up before the observation period begins. This would happen, for example, in a study that tracks patient recovery from a surgery, but with an observation period beginning one a month after the surgery took place. If a patient died less than a month after surgery, their survival time would need to be left censored. The final type of censoring is called interval censoring, which happens when a patient comes in and out of the study, making it possible for them to experience the outcome of interest during a period of time when they aren't being observed. This often happens when recurrence is being tracked in a study. One example could be if recurrence of cancer is being tracked and the study checks in with patients every month. If an individual does not have cancer after the first month but then does after the second month, the recurrence time is somewhere between one and two months, and it therefore needs to be interval censored (@collet). Out of the three types, right censoring is the most common and will be demonstrated in the example data-set.
+
+## References

@@ -10,7 +10,7 @@ The Kaplan Meier curve is a graphical representation of survival analysis. Simil
 
 ## Kaplan Meier in R
 
-Luckily, modern software makes these calculations easy and fast, as well as plotting them with confidence intervals and risk tables. The `survival` package in `R` has a function called `Surv()` that takes input data and creates a response object recording survival time for each observation. The `survfit()` function can be used to calculate the Kaplan Meier survival estimate for each time that a new event occurs. This object can then be used for the response in the regression `functionSurvfit2()` in the `ggsurvfit` package, which plots the Kaplan Meier curve for the data. The function takes into account right censoring as well, marking censored times with a $+$ symbol in the object created and then editing the regression accordingly (@zabor23). A new data set with censored times will be created to demonstrate this process. To do this, a 0 will be recorded for some individuals at times before t = 10.
+Luckily, modern software makes these calculations easy and fast, as well as plotting them with confidence intervals and risk tables. The `survival` package in `R` has a function called `Surv()` that takes input data and creates a response object recording survival time for each observation. The `survfit()` function can be used to calculate the Kaplan Meier survival estimate for each time that a new event occurs. This object can then be used for the response in the regression `functionSurvfit2()` in the `ggsurvfit` package, which plots the Kaplan Meier curve for the data. The function takes into account right censoring as well, marking censored times with a $+$ symbol in the object created and then editing the regression accordingly (@zabor23). A new data set with censored times will be created to demonstrate this process. To do this, a 0 will be recorded for some individuals at times before t = 10. @tbl-censor shows this data set's structure, and @fig-survcurv shows the Kaplan Meier curve for predicting the event.
 
 ```{r}
 # Load Packages
@@ -38,8 +38,6 @@ censor %>% gt(caption = "Example Data Set with Censored Times") %>%
   cols_label(id = "ID", time = "Time", status = "Status") %>%
   tab_source_note(source_note = "Table 3") 
 ```
-
-@tbl-censor
 
 ```{r}
 # Surv() Function shows the time of event or censored time for each observation
@@ -76,11 +74,9 @@ survfit2(Surv(time, status) ~ 1, data = censor) %>%
   add_risktable()
 ```
 
-@fig-survcurv
-
 ## Log-Rank Test
 
-One of the most common applications of survival analysis and Kaplan Meier curves is for comparing survival statistics between two groups. One example of this might be if a study is comparing survival after two different treatment plans. The Log-Rank Test is a statistical test that tests the null hypothesis that there is no difference between the survival estimates of two groups at any point in time (@rich10). The only adjustment needed in R to factor in groups is to use the grouping variable as a predictor in the model (@zabor23).
+One of the most common applications of survival analysis and Kaplan Meier curves is for comparing survival statistics between two groups. One example of this might be if a study is comparing survival after two different treatment plans. The Log-Rank Test is a statistical test that tests the null hypothesis that there is no difference between the survival estimates of two groups at any point in time (@rich10). The only adjustment needed in R to factor in groups is to use the grouping variable as a predictor in the model (@zabor23). The two survival curves are depicted in @fig-survcurv2.
 
 ```{r}
 # Create a data set to compare to surv2
@@ -112,4 +108,48 @@ survfit2(Surv(time, status) ~ group, data = surv3) %>%
   add_risktable()
 ```
 
-@fig-survcurv2
+## Case Study
+
+The next example uses a data set with variables for predicting cirrhosis, or the permanent scarring of the liver, in patients with liver diseases such as hepatitis C. The data set is from a clinical trial conducted by the Mayo Clinic from 1974 to 1984. The data set contains 424 primary biliary cirrhosis patients with 20 variables (@fedesoriano). To conduct survival analysis, the `Status` variable was transformed to an indicator variable, labelled `event`, coded as a 1 representing death and 0 representing censored. The `N_Days` variable was used for the time variable, indicating number of days since the beginning of the trial. @fig-casestudy shows the Kaplan Meier for this case study.
+
+```{r}
+cirrhosis <- read_csv("data/cirrhosis.csv")
+```
+
+```{r}
+cirrhosis <- cirrhosis %>% mutate(event = if_else(Status == 'D', 1, 0)) 
+```
+
+```{r}
+# View times of censor or death
+times <- Surv(cirrhosis$N_Days, cirrhosis$event)
+times
+```
+
+```{r}
+# Calculate survival object
+s1 <- survfit(times ~ 1, data = cirrhosis)
+# See the structure of this object
+str(s1)
+```
+
+```{r}
+# View the survival estimate for each time an event occurs
+round(s1$surv, 2)
+```
+
+```{r}
+#| label: fig-casestudy
+#| tbl-cap: "Kaplan Meier Survival Curve Predicting Death from Cirrhosis"
+
+survfit2(Surv(N_Days, event) ~ 1, data = cirrhosis) %>% 
+  ggsurvfit() +
+  labs(
+    x = "Time",
+    y = "Overall survival probability",
+    title = "Kaplan Meier Survival Curve"
+  ) + 
+  add_risktable()
+```
+
+## References
