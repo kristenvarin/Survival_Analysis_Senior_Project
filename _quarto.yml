@@ -9,6 +9,7 @@ book:
   chapters:
     - index.qmd
     - KaplanMeier.qmd
+    - HazardAnalysis.qmd
 
 bibliography: references.bib
 

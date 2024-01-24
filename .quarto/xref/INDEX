@@ -16,5 +16,8 @@
   },
   "KaplanMeier.qmd": {
     "KaplanMeier.html": "dd7fd8af"
+  },
+  "HazardAnalysis.qmd": {
+    "HazardAnalysis.html": "9e6bda85"
   }
 }

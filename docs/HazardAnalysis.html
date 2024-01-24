@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Kristen Varin">
-<meta name="dcterms.date" content="2023-09-06">
 
-<title>Survival Analysis Senior Project</title>
+<title>Survival Analysis Senior Project - 3&nbsp; Cox Proportional Hazards Regression</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -85,7 +83,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./KaplanMeier.html" rel="next">
+<link href="./KaplanMeier.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -132,7 +130,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Survival Analysis</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./HazardAnalysis.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Cox Proportional Hazards Regression</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -162,7 +160,7 @@ div.csl-indent {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
   </div>
 </li>
@@ -174,7 +172,7 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./HazardAnalysis.html" class="sidebar-item-text sidebar-link">
+  <a href="./HazardAnalysis.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Cox Proportional Hazards Regression</span></span></a>
   </div>
 </li>
@@ -188,13 +186,15 @@ div.csl-indent {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#survival-analysis" id="toc-survival-analysis" class="nav-link active" data-scroll-target="#survival-analysis"><span class="header-section-number">1</span> Survival Analysis</a>
-  <ul class="collapse">
-  <li><a href="#survival-analysis-background" id="toc-survival-analysis-background" class="nav-link" data-scroll-target="#survival-analysis-background"><span class="header-section-number">1.1</span> Survival Analysis Background</a></li>
-  <li><a href="#example-data-set-in-r" id="toc-example-data-set-in-r" class="nav-link" data-scroll-target="#example-data-set-in-r"><span class="header-section-number">1.2</span> Example data set in R</a></li>
-  <li><a href="#censoring-background" id="toc-censoring-background" class="nav-link" data-scroll-target="#censoring-background"><span class="header-section-number">1.3</span> Censoring Background</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">1.4</span> References</a></li>
-  </ul></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">3.1</span> Introduction</a></li>
+  <li><a href="#proportional-hazards" id="toc-proportional-hazards" class="nav-link" data-scroll-target="#proportional-hazards"><span class="header-section-number">3.2</span> Proportional Hazards</a></li>
+  <li><a href="#hazard-ratios" id="toc-hazard-ratios" class="nav-link" data-scroll-target="#hazard-ratios"><span class="header-section-number">3.3</span> Hazard Ratios</a></li>
+  <li><a href="#cox-proportional-hazards-model" id="toc-cox-proportional-hazards-model" class="nav-link" data-scroll-target="#cox-proportional-hazards-model"><span class="header-section-number">3.4</span> Cox Proportional Hazards Model</a></li>
+  <li><a href="#method-of-partial-likelihood" id="toc-method-of-partial-likelihood" class="nav-link" data-scroll-target="#method-of-partial-likelihood"><span class="header-section-number">3.5</span> Method of Partial Likelihood</a></li>
+  <li><a href="#example-data-set" id="toc-example-data-set" class="nav-link" data-scroll-target="#example-data-set"><span class="header-section-number">3.6</span> Example Data Set</a></li>
+  <li><a href="#hazard-analysis-in-r" id="toc-hazard-analysis-in-r" class="nav-link" data-scroll-target="#hazard-analysis-in-r"><span class="header-section-number">3.7</span> Hazard Analysis in R</a></li>
+  <li><a href="#case-study" id="toc-case-study" class="nav-link" data-scroll-target="#case-study"><span class="header-section-number">3.8</span> Case Study</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">3.9</span> References</a></li>
   </ul>
 </nav>
     </div>
@@ -203,26 +203,14 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Survival Analysis Senior Project</h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Cox Proportional Hazards Regression</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Kristen Varin </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">September 6, 2023</p>
-    </div>
-  </div>
   
     
   </div>
@@ -230,18 +218,31 @@ div.csl-indent {
 
 </header>
 
-<section id="survival-analysis" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Survival Analysis</h1>
-<section id="survival-analysis-background" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="survival-analysis-background"><span class="header-section-number">1.1</span> Survival Analysis Background</h2>
-<p>Survival analysis is a type of statistical analysis used for analyzing the relationship between time and an event of interest occurring for individuals. The name survival analysis implies that the most common outcome analyzed is death, but many other events can be analyzed including: time it takes to begin recovering from treatment or time until a disease is contracted. These analyses are specifically helpful when comparing groups of people such as treatment groups in a clinical trial. Survival analysis can reveal whether certain treatments are more effective than others in helping individuals to live longer or avoid certain outcomes of interest, such as heart attacks.</p>
+<section id="introduction" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">3.1</span> Introduction</h2>
+<p>So far, we have dealt with calculating survival probability using a Kaplan Meier curve. While a Kaplan Meier curve is useful for predicting survival probability for simple data, it can not always be used since its a nonparametric method, meaning it follows no prior assumptions about the data. When data becomes more complex and variables about individuals need to be considered, other methods need to be used. One of these methods, proportional hazard analysis, similarly focuses on time-to-event data, but can be used for more realistic scenarios that deal with additional explanatory variables for the event of interest (<span class="citation" data-cites="clark03">Clark (<a href="#ref-clark03" role="doc-biblioref">2003</a>)</span>). For example, we can use hazard analysis to calculate the probability of a person recovering from a disease based on type of treatment, while also including variables that could affect the outcome such as age, sex or history of drugs. A hazard function can be more useful during real-world analysis than the Kaplan Meier curve previously discussed.</p>
 </section>
-<section id="example-data-set-in-r" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="example-data-set-in-r"><span class="header-section-number">1.2</span> Example data set in R</h2>
-<p>To demonstrate survival analysis, an example data set was created including ten observations with the following columns: a. <span class="math inline">\(id\)</span> variable for each observation, a <span class="math inline">\(time\)</span> variable ranging from 1 to 10, and a <span class="math inline">\(status\)</span> variable that was either a 1, which represented the event occurrence, or a 0, representing no event occurrence. For those assigned a 1, a survival time was assigned in the range of 1 to 9, representing the time that individual survived until the event occurred for them. For those assigned a 0, a time of t = 10 was assigned, suggesting that they lasted until the end of the hypothetical study without the event occurring. <a href="#tbl-surv">Table&nbsp;<span>1.1</span></a> shows these data.</p>
+<section id="proportional-hazards" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="proportional-hazards"><span class="header-section-number">3.2</span> Proportional Hazards</h2>
+<p>The proportional hazards model, also known as the Cox regression model, is a semi-parametric model. This is because it assumes proportional hazards, or that the hazard of an event occurring is the same for all individuals, yet does not assume a specific distribution (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). The proportional hazard model also assumes that the hazard ratio between two groups is constant over time. This means that the hazard ratio between two groups is the same at any time <span class="math inline">\(t\)</span>, thus making the model proportional. In other words, the instantaneous hazard of an event occurring between two individuals of different groups will remain constant at all times, or the effect of the predictors is the same at all times (<span class="citation" data-cites="sthda"><span>“Cox Proportional-Hazards Model”</span> (<a href="#ref-sthda" role="doc-biblioref">n.d.</a>)</span>).</p>
+</section>
+<section id="hazard-ratios" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="hazard-ratios"><span class="header-section-number">3.3</span> Hazard Ratios</h2>
+<p>The goal of hazard analysis is to create a hazard function for modelling time to event data, where the outcome <span class="math inline">\(h(t)\)</span> or <span class="math inline">\(λ(t)\)</span> is the probability of the event occurring for a subject who has lasted until time <span class="math inline">\(t\)</span> (<span class="citation" data-cites="clark03">Clark (<a href="#ref-clark03" role="doc-biblioref">2003</a>)</span>). The hazard function is modeled using hazard ratios, which express the ratio between the hazard of an event between two groups at a time. The hazard ratio between two groups can be expressed as <span class="math inline">\(v = \frac{h_1(t)}{h_2(t)}\)</span> (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>).</p>
+</section>
+<section id="cox-proportional-hazards-model" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="cox-proportional-hazards-model"><span class="header-section-number">3.4</span> Cox Proportional Hazards Model</h2>
+<p>The Cox proportional hazards model is expressed in terms of the hazard function on an individual <span class="math inline">\(i\)</span> at time <span class="math inline">\(t\)</span>. This function is expressed as <span class="math inline">\(h_i(t) = vh_0(t)\)</span>, where <span class="math inline">\(h_0(t)\)</span> is the baseline hazard function and <span class="math inline">\(v\)</span> is the hazard ratio (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). The baseline hazard function is the hazard function for a subject with all explanatory variables equal to zero. For the models we will discuss, the hazard ratio <span class="math inline">\(v\)</span> is set to equal <span class="math inline">\(exp(\beta)\)</span> since the hazard ratio cannot be a negative value. The parameter <span class="math inline">\(beta\)</span> is thus the log of the hazard ratio, expressed <span class="math inline">\(\beta = log(v)\)</span>. Any value of <span class="math inline">\(\beta\)</span> will output a positive value <span class="math inline">\(v\)</span>. We can include many explanatory variables in the hazard function such as factors, which can take on different levels, or variates, which can be any value on a continuous scale. With many predictors, the Cox proportional hazards model can be expressed as <span class="math inline">\(h_i(t) = h_0(t)exp(\beta_1x_{1i} + \beta_2x_{2i} + ... + \beta_px_{pi})\)</span>, where <span class="math inline">\(h_0(t)\)</span> is the baseline hazard function, <span class="math inline">\(x_1\)</span> to <span class="math inline">\(x_p\)</span> are the values of the explanatory variables for individual <span class="math inline">\(i\)</span>, and <span class="math inline">\(\beta_1\)</span> to <span class="math inline">\(\beta_p\)</span> are the regression coefficients. The model can also be expressed as a linear model in terms of the log of the ratios between the two hazard functions, looking like <span class="math inline">\(log(\frac{h_i(t)}{h_0(t)}) = \beta_1x_{1i} + \beta_2x_{2i} + ... + \beta_px_{pi}\)</span> (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>).</p>
+</section>
+<section id="method-of-partial-likelihood" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="method-of-partial-likelihood"><span class="header-section-number">3.5</span> Method of Partial Likelihood</h2>
+<p>In the Cox proportional hazards model, there are two unknowns: the baseline hazard function, <span class="math inline">\(h_0(t)\)</span>, and the regression coefficients, <span class="math inline">\(\beta_1\)</span> to <span class="math inline">\(\beta_p\)</span>. The method of partial likelihood, first discovered by Cox himself, allows us to estimate the regression coefficients without knowing the baseline hazard function (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). We do this by maximizing the likelihood of the observed data (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). Basically, it is a way of choosing coefficient estimates that will be most likely to output the exact same data points we have. One key assumption of this method is that there are no ties, or deaths at the same time, in the data (<span class="citation" data-cites="waagepetersen22">Waagepetersen (<a href="#ref-waagepetersen22" role="doc-biblioref">2022</a>)</span>). We must make this assumption because the way this method works is by ranking the times of death in each group.</p>
+</section>
+<section id="example-data-set" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="example-data-set"><span class="header-section-number">3.6</span> Example Data Set</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Packages</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.3     ✔ readr     2.1.4
@@ -259,37 +260,37 @@ div.csl-indent {
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggsurvfit)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>We will again create a simple data set to demonstrate the process. Let’s recall the <code>surv2</code> data set we created earlier, now with an additional variable, age <a href="#tbl-surv3">Table&nbsp;<span>3.1</span></a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a simple data set</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>surv <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(id, time, status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">8</span>, <span class="dv">7</span>, <span class="dv">10</span>, <span class="dv">8</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">10</span>, <span class="dv">6</span>, <span class="dv">1</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span> ,<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">62</span>, <span class="dv">37</span>, <span class="dv">67</span>, <span class="dv">44</span>, <span class="dv">70</span>, <span class="dv">50</span>, <span class="dv">45</span>, <span class="dv">61</span>, <span class="dv">62</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>surv3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(time, status, group, age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>surv <span class="sc">%&gt;%</span> <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with ID, Status, and Time"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">id =</span> <span class="st">"ID"</span>, <span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_source_note</span>(<span class="at">source_note =</span> <span class="st">"Table 1"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>surv3 <span class="sc">%&gt;%</span> <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with Status, Time, Group, and Age"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>, <span class="at">group =</span> <span class="st">"Group"</span>, <span class="at">age =</span> <span class="st">"Age"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="tbl-surv" class="anchored">
+<div id="tbl-surv3" class="anchored">
 
-<div id="zgyrkwxuns" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#zgyrkwxuns table {
+<div id="bbjpvbpnmc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#bbjpvbpnmc table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#zgyrkwxuns thead, #zgyrkwxuns tbody, #zgyrkwxuns tfoot, #zgyrkwxuns tr, #zgyrkwxuns td, #zgyrkwxuns th {
+#bbjpvbpnmc thead, #bbjpvbpnmc tbody, #bbjpvbpnmc tfoot, #bbjpvbpnmc tr, #bbjpvbpnmc td, #bbjpvbpnmc th {
   border-style: none;
 }
 
-#zgyrkwxuns p {
+#bbjpvbpnmc p {
   margin: 0;
   padding: 0;
 }
 
-#zgyrkwxuns .gt_table {
+#bbjpvbpnmc .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -315,12 +316,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#zgyrkwxuns .gt_caption {
+#bbjpvbpnmc .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#zgyrkwxuns .gt_title {
+#bbjpvbpnmc .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -332,7 +333,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#zgyrkwxuns .gt_subtitle {
+#bbjpvbpnmc .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -344,7 +345,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#zgyrkwxuns .gt_heading {
+#bbjpvbpnmc .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -356,13 +357,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#zgyrkwxuns .gt_bottom_border {
+#bbjpvbpnmc .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#zgyrkwxuns .gt_col_headings {
+#bbjpvbpnmc .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -377,7 +378,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#zgyrkwxuns .gt_col_heading {
+#bbjpvbpnmc .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -397,7 +398,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#zgyrkwxuns .gt_column_spanner_outer {
+#bbjpvbpnmc .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -409,15 +410,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#zgyrkwxuns .gt_column_spanner_outer:first-child {
+#bbjpvbpnmc .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#zgyrkwxuns .gt_column_spanner_outer:last-child {
+#bbjpvbpnmc .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#zgyrkwxuns .gt_column_spanner {
+#bbjpvbpnmc .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -429,11 +430,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#zgyrkwxuns .gt_spanner_row {
+#bbjpvbpnmc .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#zgyrkwxuns .gt_group_heading {
+#bbjpvbpnmc .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -459,7 +460,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#zgyrkwxuns .gt_empty_group_heading {
+#bbjpvbpnmc .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -474,15 +475,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#zgyrkwxuns .gt_from_md > :first-child {
+#bbjpvbpnmc .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#zgyrkwxuns .gt_from_md > :last-child {
+#bbjpvbpnmc .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#zgyrkwxuns .gt_row {
+#bbjpvbpnmc .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -501,7 +502,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#zgyrkwxuns .gt_stub {
+#bbjpvbpnmc .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -514,7 +515,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#zgyrkwxuns .gt_stub_row_group {
+#bbjpvbpnmc .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -528,15 +529,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#zgyrkwxuns .gt_row_group_first td {
+#bbjpvbpnmc .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#zgyrkwxuns .gt_row_group_first th {
+#bbjpvbpnmc .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#zgyrkwxuns .gt_summary_row {
+#bbjpvbpnmc .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -546,16 +547,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#zgyrkwxuns .gt_first_summary_row {
+#bbjpvbpnmc .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#zgyrkwxuns .gt_first_summary_row.thick {
+#bbjpvbpnmc .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#zgyrkwxuns .gt_last_summary_row {
+#bbjpvbpnmc .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -565,7 +566,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#zgyrkwxuns .gt_grand_summary_row {
+#bbjpvbpnmc .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -575,7 +576,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#zgyrkwxuns .gt_first_grand_summary_row {
+#bbjpvbpnmc .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -585,7 +586,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#zgyrkwxuns .gt_last_grand_summary_row_top {
+#bbjpvbpnmc .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -595,11 +596,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#zgyrkwxuns .gt_striped {
+#bbjpvbpnmc .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#zgyrkwxuns .gt_table_body {
+#bbjpvbpnmc .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -608,7 +609,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#zgyrkwxuns .gt_footnotes {
+#bbjpvbpnmc .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -622,7 +623,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#zgyrkwxuns .gt_footnote {
+#bbjpvbpnmc .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -631,7 +632,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#zgyrkwxuns .gt_sourcenotes {
+#bbjpvbpnmc .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -645,7 +646,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#zgyrkwxuns .gt_sourcenote {
+#bbjpvbpnmc .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -653,645 +654,175 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#zgyrkwxuns .gt_left {
+#bbjpvbpnmc .gt_left {
   text-align: left;
 }
 
-#zgyrkwxuns .gt_center {
+#bbjpvbpnmc .gt_center {
   text-align: center;
 }
 
-#zgyrkwxuns .gt_right {
+#bbjpvbpnmc .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#zgyrkwxuns .gt_font_normal {
+#bbjpvbpnmc .gt_font_normal {
   font-weight: normal;
 }
 
-#zgyrkwxuns .gt_font_bold {
+#bbjpvbpnmc .gt_font_bold {
   font-weight: bold;
 }
 
-#zgyrkwxuns .gt_font_italic {
+#bbjpvbpnmc .gt_font_italic {
   font-style: italic;
 }
 
-#zgyrkwxuns .gt_super {
+#bbjpvbpnmc .gt_super {
   font-size: 65%;
 }
 
-#zgyrkwxuns .gt_footnote_marks {
+#bbjpvbpnmc .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#zgyrkwxuns .gt_asterisk {
+#bbjpvbpnmc .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#zgyrkwxuns .gt_indent_1 {
+#bbjpvbpnmc .gt_indent_1 {
   text-indent: 5px;
 }
 
-#zgyrkwxuns .gt_indent_2 {
+#bbjpvbpnmc .gt_indent_2 {
   text-indent: 10px;
 }
 
-#zgyrkwxuns .gt_indent_3 {
+#bbjpvbpnmc .gt_indent_3 {
   text-indent: 15px;
 }
 
-#zgyrkwxuns .gt_indent_4 {
+#bbjpvbpnmc .gt_indent_4 {
   text-indent: 20px;
 }
 
-#zgyrkwxuns .gt_indent_5 {
+#bbjpvbpnmc .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
 <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-  <caption>Table&nbsp;1.1:  <p>surv table 1</p> </caption>
+  <caption>Table&nbsp;3.1:  <p>surv table 3</p> </caption>
   <thead>
     
     <tr class="gt_col_headings">
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="ID">ID</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Time">Time</th>
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Status">Status</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Group">Group</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Age">Age</th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
-    <tr><td headers="id" class="gt_row gt_right">1</td>
-<td headers="time" class="gt_row gt_right">1</td>
-<td headers="status" class="gt_row gt_right">1</td></tr>
-    <tr><td headers="id" class="gt_row gt_right">2</td>
-<td headers="time" class="gt_row gt_right">2</td>
-<td headers="status" class="gt_row gt_right">1</td></tr>
-    <tr><td headers="id" class="gt_row gt_right">3</td>
-<td headers="time" class="gt_row gt_right">4</td>
-<td headers="status" class="gt_row gt_right">1</td></tr>
-    <tr><td headers="id" class="gt_row gt_right">4</td>
-<td headers="time" class="gt_row gt_right">5</td>
-<td headers="status" class="gt_row gt_right">1</td></tr>
-    <tr><td headers="id" class="gt_row gt_right">5</td>
-<td headers="time" class="gt_row gt_right">6</td>
-<td headers="status" class="gt_row gt_right">1</td></tr>
-    <tr><td headers="id" class="gt_row gt_right">6</td>
-<td headers="time" class="gt_row gt_right">8</td>
-<td headers="status" class="gt_row gt_right">1</td></tr>
-    <tr><td headers="id" class="gt_row gt_right">7</td>
-<td headers="time" class="gt_row gt_right">9</td>
-<td headers="status" class="gt_row gt_right">1</td></tr>
-    <tr><td headers="id" class="gt_row gt_right">8</td>
-<td headers="time" class="gt_row gt_right">10</td>
-<td headers="status" class="gt_row gt_right">0</td></tr>
-    <tr><td headers="id" class="gt_row gt_right">9</td>
-<td headers="time" class="gt_row gt_right">10</td>
-<td headers="status" class="gt_row gt_right">0</td></tr>
-    <tr><td headers="id" class="gt_row gt_right">10</td>
-<td headers="time" class="gt_row gt_right">10</td>
-<td headers="status" class="gt_row gt_right">0</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">8</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="group" class="gt_row gt_right">1</td>
+<td headers="age" class="gt_row gt_right">40</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">7</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">1</td>
+<td headers="age" class="gt_row gt_right">62</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">10</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="group" class="gt_row gt_right">1</td>
+<td headers="age" class="gt_row gt_right">37</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">8</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">1</td>
+<td headers="age" class="gt_row gt_right">67</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">5</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="group" class="gt_row gt_right">1</td>
+<td headers="age" class="gt_row gt_right">44</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">3</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">2</td>
+<td headers="age" class="gt_row gt_right">70</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">4</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="group" class="gt_row gt_right">2</td>
+<td headers="age" class="gt_row gt_right">50</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">10</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="group" class="gt_row gt_right">2</td>
+<td headers="age" class="gt_row gt_right">45</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">6</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">2</td>
+<td headers="age" class="gt_row gt_right">61</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">1</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">2</td>
+<td headers="age" class="gt_row gt_right">62</td></tr>
   </tbody>
-  <tfoot class="gt_sourcenotes">
-    <tr>
-      <td class="gt_sourcenote" colspan="3">Table 1</td>
-    </tr>
-  </tfoot>
+  
   
 </table>
 </div>
 </div>
 </div>
 </div>
-<p>To perform survival analysis on these data, the probability of survival at each time from t = 0 to t = 10 can be calculated by dividing the amount of people surviving until that time by the total amount of people in the study. For the first observation in the example data, probability of survival is equal to 1, or 100%, because every participant would presumably begin the study alive. To calculate the probability of survival for time t = 1, the number of participants that did not experience the outcome of interest by t = 1 would be divided by 10, the total number of observations in the study. In this case, 9 participants survived until time t = 1, because only one observation was assigned a 1 between times t = 0 and t = 1. Dividing this total by the 10 total observations in the study shows that the probability of surviving to time 1 is 0.9, or 90%. As time increases, the total probability of survival for the group will decrease in the range of 1 to 0 because more people will be experiencing the outcome. This is why survival curves have a rightly skewed distribution. <a href="#tbl-probabilities">Table&nbsp;<span>1.2</span></a> shows the survival probabilities for each observation.</p>
+<p>Let’s start by calculating a hazard function between groups 1 and 2 and ignoring age. Recall that <span class="math inline">\(h_i(t) = h_0(t)exp(\beta_1x_{1i} + \beta_2x_{2i} + ... + \beta_px_{pi})\)</span>. So for group 1, <span class="math inline">\(h_1(t) = h_0(t)exp(\beta_1x_{1})\)</span>, with <span class="math inline">\(x_{1}\)</span> being 1 since the individual is in group 1. For group 2, <span class="math inline">\(h_2(t) = h_0(t)exp(\beta_1x_{2})\)</span>, with <span class="math inline">\(x_{2}\)</span> being 2 since the individual is in group 2. We can then calculate the hazard ratio between the two groups as <span class="math inline">\(v = \frac{h_1(t)}{h_2(t)} = \frac{h_0(t)exp(\beta_1x_{1})}{h_0(t)exp(\beta_1x_{2})} = exp(\beta_1x_{1} - \beta_1x_{2}) = exp(\beta_1(x_{1} - x_{2}))\)</span>. Note that the baseline hazard function, <span class="math inline">\(h_0(t)\)</span>, cancels out, which makes sense since this model does not assume a specific shape.</p>
+<p>To find the value for <span class="math inline">\(\beta_1\)</span>, we need to use something called the maximum likelihood test.</p>
+<p>When looking at multiple predictors, such as and and group, the parameter estimates are found by the equation:</p>
+<p>To determine the values for the predictors, we must use the partial likelihood test.</p>
+<p>We can calculate the cumulative hazard ratio, <span class="math inline">\(v\)</span> of the event occurring in the group of individuals with a status of 1 compared to the group of individuals with a status of 0. We can calculate the hazard of the event occurring for an individual in group 1 at time t, <span class="math inline">\(h_1(t)\)</span>, by dividing the number of individuals who died in the group of individuals with a status of 1 by the total number of individuals in the group of individuals with a status of 1.</p>
+<ul>
+<li>cumulative? This can be expressed as <span class="math inline">\(v = \frac{\frac{d_1}{n_1}}{\frac{d_0}{n_0}}\)</span>.</li>
+</ul>
+</section>
+<section id="hazard-analysis-in-r" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="hazard-analysis-in-r"><span class="header-section-number">3.7</span> Hazard Analysis in R</h2>
+<p>Similarly to before with the Kaplan Meier curve, we can use R to model the hazard function. The <code>coxph()</code> function in the <code>survival</code> package returns the coefficients of the cox proportional hazards model as well as the p value for the coefficients, allowing us to determine whether each coefficient is significant (<span class="citation" data-cites="sthda"><span>“Cox Proportional-Hazards Model”</span> (<a href="#ref-sthda" role="doc-biblioref">n.d.</a>)</span>). Below, we see that the coefficient on the age predictor is significant, but the coefficient for group is not. This means that, when controlling for the other variables, the hazard of the event occurring is not significantly different between the two groups, but the hazard of the event occurring is significantly different for individuals of different ages.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate survival probabilities</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>probabilities <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Number_alive =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">7</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">3</span>),</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Time =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>),</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Probability =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.9</span>, <span class="fl">0.8</span>, <span class="fl">0.8</span>, <span class="fl">0.7</span>, <span class="fl">0.6</span>, <span class="fl">0.5</span>, <span class="fl">0.4</span>, <span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">0.3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>probabilities <span class="sc">%&gt;%</span> <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Probability of Survival Based on Time"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">Number_alive =</span> <span class="st">"Number alive"</span>, <span class="at">Time =</span> <span class="st">"Time"</span>, <span class="at">Probability =</span> <span class="st">"Probability"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_source_note</span>(<span class="at">source_note =</span> <span class="st">"Table 2"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div id="tbl-probabilities" class="anchored">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> group <span class="sc">+</span> age, <span class="at">data =</span> surv3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, status) ~ group + age, data = surv3)
 
-<div id="jaclnwgfuy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#jaclnwgfuy table {
-  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+          coef exp(coef) se(coef)     z      p
+group  2.63387  13.92750  1.78647 1.474 0.1404
+age    0.18887   1.20789  0.09323 2.026 0.0428
 
-#jaclnwgfuy thead, #jaclnwgfuy tbody, #jaclnwgfuy tfoot, #jaclnwgfuy tr, #jaclnwgfuy td, #jaclnwgfuy th {
-  border-style: none;
-}
-
-#jaclnwgfuy p {
-  margin: 0;
-  padding: 0;
-}
-
-#jaclnwgfuy .gt_table {
-  display: table;
-  border-collapse: collapse;
-  line-height: normal;
-  margin-left: auto;
-  margin-right: auto;
-  color: #333333;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  background-color: #FFFFFF;
-  width: auto;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #A8A8A8;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #A8A8A8;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-}
-
-#jaclnwgfuy .gt_caption {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-#jaclnwgfuy .gt_title {
-  color: #333333;
-  font-size: 125%;
-  font-weight: initial;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-color: #FFFFFF;
-  border-bottom-width: 0;
-}
-
-#jaclnwgfuy .gt_subtitle {
-  color: #333333;
-  font-size: 85%;
-  font-weight: initial;
-  padding-top: 3px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-color: #FFFFFF;
-  border-top-width: 0;
-}
-
-#jaclnwgfuy .gt_heading {
-  background-color: #FFFFFF;
-  text-align: center;
-  border-bottom-color: #FFFFFF;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#jaclnwgfuy .gt_bottom_border {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#jaclnwgfuy .gt_col_headings {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-}
-
-#jaclnwgfuy .gt_col_heading {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 6px;
-  padding-left: 5px;
-  padding-right: 5px;
-  overflow-x: hidden;
-}
-
-#jaclnwgfuy .gt_column_spanner_outer {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: normal;
-  text-transform: inherit;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-#jaclnwgfuy .gt_column_spanner_outer:first-child {
-  padding-left: 0;
-}
-
-#jaclnwgfuy .gt_column_spanner_outer:last-child {
-  padding-right: 0;
-}
-
-#jaclnwgfuy .gt_column_spanner {
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: bottom;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  overflow-x: hidden;
-  display: inline-block;
-  width: 100%;
-}
-
-#jaclnwgfuy .gt_spanner_row {
-  border-bottom-style: hidden;
-}
-
-#jaclnwgfuy .gt_group_heading {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  text-align: left;
-}
-
-#jaclnwgfuy .gt_empty_group_heading {
-  padding: 0.5px;
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  vertical-align: middle;
-}
-
-#jaclnwgfuy .gt_from_md > :first-child {
-  margin-top: 0;
-}
-
-#jaclnwgfuy .gt_from_md > :last-child {
-  margin-bottom: 0;
-}
-
-#jaclnwgfuy .gt_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  margin: 10px;
-  border-top-style: solid;
-  border-top-width: 1px;
-  border-top-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 1px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 1px;
-  border-right-color: #D3D3D3;
-  vertical-align: middle;
-  overflow-x: hidden;
-}
-
-#jaclnwgfuy .gt_stub {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#jaclnwgfuy .gt_stub_row_group {
-  color: #333333;
-  background-color: #FFFFFF;
-  font-size: 100%;
-  font-weight: initial;
-  text-transform: inherit;
-  border-right-style: solid;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-  padding-left: 5px;
-  padding-right: 5px;
-  vertical-align: top;
-}
-
-#jaclnwgfuy .gt_row_group_first td {
-  border-top-width: 2px;
-}
-
-#jaclnwgfuy .gt_row_group_first th {
-  border-top-width: 2px;
-}
-
-#jaclnwgfuy .gt_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#jaclnwgfuy .gt_first_summary_row {
-  border-top-style: solid;
-  border-top-color: #D3D3D3;
-}
-
-#jaclnwgfuy .gt_first_summary_row.thick {
-  border-top-width: 2px;
-}
-
-#jaclnwgfuy .gt_last_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#jaclnwgfuy .gt_grand_summary_row {
-  color: #333333;
-  background-color: #FFFFFF;
-  text-transform: inherit;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#jaclnwgfuy .gt_first_grand_summary_row {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-top-style: double;
-  border-top-width: 6px;
-  border-top-color: #D3D3D3;
-}
-
-#jaclnwgfuy .gt_last_grand_summary_row_top {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-bottom-style: double;
-  border-bottom-width: 6px;
-  border-bottom-color: #D3D3D3;
-}
-
-#jaclnwgfuy .gt_striped {
-  background-color: rgba(128, 128, 128, 0.05);
-}
-
-#jaclnwgfuy .gt_table_body {
-  border-top-style: solid;
-  border-top-width: 2px;
-  border-top-color: #D3D3D3;
-  border-bottom-style: solid;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-}
-
-#jaclnwgfuy .gt_footnotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#jaclnwgfuy .gt_footnote {
-  margin: 0px;
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#jaclnwgfuy .gt_sourcenotes {
-  color: #333333;
-  background-color: #FFFFFF;
-  border-bottom-style: none;
-  border-bottom-width: 2px;
-  border-bottom-color: #D3D3D3;
-  border-left-style: none;
-  border-left-width: 2px;
-  border-left-color: #D3D3D3;
-  border-right-style: none;
-  border-right-width: 2px;
-  border-right-color: #D3D3D3;
-}
-
-#jaclnwgfuy .gt_sourcenote {
-  font-size: 90%;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-#jaclnwgfuy .gt_left {
-  text-align: left;
-}
-
-#jaclnwgfuy .gt_center {
-  text-align: center;
-}
-
-#jaclnwgfuy .gt_right {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-#jaclnwgfuy .gt_font_normal {
-  font-weight: normal;
-}
-
-#jaclnwgfuy .gt_font_bold {
-  font-weight: bold;
-}
-
-#jaclnwgfuy .gt_font_italic {
-  font-style: italic;
-}
-
-#jaclnwgfuy .gt_super {
-  font-size: 65%;
-}
-
-#jaclnwgfuy .gt_footnote_marks {
-  font-size: 75%;
-  vertical-align: 0.4em;
-  position: initial;
-}
-
-#jaclnwgfuy .gt_asterisk {
-  font-size: 100%;
-  vertical-align: 0;
-}
-
-#jaclnwgfuy .gt_indent_1 {
-  text-indent: 5px;
-}
-
-#jaclnwgfuy .gt_indent_2 {
-  text-indent: 10px;
-}
-
-#jaclnwgfuy .gt_indent_3 {
-  text-indent: 15px;
-}
-
-#jaclnwgfuy .gt_indent_4 {
-  text-indent: 20px;
-}
-
-#jaclnwgfuy .gt_indent_5 {
-  text-indent: 25px;
-}
-</style>
-<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-  <caption>Table&nbsp;1.2:  <p>probabilities</p> </caption>
-  <thead>
-    
-    <tr class="gt_col_headings">
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Number alive">Number alive</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Time">Time</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Probability">Probability</th>
-    </tr>
-  </thead>
-  <tbody class="gt_table_body">
-    <tr><td headers="Number_alive" class="gt_row gt_right">10</td>
-<td headers="Time" class="gt_row gt_right">0</td>
-<td headers="Probability" class="gt_row gt_right">1.0</td></tr>
-    <tr><td headers="Number_alive" class="gt_row gt_right">9</td>
-<td headers="Time" class="gt_row gt_right">1</td>
-<td headers="Probability" class="gt_row gt_right">0.9</td></tr>
-    <tr><td headers="Number_alive" class="gt_row gt_right">8</td>
-<td headers="Time" class="gt_row gt_right">2</td>
-<td headers="Probability" class="gt_row gt_right">0.8</td></tr>
-    <tr><td headers="Number_alive" class="gt_row gt_right">8</td>
-<td headers="Time" class="gt_row gt_right">3</td>
-<td headers="Probability" class="gt_row gt_right">0.8</td></tr>
-    <tr><td headers="Number_alive" class="gt_row gt_right">7</td>
-<td headers="Time" class="gt_row gt_right">4</td>
-<td headers="Probability" class="gt_row gt_right">0.7</td></tr>
-    <tr><td headers="Number_alive" class="gt_row gt_right">6</td>
-<td headers="Time" class="gt_row gt_right">5</td>
-<td headers="Probability" class="gt_row gt_right">0.6</td></tr>
-    <tr><td headers="Number_alive" class="gt_row gt_right">5</td>
-<td headers="Time" class="gt_row gt_right">6</td>
-<td headers="Probability" class="gt_row gt_right">0.5</td></tr>
-    <tr><td headers="Number_alive" class="gt_row gt_right">4</td>
-<td headers="Time" class="gt_row gt_right">7</td>
-<td headers="Probability" class="gt_row gt_right">0.4</td></tr>
-    <tr><td headers="Number_alive" class="gt_row gt_right">3</td>
-<td headers="Time" class="gt_row gt_right">8</td>
-<td headers="Probability" class="gt_row gt_right">0.3</td></tr>
-    <tr><td headers="Number_alive" class="gt_row gt_right">3</td>
-<td headers="Time" class="gt_row gt_right">9</td>
-<td headers="Probability" class="gt_row gt_right">0.3</td></tr>
-    <tr><td headers="Number_alive" class="gt_row gt_right">3</td>
-<td headers="Time" class="gt_row gt_right">10</td>
-<td headers="Probability" class="gt_row gt_right">0.3</td></tr>
-  </tbody>
-  <tfoot class="gt_sourcenotes">
-    <tr>
-      <td class="gt_sourcenote" colspan="3">Table 2</td>
-    </tr>
-  </tfoot>
-  
-</table>
-</div>
-</div>
+Likelihood ratio test=10.39  on 2 df, p=0.005533
+n= 10, number of events= 5 </code></pre>
 </div>
 </div>
 </section>
-<section id="censoring-background" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="censoring-background"><span class="header-section-number">1.3</span> Censoring Background</h2>
-<p>One issue with survival analysis data is the problem of an individual being lost-to-follow-up, meaning data could not be collected for them at some point during the study. This causes the outcome of interest to not be recorded for that individual, so the survival time for that individual can not be analyzed as it would not be accurate. When this happens, the survival times for those individuals are recorded as censored, causing standard analysis techniques to be inappropriate for these data. There are three types of censoring that can occur. The first type of censoring is called right censoring, which happens if an individual begins the study but then is lost-to-follow-up at some point during the study before it ends. The censored survival time for these individuals is thus equal to the total time they were known to be alive in the study’s observation period before they were lost-to-follow-up. Some common examples of when right censoring is needed include: an individual moving away from the study and not being able to participate or when an individual dies due to a non-related event after the study begins. Another type of censoring is called left censoring. In this type, the individual experiences lost-to-follow-up before the observation period begins. This would happen, for example, in a study that tracks patient recovery from a surgery, but with an observation period beginning one a month after the surgery took place. If a patient died less than a month after surgery, their survival time would need to be left censored. The final type of censoring is called interval censoring, which happens when a patient comes in and out of the study, making it possible for them to experience the outcome of interest during a period of time when they aren’t being observed. This often happens when recurrence is being tracked in a study. One example could be if recurrence of cancer is being tracked and the study checks in with patients every month. If an individual does not have cancer after the first month but then does after the second month, the recurrence time is somewhere between one and two months, and it therefore needs to be interval censored (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). Out of the three types, right censoring is the most common and will be demonstrated in the example data-set.</p>
+<section id="case-study" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="case-study"><span class="header-section-number">3.8</span> Case Study</h2>
+<p>Let’s look back at the Cirrhosis data set.</p>
 </section>
-<section id="references" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="references"><span class="header-section-number">1.4</span> References</h2>
+<section id="references" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="references"><span class="header-section-number">3.9</span> References</h2>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-clark03" class="csl-entry" role="listitem">
+Clark, Bradburn, T. G. 2003. <span>“Survival Analysis Part i: Basic Concepts and First Analyses.”</span> <em>British Journal of Cancer</em>, May. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2394262/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2394262/</a>.
+</div>
 <div id="ref-collet" class="csl-entry" role="listitem">
 Collet, David. 2003. <em>Modelling Survival Data in Medical Research</em>. Chapman &amp; Hall/CRC.
 </div>
+<div id="ref-sthda" class="csl-entry" role="listitem">
+<span>“Cox Proportional-Hazards Model.”</span> n.d. <a href="https://www.sthda.com/english/wiki/cox-proportional-hazards-model">www.sthda.com/english/wiki/cox-proportional-hazards-model</a>.
 </div>
-</section>
+<div id="ref-waagepetersen22" class="csl-entry" role="listitem">
+Waagepetersen, Rasmus. 2022. <span>“Cox’s Proportional Hazards Model and Cox’s Partial Likelihood.”</span> <a href="https://people.math.aau.dk/~rw/Undervisning/DurationAnalysis/Slides/lektion3.pdf">https://people.math.aau.dk/~rw/Undervisning/DurationAnalysis/Slides/lektion3.pdf</a>.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
@@ -1645,11 +1176,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./KaplanMeier.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Kaplan Meier</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./KaplanMeier.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Kaplan Meier</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

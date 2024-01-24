@@ -10,14 +10,13 @@ The Kaplan Meier curve is a graphical representation of survival analysis. Simil
 
 ## Kaplan Meier in R
 
-Luckily, modern software makes these calculations easy and fast, as well as plotting them with confidence intervals and risk tables. The `survival` package in `R` has a function called `Surv()` that takes input data and creates a response object recording survival time for each observation. The `survfit()` function can be used to calculate the Kaplan Meier survival estimate for each time that a new event occurs. This object can then be used for the response in the regression `functionSurvfit2()` in the `ggsurvfit` package, which plots the Kaplan Meier curve for the data. The function takes into account right censoring as well, marking censored times with a $+$ symbol in the object created and then editing the regression accordingly (@zabor23). A new data set with censored times will be created to demonstrate this process. To do this, a 0 will be recorded for some individuals at times before t = 10. @tbl-censor shows this data set's structure, and @fig-survcurv shows the Kaplan Meier curve for predicting the event.
+Luckily, modern software makes these calculations easy and fast, as well as plotting them with confidence intervals and risk tables. A new data set with censored times will be created to demonstrate this process. To do this, a 0 will be recorded for some individuals at times before t = 10. @tbl-censor shows this data set's structure.
 
 ```{r}
 # Load Packages
-library(tidyverse)
+library(tidyverse) 
 library(knitr)
 library(survival)
-library(ggplot2)
 library(ggsurvfit)
 library(gt)
 ```
@@ -25,6 +24,7 @@ library(gt)
 ```{r}
 # Create data set
 id <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+#id <- c(5, 5, 7, 7, 8, 8, 9, 9, 1, 1)
 time <- c(1, 2, 10, 4, 5, 6, 10, 8, 9, 10)
 status <- c(1, 1, 0, 0, 1, 0, 0, 1, 1, 0)
 censor <- data.frame(id, time, status)
@@ -39,30 +39,32 @@ censor %>% gt(caption = "Example Data Set with Censored Times") %>%
   tab_source_note(source_note = "Table 3") 
 ```
 
+The `survival` package in `R` has a function called `Surv()` that takes input data and creates a response object recording survival time for each observation. The function takes in the time variable and the status variable. The function takes into account right censoring as well, marking censored times with a $+$ symbol in the object created (@zabor23).
+
 ```{r}
-# Surv() Function shows the time of event or censored time for each observation
-times2 <- Surv(censor$time, censor$status)
-times2
+# Show the time of event or censored time for each observation
+times <- Surv(censor$time, censor$status)
+times
 ```
+
+The `survfit()` function can be used to calculate the Kaplan Meier survival estimate for each time that a new event occurs. The function takes in the response object created by the `Surv()` function in order to drop censored observations from the regression. We use \~ 1 because we are not including predictor variables in the model. The function returns a survival object that can be used to plot the Kaplan Meier curve and calculate summary statistics. The `time` variable in the object created by the `survfit()` function shows the time of each event, and the `surv` variable shows the survival probability for the remaining individuals after each event occurs.
 
 ```{r}
 # Calculate survival object
-s2 <- survfit(times2 ~ 1, data = censor)
-# See the structure of this object
-str(s2)
+s1 <- survfit(times ~ 1, data = censor)
+# View the survival time for each time an event occurs
+s1$time
+# View survival probability for remaining individuals after each event occurs 
+round(s1$surv, 2)
 ```
 
-```{r}
-# View the survival estimate for each time an event occurs
-s2$time
-round(s2$surv, 2)
-```
+The `ggsurvfit` package can be used to plot the Kaplan Meier curve for this data using the previously created `s1` object. @fig-survcurv shows the Kaplan Meier curve for predicting the event. The risk table shows the number of individuals at risk at each time point and the number of events that occurred at each time point.
 
 ```{r}
 #| label: fig-survcurv
-#| tbl-cap: "Kaplan Meier Survival Curve"
+#| fig-cap: "Kaplan Meier Survival Curve"
 
-survfit2(Surv(time, status) ~ 1, data = censor) %>% 
+s1 %>% 
   ggsurvfit() +
   labs(
     x = "Time",
@@ -76,27 +78,107 @@ survfit2(Surv(time, status) ~ 1, data = censor) %>%
 
 ## Log-Rank Test
 
-One of the most common applications of survival analysis and Kaplan Meier curves is for comparing survival statistics between two groups. One example of this might be if a study is comparing survival after two different treatment plans. The Log-Rank Test is a statistical test that tests the null hypothesis that there is no difference between the survival estimates of two groups at any point in time (@rich10). The only adjustment needed in R to factor in groups is to use the grouping variable as a predictor in the model (@zabor23). The two survival curves are depicted in @fig-survcurv2.
+One of the most common applications of survival analysis and Kaplan Meier curves is for comparing survival times between two groups. One example of when this might be useful is if a study is comparing survival after two different treatment plans. A data set with two groups will be created to demonstrate this process.
 
 ```{r}
-# Create a data set to compare to surv2
-id <- c(1:20)
-time <- c(8, 7, 10, 8, 5, 10, 10, 8, 9, 10, 1, 2, 1, 4, 5, 3, 4, 10, 8, 1)
-status <- c(0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1)
-group <- c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2 ,2 ,2, 2, 2)
-surv3 <- data.frame(id, time, status)
+# Create new data set
+time <- c(8, 7, 10, 8, 5, 3, 4, 10, 6, 1)
+status <- c(0, 1, 0, 1, 0, 1, 0, 0, 1, 1)
+group <- c(1, 1, 1, 1, 1, 2, 2 ,2, 2, 2)
+surv2 <- data.frame(time, status, group)
 ```
 
-The `survdiff` function works similarly to the `survfit` function, but compares groups. The two curves are statistically different at the five percent level.
+To run analysis, the statistical test called the Log-Rank Test can be used to test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time (@rich10). The test is conducted by comparing the observed number of event with an estimated number of events for each group at each time. To model this, we need to record some values of interest from our existing data. The first, $n1t$, represents the number of people alive and still in the study, or at risk, at time t in group 1. Similarly, $n2t$ is the number at risk in group 2 at time t. $nt$ is the sum of these two values at time t, representing the total number of people at risk in the study at time t. $o1t$ is the number of observed events occurring at time t in group 1, $o2t$ is observed events occurring at time t in group 2, and $ot$ is the total observed events across both groups at time t. To calculate expected number of events, the assumption that the two curves are identical is used. The expected number of events at a time t is for group i calculated by the formula $E_{it} = \frac{N_{it} \times O_{t}}{N_{t}}$, where $N_{it}$ is the observed number of events in group i at time t, $O_{t}$ is the total number of events in all groups at time t, and $N_{t}$ is the total number observations at risk in all groups at time t (@sullivan16). @tbl-logrank shows the creation of all of these values, where $e1t$ is the expected number of events at time t in group 1, $e2t$ is the expected number of events at time t in group 2, and $et$ is the total expected number of events across both groups at time t. Cumulative sums are also calculated for each of these values.
 
 ```{r}
-survdiff(Surv(time, status) ~ group, data = surv3)
+#| label: tbl-logrank
+#| tbl-cap: "Calculation of Log-Rank Test Statistic"
+
+Time <- c(1, 3, 4, 5, 6, 7, 8, 10)
+N1t <- c(5, 5, 5, 5, 4, 4, 3, 1)
+N2t <- c(5, 4, 3, 2, 2, 1, 1, 1)
+O1t <- c(0, 0, 0, 0, 0, 1, 1, 0)
+O2t <- c(1, 1, 0, 0, 1, 0, 0, 0)
+
+log_rank <- data.frame(Time, N1t, N2t, O1t, O2t)
+
+# Calculate Totals
+log_rank$Nt <- log_rank$N1t + log_rank$N2t
+log_rank$Ot <- log_rank$O1t + log_rank$O2t
+log_rank$E1t <- (log_rank$N1t * log_rank$Ot) / log_rank$Nt
+log_rank$E2t <- (log_rank$N2t * log_rank$Ot) / log_rank$Nt
+
+round(log_rank, 2) %>% 
+  gt() %>% 
+  tab_header("Values Needed to Calculate Chi-Square Statistic") %>% 
+  cols_label(Time = "Time", N1t = "Number at Risk in Group 1", N2t = "Number at Risk in Group 2", Nt = "Total Number at Risk", O1t = "Observed Events in Group 1", O2t = "Observed Events in Group 2", Ot = "Total Observed Events", E1t = "Expected Events in Group 1", E2t = "Expected Events in Group 2")
 ```
+
+To test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time, a test statistics is needed. For the Log-Rank test, a Chi-Square test statistic is used because the data follows a Chi-Square curve rather than a normal distribution. The Chi-Square test statistic is calculated by the formula $X^2 = \sum_{i=1}^k \frac{(\sum{O_{it}} - \sum{E_{it}})^2}{\sum{Vi}}$, where $\sum_{0}^T{O_{it}}$ is the sum of the observed number of events in group i over the entire time interval and $\sum_{0}^T{E_{it}}$ is the sum of the expected number of events in group i over the entire time interval. The difference of the sums of these two values are divided by the sum of the variance. The variance for group 1 at time t is calculated by the formula $V_{1t} = \frac{N_{1t} \times N_{2t} \times O_{t} \times (N_{t} - O_{t})}{N_{t}^2 \times (N_{t} - 1)}$ (@collet). The variance for group 2 is calculated similarly, and the total variance is calculated by the formula $V_{t} = V_{1t} + V_{2t}$. @tbl-logrank2 shows the calculation of the Chi-Square test statistic for the data set. In the table, $V1t$ is the variance of the number of events at time t in group 1, $V2t$ is the variance of the number of events at time t in group 2, $Vt$ is the total variance of the number of events across both groups at time t, $sum_{Vt}$ is the cumulative sum of the total variance across all times, and $X2$ is the Chi-Square test statistic.
+
+```{r}
+#| label: tbl-logrank2
+#| tbl-cap: "Calculation of Variance"
+
+log_rank$V1t <- (log_rank$N1t * log_rank$N2t * log_rank$Ot * (log_rank$Nt - log_rank$Ot)) / (log_rank$Nt^2 * (log_rank$Nt - 1))
+
+log_rank$V2t <- (log_rank$N1t * log_rank$N2t * log_rank$Ot * (log_rank$Nt - log_rank$Ot)) / (log_rank$Nt^2 * (log_rank$Nt - 1))
+
+round(log_rank, 2) %>% 
+  gt() %>% 
+  tab_header("Calculation of Variance") %>% 
+  cols_label(Time = "Time", N1t = "Number at Risk in Group 1", N2t = "Number at Risk in Group 2", Nt = "Total Number at Risk", O1t = "Observed Events in Group 1", O2t = "Observed Events in Group 2", Ot = "Total Observed Events", E1t = "Expected Events in Group 1", E2t = "Expected Events in Group 2", V1t = "Variance of Number of Events in Group 1", V2t = "Variance of Number of Events in Group 2")
+```
+
+For group 1 at time 1, we would calculate $E_{1t} = \frac{5 \times 1}{10} = 0.50$ and for group 2 at time 1, $E_{2t} = \frac{5 \times 1}{10} = 0.50$. We would repeat for each group at each time and then sum the values to get $\sum_{t=1}^t{E_{i}}$ for each group. For group 1, $\sum_{t=1}^t{E_{1}} = 0.50 + 0.56 + 0 + 0 + 0.67 + 0.80 + 0.75 + 0 = 3.27$ and for group 2, $\sum_{t=0}^t{E_{2}} = 0.50 + 0.44 + 0 + 0 + 0.33 + 0.20 + 0.25 + 0 = 1.73$. The sum of the observed events for group 1 is 2 and for group 2 is 3. For group 1 at time 1, we would calculate $V_1t = \frac{5 \times 5 \times 1 \times (10-1)}{10^2 \times (10-1)} = 0.25$ @tbl-chi-square shows the rest of the variances calculated for both groups for the `surv2` data set.
+
+```{r}
+#| label: tbl-chi-square
+#| tbl-cap: "Calculation of Chi Square Statistic"
+
+sum_O1t <- cumsum(log_rank$O1t)
+sum_O2t <- cumsum(log_rank$O2t)
+sum_E1t <- cumsum(log_rank$E1t)
+sum_E2t <- cumsum(log_rank$E2t)
+sum_V1t <- cumsum(log_rank$V1t)
+sum_V2t <- cumsum(log_rank$V2t)
+
+# Create table with each of the last values 
+sum_stats <- data.frame(sum_O1t, sum_O2t, sum_E1t, sum_E2t, sum_V1t, sum_V2t)
+# Get the last row of summary statistics
+sum_stats <- sum_stats[nrow(sum_stats), ]
+sum_stats$X2_group1 <- ((sum_stats$sum_O1t - sum_stats$sum_E1t)^2 / sum_stats$sum_V1t)
+sum_stats$X2_group2 <- ((sum_stats$sum_O2t - sum_stats$sum_E2t)^2 / sum_stats$sum_V2t)
+
+round(sum_stats, 2) %>% 
+  gt() %>% 
+  tab_header("Calculation of Chi Square Statistic") %>% 
+  cols_label(sum_O1t = "Sum of Observed Events in Group 1", sum_O2t = "Sum of Observed Events in Group 2", sum_E1t = "Sum of Expected Events in Group 1", sum_E2t = "Sum of Expected Events in Group 2", sum_V1t = "Sum of Variance of Number of Events in Group 1", sum_V2t = "Sum of Variance of Number of Events in Group 2", X2_group1 = "Chi Square Statistic for Group 1", X2_group2 = "Chi Square Statistic for Group 2")
+```
+
+With all of these values, we can calculate the Chi Square test statistic, $X^2i = \frac{(\sum{O_{it}} - \sum{E_{it}})^2}{V_{it}}$. We get $X^2group1 = \frac{(2 - 3.27)^2}{1.07} = 1.51$ and $X^2group1 = \frac{(3 - 1.73)^2}{1.07} = 1.51$. The test statistic can then be compared to a Chi-Square distribution with one k-1 degrees of freedom, with k being the number of groups. So, for this example, there is one degree of freedom. If the p-value is less than 0.05, then we can reject the null hypothesis that there is no difference between the survival estimates of the two groups (@sullivan16).
+
+Clearly, calculating the test statistic is very tedious, even for a data set with 10 observations. The `survdiff` function can be used to run a Log-Rank test in R, making it much easier to run the test. The function takes in the response object created by the `Surv()` function and the grouping variable (@zabor23). It returns a Chi-Square statistic and a p-value. We can see that the p-value is much higher than 0.05, indicating that we do not have evidence to reject the null hypothesis, and thus that there is no difference between the survival estimates of the two groups.
+
+```{r}
+# Calculate times for events in this data set
+times2 <- Surv(surv2$time, surv2$status)
+# Run a log rank test based on group variable
+test_stat <- survdiff(times2 ~ group, data = surv2)
+test_stat
+```
+
+The only adjustment needed for plotting the Kaplan Meier curves for two groups is to include the grouping variable while making the survival object using the `survfit` function (@zabor23). The two survival curves are depicted in @fig-survcurv2.
 
 ```{r}
 #| label: fig-survcurv2
-#| tbl-cap: "Kaplan Meier Survival Curve by Group"
-survfit2(Surv(time, status) ~ group, data = surv3) %>% 
+#| fig-cap: "Kaplan Meier Survival Curve by Group"
+
+# Create survival object using group as a predictor
+s2 <- survfit(Surv(time, status) ~ group, data = surv2)
+
+# Plot the two curves
+s2 %>% 
   ggsurvfit() +
   labs(
     x = "Days",
@@ -110,39 +192,32 @@ survfit2(Surv(time, status) ~ group, data = surv3) %>%
 
 ## Case Study
 
-The next example uses a data set with variables for predicting cirrhosis, or the permanent scarring of the liver, in patients with liver diseases such as hepatitis C. The data set is from a clinical trial conducted by the Mayo Clinic from 1974 to 1984. The data set contains 424 primary biliary cirrhosis patients with 20 variables (@fedesoriano). To conduct survival analysis, the `Status` variable was transformed to an indicator variable, labelled `event`, coded as a 1 representing death and 0 representing censored. The `N_Days` variable was used for the time variable, indicating number of days since the beginning of the trial. @fig-casestudy shows the Kaplan Meier for this case study.
+The next example uses a data set with variables for predicting death in patients with cirrhosis, which is permanent scarring of the liver. The data set is from a clinical trial conducted by the Mayo Clinic from 1974 to 1984. The data set contains 424 primary biliary cirrhosis patients with 20 variables (@fedesoriano). To conduct survival analysis, the `Status` variable needs to be transformed into an indicator variable, labelled `event`, coded as a 1 representing death and 0 representing censored. The `N_Days` variable will be used for the time variable, indicating number of days since the beginning of the trial.
 
 ```{r}
-cirrhosis <- read_csv("data/cirrhosis.csv")
-```
-
-```{r}
+cirrhosis <- read_csv("data/cirrhosis.csv", show_col_types = FALSE)
 cirrhosis <- cirrhosis %>% mutate(event = if_else(Status == 'D', 1, 0)) 
 ```
 
-```{r}
-# View times of censor or death
-times <- Surv(cirrhosis$N_Days, cirrhosis$event)
-times
-```
+The main interest of this data is to explore the difference in survival time between patients taking the drug of interest, D-penicillamine, and those given a placebo. The variable `Drug` indicates which group the patient was in and will be used as the grouping variable for a Log-Rank Test. Below, we calculate a survival object for this data and then use the `survdiff` function to run a Log-Rank Test.
 
 ```{r}
-# Calculate survival object
-s1 <- survfit(times ~ 1, data = cirrhosis)
-# See the structure of this object
-str(s1)
+# Calculate times and survival object
+times3 <- Surv(cirrhosis$N_Days, cirrhosis$event)
+s3 <- survfit(times3 ~ Drug, data = cirrhosis)
+# Run a log rank test based on drug group
+survdiff(times3 ~ Drug, data = cirrhosis)
 ```
 
-```{r}
-# View the survival estimate for each time an event occurs
-round(s1$surv, 2)
-```
+From the Log-Rank test, we see that the p-value is 0.7, which is mush larger than 0.05. This indicates that the test was not statistically significant at the five percent level. Thus, there was no significant difference between patient outcome between the two treatment groups. For patients with biliary cirrhosis, D-penicillamine is not an effective drug for preventing death.
+
+We can again visualize the difference in survival curves in @fig-casestudy.
 
 ```{r}
 #| label: fig-casestudy
-#| tbl-cap: "Kaplan Meier Survival Curve Predicting Death from Cirrhosis"
+#| fig-cap: "Kaplan Meier Survival Curve Predicting Death from Cirrhosis"
 
-survfit2(Surv(N_Days, event) ~ 1, data = cirrhosis) %>% 
+s3 %>% 
   ggsurvfit() +
   labs(
     x = "Time",
@@ -151,5 +226,7 @@ survfit2(Surv(N_Days, event) ~ 1, data = cirrhosis) %>%
   ) + 
   add_risktable()
 ```
+
+It is important to note the limitations of this analysis. The Kaplan Meier Curve is not a suitable fit for a complex, real-world data set such as the `cirrhosis` data. It is a nonparametric method of analysis, which means that it assumes no form of distribution and no additional factors influencing the outcome of interest. To create a Kaplan Meier curve and run the Log-Rank test, we ignored all other factors included int the data. In the next section, we will discuss other methods that can be used for survival analysis that can account for other factors.
 
 ## References

@@ -6,14 +6,13 @@ Survival analysis is a type of statistical analysis used for analyzing the relat
 
 ## Example data set in R
 
-To demonstrate survival analysis, an example data set was created including ten observations with the following columns: a. $id$ variable for each observation, a $time$ variable ranging from 1 to 10, and a $status$ variable that was either a 1, which represented the event occurrence, or a 0, representing no event occurrence. For those assigned a 1, a survival time was assigned in the range of 1 to 9, representing the time that individual survived until the event occurred for them. For those assigned a 0, a time of t = 10 was assigned, suggesting that they lasted until the end of the hypothetical study without the event occurring. @tbl-surv shows these data. To perform survival analysis on these data, the probability of survival at each time from t = 0 to t = 10 can be calculated by dividing the amount of people surviving until that time by the total amount of people in the study. For the first observation in the example data, probability of survival is equal to 1, or 100%, because every participant would presumably begin the study alive. To calculate the probability of survival for time t = 1, the number of participants that did not experience the outcome of interest by t = 1 would be divided by 10, the total number of observations in the study. In this case, 9 participants survived until time t = 1, because only one observation was assigned a 1 between times t = 0 and t = 1. Dividing this total by the 10 total observations in the study shows that the probability of surviving to time 1 is 0.9, or 90%. As time increases, the total probability of survival for the group will decrease in the range of 1 to 0 because more people will be experiencing the outcome. This is why survival curves have a rightly skewed distribution. @tbl-probabilities shows the survival probabilities for each observation.
+To demonstrate survival analysis, an example data set was created including ten observations with the following columns: a. $id$ variable for each observation, a $time$ variable ranging from 1 to 10, and a $status$ variable that was either a 1, which represented the event occurrence, or a 0, representing no event occurrence. For those assigned a 1, a survival time was assigned in the range of 1 to 9, representing the time that individual survived until the event occurred for them. For those assigned a 0, a time of t = 10 was assigned, suggesting that they lasted until the end of the hypothetical study without the event occurring. @tbl-surv shows these data.
 
 ```{r}
 # Load Packages
 library(tidyverse)
 library(knitr)
 library(survival)
-library(ggplot2)
 library(ggsurvfit)
 library(gt)
 ```
@@ -34,6 +33,8 @@ surv %>% gt(caption = "Example Data Set with ID, Status, and Time") %>%
   cols_label(id = "ID", time = "Time", status = "Status") %>%
   tab_source_note(source_note = "Table 1") 
 ```
+
+To perform survival analysis on these data, the probability of survival at each time from t = 0 to t = 10 can be calculated by dividing the amount of people surviving until that time by the total amount of people in the study. For the first observation in the example data, probability of survival is equal to 1, or 100%, because every participant would presumably begin the study alive. To calculate the probability of survival for time t = 1, the number of participants that did not experience the outcome of interest by t = 1 would be divided by 10, the total number of observations in the study. In this case, 9 participants survived until time t = 1, because only one observation was assigned a 1 between times t = 0 and t = 1. Dividing this total by the 10 total observations in the study shows that the probability of surviving to time 1 is 0.9, or 90%. As time increases, the total probability of survival for the group will decrease in the range of 1 to 0 because more people will be experiencing the outcome. This is why survival curves have a rightly skewed distribution. @tbl-probabilities shows the survival probabilities for each observation.
 
 ```{r}
 # Calculate survival probabilities

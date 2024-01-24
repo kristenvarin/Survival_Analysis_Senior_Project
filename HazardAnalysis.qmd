@@ -1,0 +1,76 @@
+# Cox Proportional Hazards Regression
+
+## Introduction
+
+So far, we have dealt with calculating survival probability using a Kaplan Meier curve. While a Kaplan Meier curve is useful for predicting survival probability for simple data, it can not always be used since its a nonparametric method, meaning it follows no prior assumptions about the data. When data becomes more complex and variables about individuals need to be considered, other methods need to be used. One of these methods, proportional hazard analysis, similarly focuses on time-to-event data, but can be used for more realistic scenarios that deal with additional explanatory variables for the event of interest (@clark03). For example, we can use hazard analysis to calculate the probability of a person recovering from a disease based on type of treatment, while also including variables that could affect the outcome such as age, sex or history of drugs. A hazard function can be more useful during real-world analysis than the Kaplan Meier curve previously discussed.
+
+## Proportional Hazards
+
+The proportional hazards model, also known as the Cox regression model, is a semi-parametric model. This is because it assumes proportional hazards, or that the hazard of an event occurring is the same for all individuals, yet does not assume a specific distribution (@collet). The proportional hazard model also assumes that the hazard ratio between two groups is constant over time. This means that the hazard ratio between two groups is the same at any time $t$, thus making the model proportional. In other words, the instantaneous hazard of an event occurring between two individuals of different groups will remain constant at all times, or the effect of the predictors is the same at all times (@sthda).
+
+## Hazard Ratios
+
+The goal of hazard analysis is to create a hazard function for modelling time to event data, where the outcome $h(t)$ or $λ(t)$ is the probability of the event occurring for a subject who has lasted until time $t$ (@clark03). The hazard function is modeled using hazard ratios, which express the ratio between the hazard of an event between two groups at a time. The hazard ratio between two groups can be expressed as $v = \frac{h_1(t)}{h_2(t)}$ (@collet).
+
+## Cox Proportional Hazards Model
+
+The Cox proportional hazards model is expressed in terms of the hazard function on an individual $i$ at time $t$. This function is expressed as $h_i(t) = vh_0(t)$, where $h_0(t)$ is the baseline hazard function and $v$ is the hazard ratio (@collet). The baseline hazard function is the hazard function for a subject with all explanatory variables equal to zero. For the models we will discuss, the hazard ratio $v$ is set to equal $exp(\beta)$ since the hazard ratio cannot be a negative value. The parameter $beta$ is thus the log of the hazard ratio, expressed $\beta = log(v)$. Any value of $\beta$ will output a positive value $v$. We can include many explanatory variables in the hazard function such as factors, which can take on different levels, or variates, which can be any value on a continuous scale. With many predictors, the Cox proportional hazards model can be expressed as $h_i(t) = h_0(t)exp(\beta_1x_{1i} + \beta_2x_{2i} + ... + \beta_px_{pi})$, where $h_0(t)$ is the baseline hazard function, $x_1$ to $x_p$ are the values of the explanatory variables for individual $i$, and $\beta_1$ to $\beta_p$ are the regression coefficients. The model can also be expressed as a linear model in terms of the log of the ratios between the two hazard functions, looking like $log(\frac{h_i(t)}{h_0(t)}) = \beta_1x_{1i} + \beta_2x_{2i} + ... + \beta_px_{pi}$ (@collet).
+
+## Method of Partial Likelihood
+
+In the Cox proportional hazards model, there are two unknowns: the baseline hazard function, $h_0(t)$, and the regression coefficients, $\beta_1$ to $\beta_p$. The method of partial likelihood, first discovered by Cox himself, allows us to estimate the regression coefficients without knowing the baseline hazard function (@collet). We do this by maximizing the likelihood of the observed data (@collet). Basically, it is a way of choosing coefficient estimates that will be most likely to output the exact same data points we have. One key assumption of this method is that there are no ties, or deaths at the same time, in the data (@waagepetersen22). We must make this assumption because the way this method works is by ranking the times of death in each group. 
+
+## Example Data Set
+
+```{r}
+# Load Packages
+library(tidyverse) 
+library(knitr)
+library(survival)
+library(ggsurvfit)
+library(gt)
+```
+
+We will again create a simple data set to demonstrate the process. Let's recall the `surv2` data set we created earlier, now with an additional variable, age @tbl-surv3.
+
+```{r}
+time <- c(8, 7, 10, 8, 5, 3, 4, 10, 6, 1)
+status <- c(0, 1, 0, 1, 0, 1, 0, 0, 1, 1)
+group <- c(1, 1, 1, 1, 1, 2, 2 ,2, 2, 2)
+age <- c(40, 62, 37, 67, 44, 70, 50, 45, 61, 62)
+surv3 <- data.frame(time, status, group, age)
+```
+
+```{r}
+#| label: tbl-surv3
+#| tbl-cap: surv table 3
+
+surv3 %>% gt(caption = "Example Data Set with Status, Time, Group, and Age") %>%
+  cols_label(time = "Time", status = "Status", group = "Group", age = "Age") 
+```
+
+Let's start by calculating a hazard function between groups 1 and 2 and ignoring age. Recall that $h_i(t) = h_0(t)exp(\beta_1x_{1i} + \beta_2x_{2i} + ... + \beta_px_{pi})$. So for group 1, $h_1(t) = h_0(t)exp(\beta_1x_{1})$, with $x_{1}$ being 1 since the individual is in group 1. For group 2, $h_2(t) = h_0(t)exp(\beta_1x_{2})$, with $x_{2}$ being 2 since the individual is in group 2. We can then calculate the hazard ratio between the two groups as $v = \frac{h_1(t)}{h_2(t)} = \frac{h_0(t)exp(\beta_1x_{1})}{h_0(t)exp(\beta_1x_{2})} = exp(\beta_1x_{1} - \beta_1x_{2}) = exp(\beta_1(x_{1} - x_{2}))$. Note that the baseline hazard function, $h_0(t)$, cancels out, which makes sense since this model does not assume a specific shape.
+
+To find the value for $\beta_1$, we need to use something called the maximum likelihood test.
+
+When looking at multiple predictors, such as and and group, the parameter estimates are found by the equation:
+
+To determine the values for the predictors, we must use the partial likelihood test.
+
+We can calculate the cumulative hazard ratio, $v$ of the event occurring in the group of individuals with a status of 1 compared to the group of individuals with a status of 0. We can calculate the hazard of the event occurring for an individual in group 1 at time t, $h_1(t)$, by dividing the number of individuals who died in the group of individuals with a status of 1 by the total number of individuals in the group of individuals with a status of 1.
+
+-   cumulative? This can be expressed as $v = \frac{\frac{d_1}{n_1}}{\frac{d_0}{n_0}}$.
+
+## Hazard Analysis in R
+
+Similarly to before with the Kaplan Meier curve, we can use R to model the hazard function. The `coxph()` function in the `survival` package returns the coefficients of the cox proportional hazards model as well as the p value for the coefficients, allowing us to determine whether each coefficient is significant (@sthda). Below, we see that the coefficient on the age predictor is significant, but the coefficient for group is not. This means that, when controlling for the other variables, the hazard of the event occurring is not significantly different between the two groups, but the hazard of the event occurring is significantly different for individuals of different ages.
+
+```{r}
+coxph(Surv(time, status) ~ group + age, data = surv3)
+```
+
+## Case Study
+
+Let's look back at the Cirrhosis data set.
+
+## References
