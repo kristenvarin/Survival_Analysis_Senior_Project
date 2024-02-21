@@ -145,6 +145,18 @@ We can calculate the cumulative hazard ratio, $v$ of the event occurring in the 
 
 Similarly to before with the Kaplan Meier curve, we can use R to model the hazard function. The `coxph()` function in the `survival` package returns the coefficients of the cox proportional hazards model as well as the p value for the coefficients, allowing us to determine whether each coefficient is significant (@sthda). Below, we see that the coefficient on the age predictor is significant, but the coefficient for group is not. This means that, when controlling for the other variables, the hazard of the event occurring is not significantly different between the two groups, but the hazard of the event occurring is significantly different for individuals of different ages.
 
+https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_survival/BS704_Survival6.html
+
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8651375/
+
+https://www2.eecs.berkeley.edu/Pubs/TechRpts/2017/EECS-2017-110.pdf
+
+https://www.graphpad.com/guides/prism/latest/statistics/stat_kaplan-meier_mathematics.htm
+
+https://www.statsdirect.com/help/survival_analysis/cox_regression.htm
+
+https://datatab.net/tutorial/log-rank-test
+
 ```{r}
 coxph(Surv(time, status) ~ group + age, data = surv3)
 ```
