@@ -195,12 +195,16 @@ div.csl-indent {
   <li><a href="#partial-likelihood-derivation" id="toc-partial-likelihood-derivation" class="nav-link" data-scroll-target="#partial-likelihood-derivation"><span class="header-section-number">3.7</span> Partial Likelihood Derivation</a></li>
   <li><a href="#example-data" id="toc-example-data" class="nav-link" data-scroll-target="#example-data"><span class="header-section-number">3.8</span> Example Data</a></li>
   <li><a href="#censoring" id="toc-censoring" class="nav-link" data-scroll-target="#censoring"><span class="header-section-number">3.9</span> Censoring</a></li>
-  <li><a href="#estimating-b" id="toc-estimating-b" class="nav-link" data-scroll-target="#estimating-b"><span class="header-section-number">3.10</span> Estimating B’</a></li>
-  <li><a href="#newton-raphson-method" id="toc-newton-raphson-method" class="nav-link" data-scroll-target="#newton-raphson-method"><span class="header-section-number">3.11</span> Newton Raphson Method</a></li>
-  <li><a href="#multiple-predictors" id="toc-multiple-predictors" class="nav-link" data-scroll-target="#multiple-predictors"><span class="header-section-number">3.12</span> Multiple Predictors</a></li>
-  <li><a href="#hazard-analysis-in-r" id="toc-hazard-analysis-in-r" class="nav-link" data-scroll-target="#hazard-analysis-in-r"><span class="header-section-number">3.13</span> Hazard Analysis in R</a></li>
-  <li><a href="#case-study" id="toc-case-study" class="nav-link" data-scroll-target="#case-study"><span class="header-section-number">3.14</span> Case Study</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">3.15</span> References</a></li>
+  <li><a href="#ties-in-the-data" id="toc-ties-in-the-data" class="nav-link" data-scroll-target="#ties-in-the-data"><span class="header-section-number">3.10</span> Ties in the Data</a></li>
+  <li><a href="#fitting-the-partial-log-likelihood-equation" id="toc-fitting-the-partial-log-likelihood-equation" class="nav-link" data-scroll-target="#fitting-the-partial-log-likelihood-equation"><span class="header-section-number">3.11</span> Fitting the Partial Log Likelihood Equation</a></li>
+  <li><a href="#estimating-b" id="toc-estimating-b" class="nav-link" data-scroll-target="#estimating-b"><span class="header-section-number">3.12</span> Estimating B’</a></li>
+  <li><a href="#newton-raphson-method" id="toc-newton-raphson-method" class="nav-link" data-scroll-target="#newton-raphson-method"><span class="header-section-number">3.13</span> Newton Raphson Method</a></li>
+  <li><a href="#newton-raphson-example" id="toc-newton-raphson-example" class="nav-link" data-scroll-target="#newton-raphson-example"><span class="header-section-number">3.14</span> Newton Raphson Example</a></li>
+  <li><a href="#newton-raphson-in-cox-proportional-hazards-model" id="toc-newton-raphson-in-cox-proportional-hazards-model" class="nav-link" data-scroll-target="#newton-raphson-in-cox-proportional-hazards-model"><span class="header-section-number">3.15</span> Newton Raphson in Cox Proportional Hazards Model</a></li>
+  <li><a href="#multiple-predictors" id="toc-multiple-predictors" class="nav-link" data-scroll-target="#multiple-predictors"><span class="header-section-number">3.16</span> Multiple Predictors</a></li>
+  <li><a href="#hazard-analysis-in-r" id="toc-hazard-analysis-in-r" class="nav-link" data-scroll-target="#hazard-analysis-in-r"><span class="header-section-number">3.17</span> Hazard Analysis in R</a></li>
+  <li><a href="#case-study" id="toc-case-study" class="nav-link" data-scroll-target="#case-study"><span class="header-section-number">3.18</span> Case Study</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">3.19</span> References</a></li>
   </ul>
 </nav>
     </div>
@@ -250,11 +254,11 @@ div.csl-indent {
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Recreate surv2 and add age variable</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">8</span>, <span class="dv">7</span>, <span class="dv">10</span>, <span class="dv">8</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">10</span>, <span class="dv">6</span>, <span class="dv">1</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">10</span>, <span class="dv">6</span>, <span class="dv">1</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span> ,<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">62</span>, <span class="dv">37</span>, <span class="dv">67</span>, <span class="dv">44</span>, <span class="dv">70</span>, <span class="dv">50</span>, <span class="dv">45</span>, <span class="dv">61</span>, <span class="dv">62</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>surv3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(time, status, group, age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>surv3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(time, status, group, age) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>surv3 <span class="sc">%&gt;%</span> <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with Status, Time, Group, and Age"</span>) <span class="sc">%&gt;%</span></span>
@@ -262,23 +266,23 @@ div.csl-indent {
 <div class="cell-output-display">
 <div id="tbl-surv3" class="anchored">
 
-<div id="qheozffrjb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#qheozffrjb table {
+<div id="yworjutjht" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yworjutjht table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#qheozffrjb thead, #qheozffrjb tbody, #qheozffrjb tfoot, #qheozffrjb tr, #qheozffrjb td, #qheozffrjb th {
+#yworjutjht thead, #yworjutjht tbody, #yworjutjht tfoot, #yworjutjht tr, #yworjutjht td, #yworjutjht th {
   border-style: none;
 }
 
-#qheozffrjb p {
+#yworjutjht p {
   margin: 0;
   padding: 0;
 }
 
-#qheozffrjb .gt_table {
+#yworjutjht .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -304,12 +308,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#qheozffrjb .gt_caption {
+#yworjutjht .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#qheozffrjb .gt_title {
+#yworjutjht .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -321,7 +325,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#qheozffrjb .gt_subtitle {
+#yworjutjht .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -333,7 +337,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#qheozffrjb .gt_heading {
+#yworjutjht .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -345,13 +349,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#qheozffrjb .gt_bottom_border {
+#yworjutjht .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qheozffrjb .gt_col_headings {
+#yworjutjht .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -366,7 +370,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#qheozffrjb .gt_col_heading {
+#yworjutjht .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -386,7 +390,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#qheozffrjb .gt_column_spanner_outer {
+#yworjutjht .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -398,15 +402,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#qheozffrjb .gt_column_spanner_outer:first-child {
+#yworjutjht .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qheozffrjb .gt_column_spanner_outer:last-child {
+#yworjutjht .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qheozffrjb .gt_column_spanner {
+#yworjutjht .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -418,11 +422,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#qheozffrjb .gt_spanner_row {
+#yworjutjht .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#qheozffrjb .gt_group_heading {
+#yworjutjht .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -448,7 +452,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#qheozffrjb .gt_empty_group_heading {
+#yworjutjht .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -463,15 +467,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#qheozffrjb .gt_from_md > :first-child {
+#yworjutjht .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qheozffrjb .gt_from_md > :last-child {
+#yworjutjht .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qheozffrjb .gt_row {
+#yworjutjht .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -490,7 +494,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#qheozffrjb .gt_stub {
+#yworjutjht .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -503,7 +507,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#qheozffrjb .gt_stub_row_group {
+#yworjutjht .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -517,15 +521,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#qheozffrjb .gt_row_group_first td {
+#yworjutjht .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#qheozffrjb .gt_row_group_first th {
+#yworjutjht .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#qheozffrjb .gt_summary_row {
+#yworjutjht .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -535,16 +539,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#qheozffrjb .gt_first_summary_row {
+#yworjutjht .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#qheozffrjb .gt_first_summary_row.thick {
+#yworjutjht .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#qheozffrjb .gt_last_summary_row {
+#yworjutjht .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -554,7 +558,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#qheozffrjb .gt_grand_summary_row {
+#yworjutjht .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -564,7 +568,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#qheozffrjb .gt_first_grand_summary_row {
+#yworjutjht .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -574,7 +578,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#qheozffrjb .gt_last_grand_summary_row_top {
+#yworjutjht .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -584,11 +588,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#qheozffrjb .gt_striped {
+#yworjutjht .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qheozffrjb .gt_table_body {
+#yworjutjht .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -597,7 +601,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#qheozffrjb .gt_footnotes {
+#yworjutjht .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -611,7 +615,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#qheozffrjb .gt_footnote {
+#yworjutjht .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -620,7 +624,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#qheozffrjb .gt_sourcenotes {
+#yworjutjht .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -634,7 +638,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#qheozffrjb .gt_sourcenote {
+#yworjutjht .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -642,63 +646,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#qheozffrjb .gt_left {
+#yworjutjht .gt_left {
   text-align: left;
 }
 
-#qheozffrjb .gt_center {
+#yworjutjht .gt_center {
   text-align: center;
 }
 
-#qheozffrjb .gt_right {
+#yworjutjht .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qheozffrjb .gt_font_normal {
+#yworjutjht .gt_font_normal {
   font-weight: normal;
 }
 
-#qheozffrjb .gt_font_bold {
+#yworjutjht .gt_font_bold {
   font-weight: bold;
 }
 
-#qheozffrjb .gt_font_italic {
+#yworjutjht .gt_font_italic {
   font-style: italic;
 }
 
-#qheozffrjb .gt_super {
+#yworjutjht .gt_super {
   font-size: 65%;
 }
 
-#qheozffrjb .gt_footnote_marks {
+#yworjutjht .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#qheozffrjb .gt_asterisk {
+#yworjutjht .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#qheozffrjb .gt_indent_1 {
+#yworjutjht .gt_indent_1 {
   text-indent: 5px;
 }
 
-#qheozffrjb .gt_indent_2 {
+#yworjutjht .gt_indent_2 {
   text-indent: 10px;
 }
 
-#qheozffrjb .gt_indent_3 {
+#yworjutjht .gt_indent_3 {
   text-indent: 15px;
 }
 
-#qheozffrjb .gt_indent_4 {
+#yworjutjht .gt_indent_4 {
   text-indent: 20px;
 }
 
-#qheozffrjb .gt_indent_5 {
+#yworjutjht .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -714,7 +718,7 @@ div.csl-indent {
     </tr>
   </thead>
   <tbody class="gt_table_body">
-    <tr><td headers="time" class="gt_row gt_right">8</td>
+    <tr><td headers="time" class="gt_row gt_right">2</td>
 <td headers="status" class="gt_row gt_right">0</td>
 <td headers="group" class="gt_row gt_right">1</td>
 <td headers="age" class="gt_row gt_right">40</td></tr>
@@ -722,7 +726,7 @@ div.csl-indent {
 <td headers="status" class="gt_row gt_right">1</td>
 <td headers="group" class="gt_row gt_right">1</td>
 <td headers="age" class="gt_row gt_right">62</td></tr>
-    <tr><td headers="time" class="gt_row gt_right">10</td>
+    <tr><td headers="time" class="gt_row gt_right">9</td>
 <td headers="status" class="gt_row gt_right">0</td>
 <td headers="group" class="gt_row gt_right">1</td>
 <td headers="age" class="gt_row gt_right">37</td></tr>
@@ -807,23 +811,23 @@ div.csl-indent {
 <div class="cell-output-display">
 <div id="tbl-surv4" class="anchored">
 
-<div id="aramcwxyco" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#aramcwxyco table {
+<div id="hljotnuoga" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hljotnuoga table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#aramcwxyco thead, #aramcwxyco tbody, #aramcwxyco tfoot, #aramcwxyco tr, #aramcwxyco td, #aramcwxyco th {
+#hljotnuoga thead, #hljotnuoga tbody, #hljotnuoga tfoot, #hljotnuoga tr, #hljotnuoga td, #hljotnuoga th {
   border-style: none;
 }
 
-#aramcwxyco p {
+#hljotnuoga p {
   margin: 0;
   padding: 0;
 }
 
-#aramcwxyco .gt_table {
+#hljotnuoga .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -849,12 +853,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#aramcwxyco .gt_caption {
+#hljotnuoga .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#aramcwxyco .gt_title {
+#hljotnuoga .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -866,7 +870,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#aramcwxyco .gt_subtitle {
+#hljotnuoga .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -878,7 +882,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#aramcwxyco .gt_heading {
+#hljotnuoga .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -890,13 +894,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#aramcwxyco .gt_bottom_border {
+#hljotnuoga .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#aramcwxyco .gt_col_headings {
+#hljotnuoga .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -911,7 +915,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#aramcwxyco .gt_col_heading {
+#hljotnuoga .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -931,7 +935,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#aramcwxyco .gt_column_spanner_outer {
+#hljotnuoga .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -943,15 +947,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#aramcwxyco .gt_column_spanner_outer:first-child {
+#hljotnuoga .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#aramcwxyco .gt_column_spanner_outer:last-child {
+#hljotnuoga .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#aramcwxyco .gt_column_spanner {
+#hljotnuoga .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -963,11 +967,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#aramcwxyco .gt_spanner_row {
+#hljotnuoga .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#aramcwxyco .gt_group_heading {
+#hljotnuoga .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -993,7 +997,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#aramcwxyco .gt_empty_group_heading {
+#hljotnuoga .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1008,15 +1012,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#aramcwxyco .gt_from_md > :first-child {
+#hljotnuoga .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#aramcwxyco .gt_from_md > :last-child {
+#hljotnuoga .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#aramcwxyco .gt_row {
+#hljotnuoga .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1035,7 +1039,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#aramcwxyco .gt_stub {
+#hljotnuoga .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1048,7 +1052,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#aramcwxyco .gt_stub_row_group {
+#hljotnuoga .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1062,15 +1066,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#aramcwxyco .gt_row_group_first td {
+#hljotnuoga .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#aramcwxyco .gt_row_group_first th {
+#hljotnuoga .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#aramcwxyco .gt_summary_row {
+#hljotnuoga .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1080,16 +1084,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#aramcwxyco .gt_first_summary_row {
+#hljotnuoga .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#aramcwxyco .gt_first_summary_row.thick {
+#hljotnuoga .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#aramcwxyco .gt_last_summary_row {
+#hljotnuoga .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1099,7 +1103,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#aramcwxyco .gt_grand_summary_row {
+#hljotnuoga .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1109,7 +1113,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#aramcwxyco .gt_first_grand_summary_row {
+#hljotnuoga .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1119,7 +1123,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#aramcwxyco .gt_last_grand_summary_row_top {
+#hljotnuoga .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1129,11 +1133,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#aramcwxyco .gt_striped {
+#hljotnuoga .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#aramcwxyco .gt_table_body {
+#hljotnuoga .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1142,7 +1146,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#aramcwxyco .gt_footnotes {
+#hljotnuoga .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1156,7 +1160,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#aramcwxyco .gt_footnote {
+#hljotnuoga .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1165,7 +1169,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#aramcwxyco .gt_sourcenotes {
+#hljotnuoga .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1179,7 +1183,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#aramcwxyco .gt_sourcenote {
+#hljotnuoga .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1187,63 +1191,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#aramcwxyco .gt_left {
+#hljotnuoga .gt_left {
   text-align: left;
 }
 
-#aramcwxyco .gt_center {
+#hljotnuoga .gt_center {
   text-align: center;
 }
 
-#aramcwxyco .gt_right {
+#hljotnuoga .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#aramcwxyco .gt_font_normal {
+#hljotnuoga .gt_font_normal {
   font-weight: normal;
 }
 
-#aramcwxyco .gt_font_bold {
+#hljotnuoga .gt_font_bold {
   font-weight: bold;
 }
 
-#aramcwxyco .gt_font_italic {
+#hljotnuoga .gt_font_italic {
   font-style: italic;
 }
 
-#aramcwxyco .gt_super {
+#hljotnuoga .gt_super {
   font-size: 65%;
 }
 
-#aramcwxyco .gt_footnote_marks {
+#hljotnuoga .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#aramcwxyco .gt_asterisk {
+#hljotnuoga .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#aramcwxyco .gt_indent_1 {
+#hljotnuoga .gt_indent_1 {
   text-indent: 5px;
 }
 
-#aramcwxyco .gt_indent_2 {
+#hljotnuoga .gt_indent_2 {
   text-indent: 10px;
 }
 
-#aramcwxyco .gt_indent_3 {
+#hljotnuoga .gt_indent_3 {
   text-indent: 15px;
 }
 
-#aramcwxyco .gt_indent_4 {
+#hljotnuoga .gt_indent_4 {
   text-indent: 20px;
 }
 
-#aramcwxyco .gt_indent_5 {
+#hljotnuoga .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1259,6 +1263,10 @@ div.csl-indent {
     </tr>
   </thead>
   <tbody class="gt_table_body">
+    <tr><td headers="id" class="gt_row gt_right">1</td>
+<td headers="time" class="gt_row gt_right">2</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="group" class="gt_row gt_right">1</td></tr>
     <tr><td headers="id" class="gt_row gt_right">5</td>
 <td headers="time" class="gt_row gt_right">5</td>
 <td headers="status" class="gt_row gt_right">0</td>
@@ -1267,16 +1275,12 @@ div.csl-indent {
 <td headers="time" class="gt_row gt_right">7</td>
 <td headers="status" class="gt_row gt_right">1</td>
 <td headers="group" class="gt_row gt_right">1</td></tr>
-    <tr><td headers="id" class="gt_row gt_right">1</td>
-<td headers="time" class="gt_row gt_right">8</td>
-<td headers="status" class="gt_row gt_right">0</td>
-<td headers="group" class="gt_row gt_right">1</td></tr>
     <tr><td headers="id" class="gt_row gt_right">4</td>
 <td headers="time" class="gt_row gt_right">8</td>
 <td headers="status" class="gt_row gt_right">1</td>
 <td headers="group" class="gt_row gt_right">1</td></tr>
     <tr><td headers="id" class="gt_row gt_right">3</td>
-<td headers="time" class="gt_row gt_right">10</td>
+<td headers="time" class="gt_row gt_right">9</td>
 <td headers="status" class="gt_row gt_right">0</td>
 <td headers="group" class="gt_row gt_right">1</td></tr>
     <tr><td headers="id" class="gt_row gt_right">10</td>
@@ -1315,41 +1319,44 @@ div.csl-indent {
 <h2 data-number="3.9" class="anchored" data-anchor-id="censoring"><span class="header-section-number">3.9</span> Censoring</h2>
 <p>Since censoring is still a concern for our data, an additional term needs to be added to the partial likelihood function, making it now: <span class="math inline">\(L(\beta) = \prod_{i=1}^r [\frac{exp(\beta' x_i)}{\sum_{l \in R(t_i)} exp(\beta' x_l)}]^{δ_i}\)</span>, where {δ_i} is an indicator variable that is 0 if the <span class="math inline">\(rth\)</span> event time is right-censored and 1 otherwise. This term is added to the likelihood function to account for the fact that the event time is not observed for right-censored individuals (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). When taking the log, the function becomes <span class="math inline">\(log(L(\beta)) = \sum_{i=1}^r δ_i [\beta' x_i - log \sum_{l \in R(t_i)} exp(\beta' x_l)]\)</span> (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>).</p>
 </section>
-<section id="estimating-b" class="level2" data-number="3.10">
-<h2 data-number="3.10" class="anchored" data-anchor-id="estimating-b"><span class="header-section-number">3.10</span> Estimating B’</h2>
-<p>To find the value for <span class="math inline">\(\beta'\)</span> using the method of partial likelihood, we must order all of the event times. For group 1, there are only two times of event, time t = 7 for individual 2 and time t = 8 for individual 4. So, we will order the event times as <span class="math inline">\(t_{(1)} &lt; t_{(2)}\)</span>, where <span class="math inline">\(t_{(1)}\)</span> represents the event time for individual 2 and <span class="math inline">\(t_{(2)}\)</span> represents the event time for individual 4. Similarly for group 2, there are events at times 1, 3, and 6, so we will order the event times as <span class="math inline">\(t_{(1)} &lt; t_{(2)} &lt; t_{(3)}\)</span>, representing the event times for individuals 10, 6, and 9. We will also need to calculate the risk set at each time, which is shown below in <a href="#tbl-surv5">Table&nbsp;<span>3.3</span></a>.</p>
+<section id="ties-in-the-data" class="level2" data-number="3.10">
+<h2 data-number="3.10" class="anchored" data-anchor-id="ties-in-the-data"><span class="header-section-number">3.10</span> Ties in the Data</h2>
+<p>One of the key assumptions we are making is that there are no ties in event or censor times. However, this is not always the case. There are additional models proposed to account for ties in the data, such as the Efron method and the Breslow method, which add weights to the likelihood function to account for ties in the data. Later, we will use the Breslow method in analysis because it is the simplest. Breslow suggested the equation: <span class="math inline">\(L(B) = \prod_{i=1}^{r} \frac{exp(\beta' s_i)}{(\sum_{l \in R(t_i)} exp(\beta' x_l))^{d_i}}\)</span>, where <span class="math inline">\(d_i\)</span> is the number of individuals at risk at time <span class="math inline">\(t_i\)</span> (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). For now, we will assume there are no ties in the data and use the partial likelihood function without weights.</p>
+</section>
+<section id="fitting-the-partial-log-likelihood-equation" class="level2" data-number="3.11">
+<h2 data-number="3.11" class="anchored" data-anchor-id="fitting-the-partial-log-likelihood-equation"><span class="header-section-number">3.11</span> Fitting the Partial Log Likelihood Equation</h2>
+<p>To fit our likelihood function, we must order all of the event times. For group 1, there are only two times of event, time t = 7 for individual 2 and time t = 8 for individual 4. So, we will order the event times as <span class="math inline">\(t_{(1)} &lt; t_{(2)}\)</span>, where <span class="math inline">\(t_{(1)}\)</span> represents the event time for individual 2 and <span class="math inline">\(t_{(2)}\)</span> represents the event time for individual 4. Similarly for group 2, there are events at times 1, 3, and 6, so we will order the event times as <span class="math inline">\(t_{(1)} &lt; t_{(2)} &lt; t_{(3)}\)</span>, representing the event times for individuals 10, 6, and 9. We will also need to calculate the risk set at each time, which is shown below in <a href="#tbl-surv5">Table&nbsp;<span>3.3</span></a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#I think total</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>risk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">7</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>surv5 <span class="ot">&lt;-</span> surv4 <span class="sc">%&gt;%</span> </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(time) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">risk_set =</span> risk) <span class="sc">%&gt;%</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, group, time, status, risk_set) </span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>surv5 <span class="sc">%&gt;%</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with Status, Group, Time, and Risk Set"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">id =</span> <span class="st">"ID"</span>, <span class="at">group =</span> <span class="st">"Group"</span>, <span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>, <span class="at">risk_set =</span> <span class="st">"Risk Set"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>risk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">7</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>surv5 <span class="ot">&lt;-</span> surv4 <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(time) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">risk_set =</span> risk) <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, group, time, status, risk_set) </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>surv5 <span class="sc">%&gt;%</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with Status, Group, Time, and Risk Set"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">id =</span> <span class="st">"ID"</span>, <span class="at">group =</span> <span class="st">"Group"</span>, <span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>, <span class="at">risk_set =</span> <span class="st">"Risk Set"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="tbl-surv5" class="anchored">
 
-<div id="dklsoofkyx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dklsoofkyx table {
+<div id="mirmwrqhif" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mirmwrqhif table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#dklsoofkyx thead, #dklsoofkyx tbody, #dklsoofkyx tfoot, #dklsoofkyx tr, #dklsoofkyx td, #dklsoofkyx th {
+#mirmwrqhif thead, #mirmwrqhif tbody, #mirmwrqhif tfoot, #mirmwrqhif tr, #mirmwrqhif td, #mirmwrqhif th {
   border-style: none;
 }
 
-#dklsoofkyx p {
+#mirmwrqhif p {
   margin: 0;
   padding: 0;
 }
 
-#dklsoofkyx .gt_table {
+#mirmwrqhif .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1375,12 +1382,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#dklsoofkyx .gt_caption {
+#mirmwrqhif .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#dklsoofkyx .gt_title {
+#mirmwrqhif .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1392,7 +1399,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#dklsoofkyx .gt_subtitle {
+#mirmwrqhif .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1404,7 +1411,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#dklsoofkyx .gt_heading {
+#mirmwrqhif .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1416,13 +1423,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#dklsoofkyx .gt_bottom_border {
+#mirmwrqhif .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dklsoofkyx .gt_col_headings {
+#mirmwrqhif .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1437,7 +1444,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#dklsoofkyx .gt_col_heading {
+#mirmwrqhif .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1457,7 +1464,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#dklsoofkyx .gt_column_spanner_outer {
+#mirmwrqhif .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1469,15 +1476,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#dklsoofkyx .gt_column_spanner_outer:first-child {
+#mirmwrqhif .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dklsoofkyx .gt_column_spanner_outer:last-child {
+#mirmwrqhif .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dklsoofkyx .gt_column_spanner {
+#mirmwrqhif .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1489,11 +1496,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#dklsoofkyx .gt_spanner_row {
+#mirmwrqhif .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#dklsoofkyx .gt_group_heading {
+#mirmwrqhif .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1519,7 +1526,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#dklsoofkyx .gt_empty_group_heading {
+#mirmwrqhif .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1534,15 +1541,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#dklsoofkyx .gt_from_md > :first-child {
+#mirmwrqhif .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dklsoofkyx .gt_from_md > :last-child {
+#mirmwrqhif .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dklsoofkyx .gt_row {
+#mirmwrqhif .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1561,7 +1568,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#dklsoofkyx .gt_stub {
+#mirmwrqhif .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1574,7 +1581,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#dklsoofkyx .gt_stub_row_group {
+#mirmwrqhif .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1588,15 +1595,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#dklsoofkyx .gt_row_group_first td {
+#mirmwrqhif .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dklsoofkyx .gt_row_group_first th {
+#mirmwrqhif .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#dklsoofkyx .gt_summary_row {
+#mirmwrqhif .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1606,16 +1613,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#dklsoofkyx .gt_first_summary_row {
+#mirmwrqhif .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dklsoofkyx .gt_first_summary_row.thick {
+#mirmwrqhif .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dklsoofkyx .gt_last_summary_row {
+#mirmwrqhif .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1625,7 +1632,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#dklsoofkyx .gt_grand_summary_row {
+#mirmwrqhif .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1635,7 +1642,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#dklsoofkyx .gt_first_grand_summary_row {
+#mirmwrqhif .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1645,7 +1652,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#dklsoofkyx .gt_last_grand_summary_row_top {
+#mirmwrqhif .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1655,11 +1662,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#dklsoofkyx .gt_striped {
+#mirmwrqhif .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dklsoofkyx .gt_table_body {
+#mirmwrqhif .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1668,7 +1675,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#dklsoofkyx .gt_footnotes {
+#mirmwrqhif .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1682,7 +1689,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#dklsoofkyx .gt_footnote {
+#mirmwrqhif .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1691,7 +1698,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#dklsoofkyx .gt_sourcenotes {
+#mirmwrqhif .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1705,7 +1712,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#dklsoofkyx .gt_sourcenote {
+#mirmwrqhif .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1713,63 +1720,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#dklsoofkyx .gt_left {
+#mirmwrqhif .gt_left {
   text-align: left;
 }
 
-#dklsoofkyx .gt_center {
+#mirmwrqhif .gt_center {
   text-align: center;
 }
 
-#dklsoofkyx .gt_right {
+#mirmwrqhif .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dklsoofkyx .gt_font_normal {
+#mirmwrqhif .gt_font_normal {
   font-weight: normal;
 }
 
-#dklsoofkyx .gt_font_bold {
+#mirmwrqhif .gt_font_bold {
   font-weight: bold;
 }
 
-#dklsoofkyx .gt_font_italic {
+#mirmwrqhif .gt_font_italic {
   font-style: italic;
 }
 
-#dklsoofkyx .gt_super {
+#mirmwrqhif .gt_super {
   font-size: 65%;
 }
 
-#dklsoofkyx .gt_footnote_marks {
+#mirmwrqhif .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#dklsoofkyx .gt_asterisk {
+#mirmwrqhif .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dklsoofkyx .gt_indent_1 {
+#mirmwrqhif .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dklsoofkyx .gt_indent_2 {
+#mirmwrqhif .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dklsoofkyx .gt_indent_3 {
+#mirmwrqhif .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dklsoofkyx .gt_indent_4 {
+#mirmwrqhif .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dklsoofkyx .gt_indent_5 {
+#mirmwrqhif .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1791,51 +1798,51 @@ div.csl-indent {
 <td headers="time" class="gt_row gt_right">1</td>
 <td headers="status" class="gt_row gt_right">1</td>
 <td headers="risk_set" class="gt_row gt_right">10</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">1</td>
+<td headers="time" class="gt_row gt_right">2</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="risk_set" class="gt_row gt_right">9</td></tr>
     <tr><td headers="id" class="gt_row gt_right">6</td>
 <td headers="group" class="gt_row gt_right">2</td>
 <td headers="time" class="gt_row gt_right">3</td>
 <td headers="status" class="gt_row gt_right">1</td>
-<td headers="risk_set" class="gt_row gt_right">9</td></tr>
+<td headers="risk_set" class="gt_row gt_right">8</td></tr>
     <tr><td headers="id" class="gt_row gt_right">7</td>
 <td headers="group" class="gt_row gt_right">2</td>
 <td headers="time" class="gt_row gt_right">4</td>
 <td headers="status" class="gt_row gt_right">0</td>
-<td headers="risk_set" class="gt_row gt_right">8</td></tr>
+<td headers="risk_set" class="gt_row gt_right">7</td></tr>
     <tr><td headers="id" class="gt_row gt_right">5</td>
 <td headers="group" class="gt_row gt_right">1</td>
 <td headers="time" class="gt_row gt_right">5</td>
 <td headers="status" class="gt_row gt_right">0</td>
-<td headers="risk_set" class="gt_row gt_right">7</td></tr>
+<td headers="risk_set" class="gt_row gt_right">6</td></tr>
     <tr><td headers="id" class="gt_row gt_right">9</td>
 <td headers="group" class="gt_row gt_right">2</td>
 <td headers="time" class="gt_row gt_right">6</td>
 <td headers="status" class="gt_row gt_right">1</td>
-<td headers="risk_set" class="gt_row gt_right">6</td></tr>
+<td headers="risk_set" class="gt_row gt_right">5</td></tr>
     <tr><td headers="id" class="gt_row gt_right">2</td>
 <td headers="group" class="gt_row gt_right">1</td>
 <td headers="time" class="gt_row gt_right">7</td>
 <td headers="status" class="gt_row gt_right">1</td>
-<td headers="risk_set" class="gt_row gt_right">5</td></tr>
-    <tr><td headers="id" class="gt_row gt_right">1</td>
-<td headers="group" class="gt_row gt_right">1</td>
-<td headers="time" class="gt_row gt_right">8</td>
-<td headers="status" class="gt_row gt_right">0</td>
 <td headers="risk_set" class="gt_row gt_right">4</td></tr>
     <tr><td headers="id" class="gt_row gt_right">4</td>
 <td headers="group" class="gt_row gt_right">1</td>
 <td headers="time" class="gt_row gt_right">8</td>
 <td headers="status" class="gt_row gt_right">1</td>
-<td headers="risk_set" class="gt_row gt_right">4</td></tr>
+<td headers="risk_set" class="gt_row gt_right">3</td></tr>
     <tr><td headers="id" class="gt_row gt_right">3</td>
 <td headers="group" class="gt_row gt_right">1</td>
-<td headers="time" class="gt_row gt_right">10</td>
+<td headers="time" class="gt_row gt_right">9</td>
 <td headers="status" class="gt_row gt_right">0</td>
 <td headers="risk_set" class="gt_row gt_right">2</td></tr>
     <tr><td headers="id" class="gt_row gt_right">8</td>
 <td headers="group" class="gt_row gt_right">2</td>
 <td headers="time" class="gt_row gt_right">10</td>
 <td headers="status" class="gt_row gt_right">0</td>
-<td headers="risk_set" class="gt_row gt_right">2</td></tr>
+<td headers="risk_set" class="gt_row gt_right">1</td></tr>
   </tbody>
   
   
@@ -1845,60 +1852,145 @@ div.csl-indent {
 </div>
 </div>
 <p>To estimate the parameters, we will need to use the natural log of our partial likelihood function, which we derived as: <span class="math inline">\(log(L(\beta)) = \sum_{i=1}^r δ_i [\beta' x_i - log \sum_{l \in R(t_i)} exp(\beta' x_l)]\)</span>.</p>
-<p>At time <span class="math inline">\(t=1\)</span>, the risk set will include all 10 individuals because at the tie just before t=1, there are no individuals who have experienced the event or been censored. At time <span class="math inline">\(t=2\)</span>, the risk set will include all individuals except for individual with ID 10 because they experienced the event at time 1. We can continue this process for each time, and the risk set will be the same for both groups.</p>
+<p>At time <span class="math inline">\(t=1\)</span>, the risk set will include all 10 individuals because at the tie just before t=1, there are no individuals who have experienced the event or been censored. At time <span class="math inline">\(t=2\)</span>, the risk set will include all individuals except for individuals with ID 10 because they experienced the event at time 1. We can continue this process for each time, and the risk set will be the same for both groups.</p>
 <p>Now that we know the risk sets and the event times, we can calculate the partial likelihood function. Recall that the partial likelihood function is <span class="math inline">\(L(\beta) = \prod_{i=1}^{n} \frac{exp(\beta x_i)}{\sum_{j \in R(t_i)} exp(\beta x_j)}\)</span>. So, for our data set, we will need to calculate the partial likelihood function for each event time. For each relevant time, we can calculate the risk score for individual i, <span class="math inline">\(v(i) = B'{x_i}\)</span> (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). This risk score represents the numerator of the partial likelihood equation. For time <span class="math inline">\(t = 1\)</span>, in which individual 10 experiences the event of interest, the risk score is denoted <span class="math inline">\(v(10)\)</span>. The denominator of the partial likelihood equation is the sum of the risk scores for all individuals in the risk set at time <span class="math inline">\(t_i\)</span>, so all individuals 1 through 10. The denominator is then <span class="math inline">\(v(1) + v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9) + v(10)\)</span>. The partial likelihood function for time <span class="math inline">\(t = 1\)</span> is then <span class="math inline">\(\frac{v(10)}{v(1) + v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9) + v(10)}\)</span>.</p>
-<p>After doing this for each event time, we get the partial likelihood equation to be <span class="math inline">\(\frac{v(10)}{v(1) + v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9) + v(10)}\)</span> * <span class="math inline">\(\frac{v(6)}{v(1) + v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9)}\)</span> * <span class="math inline">\(\frac{v(9)}{v(1) + v(2) + v(3) + v(4) + v(8) + v(9)}\)</span> * <span class="math inline">\(\frac{v(2)}{v(1) + v(2) + v(3) + v(4) + v(8)}\)</span> * <span class="math inline">\(\frac{v(4)}{v(3) + v(4) + v(8)}\)</span>.</p>
-<p>We can then take the log of the partial likelihood function to get the log partial likelihood function: <span class="math inline">\(log(L(B)) = 3\beta x_2 + 2\beta x_1 - log(5exp(\beta x_1) + 5exp(\beta x_2)) - log(5exp(\beta x_1) + 4exp(\beta x_2)) - log(4exp(\beta x_1) + 2exp(\beta x_2))\)</span> - <span class="math inline">\(log(4exp(\beta x_1) + exp(\beta x_2)) - log(2exp(\beta x_1) + exp(\beta x_2))\)</span>.</p>
-<p>We can then take the derivative of the log partial likelihood function with respect to <span class="math inline">\(\beta\)</span> and set it equal to 0 to find the value of <span class="math inline">\(\beta\)</span> that maximizes the partial likelihood function. The derivative will be: <span class="math inline">\(\frac{\partial log(L(\beta))}{\partial \beta}\)</span> = <span class="math inline">\(3x_2 + 2x_1 - \frac{5x_1exp(\beta x_1)}{5exp(\beta x_1) + 5exp(\beta x_2)} - \frac{5x_2exp(\beta x_2)}{5exp(\beta x_1) + 5exp(\beta x_2)} - \frac{4x_1exp(\beta x_1)}{5exp(\beta x_1) + 4exp(\beta x_2)} - \frac{2x_2exp(\beta x_2)}{4exp(\beta x_1) + 2exp(\beta x_2)} - \frac{4x_1exp(\beta x_1)}{4exp(\beta x_1) + 2exp(\beta x_2)}\)</span> - <span class="math inline">\(\frac{x_2exp(\beta x_2)}{4exp(\beta x_1) + exp(\beta x_2)} - \frac{2x_1exp(\beta x_1)}{2exp(\beta x_1) + exp(\beta x_2)} - \frac{x_2exp(\beta x_2)}{2exp(\beta x_1) + exp(\beta x_2)}\)</span>.</p>
+<p>After doing this for each event time, we get the partial likelihood equation to be <span class="math inline">\(\frac{v(10)}{v(1) + v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9) + v(10)}\)</span> * <span class="math inline">\(\frac{v(6)}{v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9)}\)</span> * <span class="math inline">\(\frac{v(9)}{v(2) + v(3) + v(4) + v(8) + v(9)}\)</span> * <span class="math inline">\(\frac{v(2)}{v(2) + v(3) + v(4) + v(8)}\)</span> * <span class="math inline">\(\frac{v(4)}{v(3) + v(4) + v(8)}\)</span>.</p>
+<p>We can then take the log of the partial likelihood function to get the log partial likelihood function: <span class="math inline">\(log(L(B)) = 3\beta x_2 + 2\beta x_1 - log(5exp(\beta x_1) + 5exp(\beta x_2))\)</span> - <span class="math inline">\(log(4exp(\beta x_1) + 4exp(\beta x_2)) - log(3exp(\beta x_1) + 2exp(\beta x_2)) - log(3exp(\beta x_1)\)</span> + <span class="math inline">\(exp(\beta x_2)) - log(2exp(\beta x_1) + exp(\beta x_2))\)</span>.</p>
 </section>
-<section id="newton-raphson-method" class="level2" data-number="3.11">
-<h2 data-number="3.11" class="anchored" data-anchor-id="newton-raphson-method"><span class="header-section-number">3.11</span> Newton Raphson Method</h2>
-<p>simple example</p>
-<p>Setting this equation equal to zero and solving for <span class="math inline">\(\beta\)</span> would theoretically give us the value of <span class="math inline">\(\beta\)</span> that maximizes the partial likelihood function. However, because this equation is not solvable, we can use other methods to approximate the value of <span class="math inline">\(\beta\)</span>. One of the most common methods is called the Newton Raphson method.</p>
+<section id="estimating-b" class="level2" data-number="3.12">
+<h2 data-number="3.12" class="anchored" data-anchor-id="estimating-b"><span class="header-section-number">3.12</span> Estimating B’</h2>
+<p>We can then take the derivative of the log partial likelihood function with respect to <span class="math inline">\(\beta\)</span> and set it equal to 0 to find the value of <span class="math inline">\(\beta\)</span> that maximizes the partial likelihood function. The derivative will be: <span class="math inline">\(\frac{\partial log(L(\beta))}{\partial \beta}\)</span> = <span class="math inline">\(3x_2 + 2x_1 - \frac{5x_1exp(\beta x_1)}{5exp(\beta x_1) + 5exp(\beta x_2)} - \frac{5x_2exp(\beta x_2)}{5exp(\beta x_1) + 5exp(\beta x_2)} - \frac{4x_1exp(\beta x_1)}{4exp(\beta x_1) + 4exp(\beta x_2)} - \frac{4x_2exp(\beta x_2)}{4exp(\beta x_1) + 4exp(\beta x_2)}\)</span> - <span class="math inline">\(\frac{3x_1exp(\beta x_1)}{3exp(\beta x_1) + 2exp(\beta x_2)} - \frac{2x_2exp(\beta x_2)}{3exp(\beta x_1) + 2exp(\beta x_2)} - \frac{3x_1exp(\beta x_1)}{3exp(\beta x_1) + exp(\beta x_2)} - \frac{x_2exp(\beta x_2)}{3exp(\beta x_1) + exp(\beta x_2)} - \frac{2x_1exp(\beta x_1)}{2exp(\beta x_1) + exp(\beta x_2)}\)</span> - <span class="math inline">\(\frac{x_2exp(\beta x_2)}{2exp(\beta x_1) + exp(\beta x_2)}\)</span>.</p>
+<p>Setting this equation equal to zero and solving for <span class="math inline">\(\beta\)</span> would theoretically give us the value of <span class="math inline">\(\beta\)</span> that maximizes the partial likelihood function. However, because this equation is not solvable, we can use numerical methods to approximate the value of <span class="math inline">\(\beta\)</span>. One of the most common methods is called the Newton Raphson method.</p>
 </section>
-<section id="multiple-predictors" class="level2" data-number="3.12">
-<h2 data-number="3.12" class="anchored" data-anchor-id="multiple-predictors"><span class="header-section-number">3.12</span> Multiple Predictors</h2>
-<p>When looking at multiple predictors, such as age and group, the parameter estimates are found by the equation:</p>
-<p>We can calculate the cumulative hazard ratio, <span class="math inline">\(v\)</span> of the event occurring in the group of individuals with a status of 1 compared to the group of individuals with a status of 0. We can calculate the hazard of the event occurring for an individual in group 1 at time t, <span class="math inline">\(h_1(t)\)</span>, by dividing the number of individuals who died in the group of individuals with a status of 1 by the total number of individuals in the group of individuals with a status of 1.</p>
+<section id="newton-raphson-method" class="level2" data-number="3.13">
+<h2 data-number="3.13" class="anchored" data-anchor-id="newton-raphson-method"><span class="header-section-number">3.13</span> Newton Raphson Method</h2>
+<p>The Newton Raphson method is an iterative method that is used to find the root of a function, f(x). In our case, we case use this method to find the value of <span class="math inline">\(\beta\)</span> that maximizes the partial likelihood function. We do this by starting with an initial estimate, <span class="math inline">\({x_0}\)</span>, for the root, and repeating a series of steps to improve this estimation. We will first chose a value for x, <span class="math inline">\(x_0\)</span>, and then find the equation of the tangent line to the function at the point <span class="math inline">\((x_0, f(x_0))\)</span>. We can then find the x-intercept of the tangent line at <span class="math inline">\(x_0\)</span> by setting our function equal to 0. This x-intercept is our next estimate, <span class="math inline">\(x_1\)</span>, for the root (<span class="citation" data-cites="anstee">Anstee (<a href="#ref-anstee" role="doc-biblioref">n.d.</a>)</span>).</p>
+<p>Let f(x) be the function we want to find the root of and r be the root of the equation when f(x) = 0. Suppose <span class="math inline">\(r = {x_0} + h\)</span>. The value of h is the distance from the true root, r, and our initial estimate, <span class="math inline">\(x_0\)</span>. A key assumption of this method is that <span class="math inline">\({x_0}\)</span> is a good estimate and therefore h is close to the true value. Because h is small, we can use the linear approximation of the tangent line. To do this, we know that the slope of the tangent line is the derivative of the function at the point <span class="math inline">\((x_0, f(x_0))\)</span>. Thus we can estimate <span class="math inline">\(0 = f(r) = f({x_0} + h) = f({x_0}) + f'({x_0})h\)</span>. Solving for h we get <span class="math inline">\(h = -\frac{f({x_0})}{f'({x_0})}\)</span>. Thus, <span class="math inline">\(r = {x_0} + h = {x_0} - \frac{f({x_0})}{f'({x_0})}\)</span>. The new value of r will be a better estimate for the root, <span class="math inline">\(x_1\)</span> (<span class="citation" data-cites="anstee">Anstee (<a href="#ref-anstee" role="doc-biblioref">n.d.</a>)</span>).</p>
+<p>The equation used for this iteration looks like: <span class="math inline">\(x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\)</span>. We can repeat this step until the difference between <span class="math inline">\({x_n+1}\)</span> and <span class="math inline">\({x_n}\)</span> is less than a certain tolerance level, meaning that our estimate is not changing much with new iterations (<span class="citation" data-cites="anstee">Anstee (<a href="#ref-anstee" role="doc-biblioref">n.d.</a>)</span>).</p>
+</section>
+<section id="newton-raphson-example" class="level2" data-number="3.14">
+<h2 data-number="3.14" class="anchored" data-anchor-id="newton-raphson-example"><span class="header-section-number">3.14</span> Newton Raphson Example</h2>
+<p>Let’s consider a simple example of a Newton Raphson iteration. Suppose we want to find the root of the function $f(x) =</p>
 <ul>
-<li>cumulative? This can be expressed as <span class="math inline">\(v = \frac{\frac{d_1}{n_1}}{\frac{d_0}{n_0}}\)</span>.</li>
+<li>gamma distribution: <span class="math inline">\(f(x) = \frac{1}{\Gamma(k)\theta^k}x^{k-1}e^{-\frac{x}{\theta}}\)</span>.</li>
 </ul>
 </section>
-<section id="hazard-analysis-in-r" class="level2" data-number="3.13">
-<h2 data-number="3.13" class="anchored" data-anchor-id="hazard-analysis-in-r"><span class="header-section-number">3.13</span> Hazard Analysis in R</h2>
+<section id="newton-raphson-in-cox-proportional-hazards-model" class="level2" data-number="3.15">
+<h2 data-number="3.15" class="anchored" data-anchor-id="newton-raphson-in-cox-proportional-hazards-model"><span class="header-section-number">3.15</span> Newton Raphson in Cox Proportional Hazards Model</h2>
+<p>In the Cox Proportional Hazards Model, the Newton Raphson method is used to find the value of <span class="math inline">\(\beta\)</span> that maximizes the partial likelihood function. Let’s assume that there is only one parameter, <span class="math inline">\(\beta\)</span>, in the model. The partial likelihood function is given by:</p>
+</section>
+<section id="multiple-predictors" class="level2" data-number="3.16">
+<h2 data-number="3.16" class="anchored" data-anchor-id="multiple-predictors"><span class="header-section-number">3.16</span> Multiple Predictors</h2>
+<p>When looking at multiple predictors, such as age and group, the parameter estimates are found by the equation:</p>
+<p>We can calculate the cumulative hazard ratio, <span class="math inline">\(v\)</span> of the event occurring in the group of individuals with a status of 1 compared to the group of individuals with a status of 0. We can calculate the hazard of the event occurring for an individual in group 1 at time t, <span class="math inline">\(h_1(t)\)</span>, by dividing the number of individuals who died in the group of individuals with a status of 1 by the total number of individuals in the group of individuals with a status of 1.</p>
+<p>This can be expressed as <span class="math inline">\(v = \frac{\frac{d_1}{n_1}}{\frac{d_0}{n_0}}\)</span>.</p>
+</section>
+<section id="hazard-analysis-in-r" class="level2" data-number="3.17">
+<h2 data-number="3.17" class="anchored" data-anchor-id="hazard-analysis-in-r"><span class="header-section-number">3.17</span> Hazard Analysis in R</h2>
 <p>Similarly to before with the Kaplan Meier curve, we can use R to model the hazard function. The <code>coxph()</code> function in the <code>survival</code> package returns the coefficients of the cox proportional hazards model as well as the p value for the coefficients, allowing us to determine whether each coefficient is significant (<span class="citation" data-cites="sthda"><span>“Cox Proportional-Hazards Model”</span> (<a href="#ref-sthda" role="doc-biblioref">n.d.</a>)</span>). Below, we see that the coefficient on the age predictor is significant, but the coefficient for group is not. This means that, when controlling for the other variables, the hazard of the event occurring is not significantly different between the two groups, but the hazard of the event occurring is significantly different for individuals of different ages.</p>
-<p>https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_survival/BS704_Survival6.html</p>
-<p>https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8651375/</p>
-<p>https://www2.eecs.berkeley.edu/Pubs/TechRpts/2017/EECS-2017-110.pdf</p>
-<p>https://www.graphpad.com/guides/prism/latest/statistics/stat_kaplan-meier_mathematics.htm</p>
-<p>https://www.statsdirect.com/help/survival_analysis/cox_regression.htm</p>
-<p>https://datatab.net/tutorial/log-rank-test</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> group <span class="sc">+</span> age, <span class="at">data =</span> surv3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> group <span class="sc">+</span> age, <span class="at">data =</span> surv3, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
-coxph(formula = Surv(time, status) ~ group + age, data = surv3)
+coxph(formula = Surv(time, status) ~ group + age, data = surv3, 
+    ties = "breslow")
 
           coef exp(coef) se(coef)     z      p
-group  2.63387  13.92750  1.78647 1.474 0.1404
-age    0.18887   1.20789  0.09323 2.026 0.0428
+group  2.60097  13.47683  1.79663 1.448 0.1477
+age    0.18655   1.20508  0.09491 1.965 0.0494
 
-Likelihood ratio test=10.39  on 2 df, p=0.005533
+Likelihood ratio test=8.79  on 2 df, p=0.01232
 n= 10, number of events= 5 </code></pre>
 </div>
 </div>
 </section>
-<section id="case-study" class="level2" data-number="3.14">
-<h2 data-number="3.14" class="anchored" data-anchor-id="case-study"><span class="header-section-number">3.14</span> Case Study</h2>
+<section id="case-study" class="level2" data-number="3.18">
+<h2 data-number="3.18" class="anchored" data-anchor-id="case-study"><span class="header-section-number">3.18</span> Case Study</h2>
 <p>Let’s look back at the Cirrhosis data set.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load in the data and select the variables we need</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>cirrhosis <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/cirrhosis.csv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>cirrhosis <span class="ot">&lt;-</span> cirrhosis <span class="sc">%&gt;%</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">event =</span> <span class="fu">if_else</span>(Status <span class="sc">==</span> <span class="st">'D'</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(event, Drug, N_Days)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Recall that we can look at the times using the <code>Surv()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Surv</span>(cirrhosis<span class="sc">$</span>N_Days, cirrhosis<span class="sc">$</span>event)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1]  400  4500+ 1012  1925  1504+ 2503  1832+ 2466  2400    51  3762   304 
+ [13] 3577+ 1217  3584  3672+  769   131  4232+ 1356  3445+  673   264  4079 
+ [25] 4127+ 1444    77   549  4509+  321  3839  4523+ 3170  3933+ 2847  3611+
+ [37]  223  3244  2297  4467+ 1350  4453+ 4556+ 3428  4025+ 2256  2576+ 4427+
+ [49]  708  2598  3853  2386  1000  1434  1360  1847  3282  4459+ 2224  4365+
+ [61] 4256+ 3090   859  1487  3992+ 4191  2769  4039+ 1170  3458+ 4196+ 4184+
+ [73] 4190+ 1827  1191    71   326  1690  3707+  890  2540  3574  4050+ 4032+
+ [85] 3358  1657   198  2452+ 1741  2689   460   388  3913+  750   130  3850+
+ [97]  611  3823+ 3820+  552  3581+ 3099+  110  3086  3092+ 3222  3388+ 2583 
+[109] 2504+ 2105  2350+ 3445   980  3395  3422+ 3336+ 1083  2288   515  2033+
+[121]  191  3297+  971  3069+ 2468+  824  3255+ 1037  3239+ 1413   850  2944+
+[133] 2796  3149+ 3150+ 3098+ 2990+ 1297  2106+ 3059+ 3050+ 2419   786   943 
+[145] 2976+ 2615+ 2995+ 1427   762  2891+ 2870+ 1152  2863+  140  2666+  853 
+[157] 2835+ 2475+ 1536  2772+ 2797+  186  2055   264  1077  2721+ 1682  2713+
+[169] 1212  2692+ 2574+ 2301+ 2657+ 2644+ 2624+ 1492  2609+ 2580+ 2573+ 2563+
+[181] 2556+ 2555+ 2241+  974  2527+ 1576   733  2332+ 2456+ 2504+  216  2443+
+[193]  797  2449+ 2330+ 2363+ 2365+ 2357+ 1592+ 2318+ 2294+ 2272+ 2221+ 2090 
+[205] 2081  2255+ 2171+  904  2216+ 2224+ 2195+ 2176+ 2178+ 1786  1080  2168+
+[217]  790  2170+ 2157+ 1235  2050+  597   334  1945+ 2022+ 1978+  999  1967+
+[229]  348  1979+ 1165  1951+ 1932+ 1776+ 1882+ 1908+ 1882+ 1874+  694  1831+
+[241]  837+ 1810+  930  1690  1790+ 1435+  732+ 1785+ 1783+ 1769+ 1457+ 1770+
+[253] 1765+  737+ 1735+ 1701+ 1614+ 1702+ 1615+ 1656+ 1677+ 1666+ 1301+ 1542+
+[265] 1084+ 1614+  179  1191  1363+ 1568+ 1569+ 1525+ 1558+ 1447+ 1349+ 1481+
+[277] 1434+ 1420+ 1433+ 1412+   41  1455+ 1030+ 1418+ 1401+ 1408+ 1234+ 1067+
+[289]  799  1363+  901+ 1329+ 1320+ 1302+  877+ 1321+  533+ 1300+ 1293+  207 
+[301] 1295+ 1271+ 1250+ 1230+ 1216+ 1216+ 1149+ 1153+  994+  939+  839+  788+
+[313] 4062+ 3561  2844+ 2071  3030+ 1680+   41  2403+ 1170+ 2011  3523+ 3468+
+[325] 4795+ 1236+ 4214+ 2111  1462  1746    94   785  1518   466  3527+ 2635+
+[337] 2286   791  3492+ 3495+  111  3231+  625  3157+ 3021+  559  2812  2834+
+[349] 2855+  662   727  2716+ 2698+  990  2338+ 1616  2563+ 2537+ 2534+  778 
+[361]  617+ 2267+ 2249+  359  1925+  249  2202+   43  1197  1095   489  2149+
+[373] 2103+ 1980+ 1347+ 1478  1987+ 1168   597  1725+ 1899+  221  1022+ 1639+
+[385] 1635+ 1654+ 1653+ 1560+ 1581+ 1419+ 1443+ 1368+  193  1367+ 1329+ 1343+
+[397] 1328+ 1375+ 1260+ 1223+  935   943+ 1141+ 1092+ 1150+  703  1129+ 1086+
+[409] 1067+ 1072+ 1119+ 1097+  989+  681  1103+ 1055+  691+  976+</code></pre>
+</div>
+</div>
+<p>Let’s see what the Cox Analysis will tell us about the relationship between the drug and the number of days until death.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>s4 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(N_Days, event) <span class="sc">~</span> Drug, <span class="at">data =</span> cirrhosis, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(s4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(N_Days, event) ~ Drug, data = cirrhosis, 
+    ties = "breslow")
+
+  n= 312, number of events= 125 
+   (106 observations deleted due to missingness)
+
+                coef exp(coef) se(coef)      z Pr(&gt;|z|)
+DrugPlacebo -0.05712   0.94448  0.17917 -0.319     0.75
+
+            exp(coef) exp(-coef) lower .95 upper .95
+DrugPlacebo    0.9445      1.059    0.6648     1.342
+
+Concordance= 0.499  (se = 0.025 )
+Likelihood ratio test= 0.1  on 1 df,   p=0.7
+Wald test            = 0.1  on 1 df,   p=0.7
+Score (logrank) test = 0.1  on 1 df,   p=0.7</code></pre>
+</div>
+</div>
+<p>The p value for the drug is not less than 0.05, so we can not conclude that the drug has a significant effect on the number of days until death.</p>
 </section>
-<section id="references" class="level2" data-number="3.15">
-<h2 data-number="3.15" class="anchored" data-anchor-id="references"><span class="header-section-number">3.15</span> References</h2>
+<section id="references" class="level2" data-number="3.19">
+<h2 data-number="3.19" class="anchored" data-anchor-id="references"><span class="header-section-number">3.19</span> References</h2>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-allison84" class="csl-entry" role="listitem">
 Allison, P. 1984. <em>Event History Analysis</em>. SAGE Publications, Inc. <a href="https://methods.sagepub.com/book/event-history-analysis/">https://methods.sagepub.com/book/event-history-analysis/</a>.
+</div>
+<div id="ref-anstee" class="csl-entry" role="listitem">
+Anstee, R. n.d. <em>The Newton-Raphson Method</em>. <a href="https://personal.math.ubc.ca/~anstee/math104/newtonmethod.pdf">https://personal.math.ubc.ca/~anstee/math104/newtonmethod.pdf</a>.
 </div>
 <div id="ref-clark03" class="csl-entry" role="listitem">
 Clark, Bradburn, T. G. 2003. <span>“Survival Analysis Part i: Basic Concepts and First Analyses.”</span> <em>British Journal of Cancer</em>, May. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2394262/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2394262/</a>.
