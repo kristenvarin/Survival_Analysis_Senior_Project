@@ -31,6 +31,7 @@ surv3 <- data.frame(time, status, group, age)
 surv3 %>% gt(caption = "Example Data Set with Status, Time, Group, and Age") %>%
   cols_label(time = "Time", status = "Status", group = "Group", age = "Age") 
 ```
+
 ## Proportional Hazards
 
 The proportional hazards model, also known as the Cox regression model, is a semi-parametric model. This is because it assumes proportional hazards, or that the hazard of an event occurring is the same for all individuals, yet does not assume a specific distribution (@collet). The proportional hazard model also assumes that the hazard ratio between two groups is constant over time. This means that the hazard ratio between two groups is the same at any time $t$, thus making the model proportional. In other words, the instantaneous hazard of an event occurring between two individuals of different groups will remain constant at all times, or the effect of the predictors is the same at all times (@sthda).
@@ -49,7 +50,7 @@ In the Cox proportional hazards model, there are two unknowns: the baseline haza
 
 ## Method of Partial Likelihood
 
-The method of partial likelihood, first discovered by Cox himself, allows us to estimate the regression coefficients without knowing the baseline hazard function (@collet). As a reminder, the baseline hazard function describes the distribution of the data when no events have happened, but we only have data points at times when either an event occurs or an individual is censored. Thus, we need a way to fit a function that maximizes the likelihood of getting these data points without knowing what happens at every time. The method of partial likelihood does this by ranking the times of events in the data, and then using these ordered event times to predict the hazard ratio. It is called a partial likelihood method because it does not actually use the exact times of events but instead just their rankings (@collet). One key assumption of this method is that there are no ties in the data, or events at the same time . Additionally, it is important to note that this method assumes that the time intervals between each event are independent of the model parameters, or that the time intervals give no information about the model parameters (@waagepetersen22).
+The method of partial likelihood, first discovered by Cox himself, allows us to estimate the regression coefficients without knowing the baseline hazard function (@collet). As a reminder, the baseline hazard function describes the distribution of the data when no events have happened, but we only have data points at times when either an event occurs or an individual is censored. Thus, we need a way to fit a function that maximizes the likelihood of getting these data points without knowing what happens at every time. The method of partial likelihood does this by ranking the times of events in the data, and then using these ordered event times to predict the hazard ratio. It is called a partial likelihood method because it does not actually use the exact times of events but instead just their rankings (@collet). One key assumption of this method is that there are no ties in the data, or events at the same time. Additionally, it is important to note that this method assumes that the time intervals between each event are independent of the model parameters, or that the time intervals give no information about the model parameters (@waagepetersen22).
 
 ## Partial Likelihood Derivation
 
@@ -116,6 +117,7 @@ surv5 %>%
   gt(caption = "Example Data Set with Status, Group, Time, and Risk Set") %>%
   cols_label(id = "ID", group = "Group", time = "Time", status = "Status", risk_set = "Risk Set")
 ```
+
 To estimate the parameters, we will need to use the natural log of our partial likelihood function, which we derived as: $log(L(\beta)) = \sum_{i=1}^r δ_i [\beta' x_i - log \sum_{l \in R(t_i)} exp(\beta' x_l)]$.
 
 At time $t=1$, the risk set will include all 10 individuals because at the tie just before t=1, there are no individuals who have experienced the event or been censored. At time $t=2$, the risk set will include all individuals except for individuals with ID 10 because they experienced the event at time 1. We can continue this process for each time, and the risk set will be the same for both groups.
@@ -142,13 +144,58 @@ The equation used for this iteration looks like: $x_{n+1} = x_n - \frac{f(x_n)}{
 
 ## Newton Raphson Example
 
-Let's consider a simple example of a Newton Raphson iteration. Suppose we want to find the root of the function $f(x) = 
+Let's consider a simple example of a Newton Raphson iteration. Suppose we want to find the root of the function, $f(x) = x^3 +3x + 1$. First, we will take the derivative of the function, which will be $f'(x) = 3x^2 + 3$. We can then use the Newton Raphson method to find the root of the function. We will start with an initial estimate, $x_0 = 3$, and use the equation $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$ to find our second estimate for the root. In this case, $x_{n+1} = 3 - \frac{f(3)}{f'(3)}$ = $ 3 - \frac{3^3 + 3*3 + 1}{3*3^2 + 3}$ = $3 - \frac{37}{30}$ = $3 - 1.2333$ = $1.7667$. We can then use this value as our new estimate and repeat the process until the difference between ${x_n+1}$ and ${x_n}$ is less than a certain tolerance level. Let's visualize this process in table @tbl-nr1.
 
--   gamma distribution: $f(x) = \frac{1}{\Gamma(k)\theta^k}x^{k-1}e^{-\frac{x}{\theta}}$.
+```{r}
+#| label: tbl-nr1
+#| tbl-cap: newton raphson 1
+
+# define function and its derivative
+f = function(x) x^3 + 3*x + 1
+fprime = function(x) 3*x^2 + 3
+
+# Choose initial estimate to be 3
+x = 3
+
+# Use tolerance level of 0.0001
+tol = 0.0001
+
+# Initialize a vector to store the results
+iterations <- c(x)
+
+# While loop to repeat the process until the difference between ${x_n+1}$ and ${x_n}$ is less than the tolerance level
+while (abs(f(x)) > tol){
+  x = x - f(x)/fprime(x)
+  x = round(x, 4)
+  iterations <- c(iterations, x)  # Store the current value of x
+}
+
+# Create a data frame with results
+results <- data.frame(iteration = 1:length(iterations), x = iterations)
+results %>%
+  gt(caption = "Newton Raphson Example") %>%
+  cols_label(iteration = "Iteration", x = "x")
+```
+
+The table shows the results of the Newton Raphson method. We can see that the value of x is converging to the root of the function, which is approximately -0.32. 
+
+# Newton Raphson with a parameterized function
+
+## Gamma Distribution
+
+The above example shows the general process for the Newton Raphson iteration, but what about when we have a function with multiple parameters? Suppose we want to find the root of the gamma distribution, $f(x) = \frac{B^a}{\Gamma(a)}x^{a-1}e^{-Bx}$. First, we will take the natural log of the function and then take its derivative with respect to both a and B. We will then use the Newton Raphson method to find the values of B and a that maximizes the function.
+
+We would start with an estimate for the root by using other methods such as Method of Moments Estimation. The Method of Moments Estimator of the parameters of the Gamma Distribution are: $\hat{a} = \frac{\bar{x}^2}{s^2}$ and $\hat{B} = \frac{\bar{x}}{s^2}$, where $\bar{x}$ is the sample mean and s is the sample standard deviation. We can then use these estimates as our initial estimates for the Newton Raphson method using the equation $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$ to find our second estimate for the root and then repeating the process until our tolerance requirement is met. 
+
+```{r}
+# uniroot(func, c(0, 1))
+```
 
 ## Newton Raphson in Cox Proportional Hazards Model
 
-In the Cox Proportional Hazards Model, the Newton Raphson method is used to find the value of $\beta$ that maximizes the partial likelihood function. Let's assume that there is only one parameter, $\beta$, in the model. The partial likelihood function is given by: 
+In the Cox Proportional Hazards Model, the Newton Raphson method is used to find the value of $\beta$ that maximizes the partial likelihood function. Let's assume that there is only one parameter, $\beta$, in the model. 
+
+$\frac{\partial^2 log(L(\beta))}{\partial \beta}$.
 
 ## Multiple Predictors
 
@@ -160,13 +207,20 @@ This can be expressed as $v = \frac{\frac{d_1}{n_1}}{\frac{d_0}{n_0}}$.
 
 ## Hazard Analysis in R
 
-Similarly to before with the Kaplan Meier curve, we can use R to model the hazard function. The `coxph()` function in the `survival` package returns the coefficients of the cox proportional hazards model as well as the p value for the coefficients, allowing us to determine whether each coefficient is significant (@sthda). Below, we see that the coefficient on the age predictor is significant, but the coefficient for group is not. This means that, when controlling for the other variables, the hazard of the event occurring is not significantly different between the two groups, but the hazard of the event occurring is significantly different for individuals of different ages.
+Similarly to before with the Kaplan Meier curve, we can use R to model the hazard function. The `coxph()` function in the `survival` package returns the coefficients of the cox proportional hazards model as well as the p value for the coefficients, allowing us to determine whether each coefficient is significant (@sthda). 
+
+```{r}
+coxph(Surv(time, status) ~ group, data = surv3, ties = "breslow")
+```
+
+Let's add another predictor and see what happens: 
 
 ```{r}
 coxph(Surv(time, status) ~ group + age, data = surv3, ties = "breslow")
 ```
+After adding age as a predictor, we see that the coefficient on the age predictor is significant, but the coefficient for group is not. This means that, when controlling for the other variables, the hazard of the event occurring is not significantly different between the two groups, but the hazard of the event occurring is significantly different for individuals of different ages.
 
-## Case Study
+## Case Study 1
 
 Let's look back at the Cirrhosis data set.
 
@@ -181,7 +235,7 @@ cirrhosis <- cirrhosis %>%
 Recall that we can look at the times using the `Surv()` function.
 
 ```{r}
-Surv(cirrhosis$N_Days, cirrhosis$event)
+head(Surv(cirrhosis$N_Days, cirrhosis$event))
 ```
 
 Let's see what the Cox Analysis will tell us about the relationship between the drug and the number of days until death.
@@ -193,5 +247,40 @@ summary(s4)
 
 The p value for the drug is not less than 0.05, so we can not conclude that the drug has a significant effect on the number of days until death.
 
+## Case Study 2
+
+Let's look at a new data set which contains information on patients with heart failure.
+
+https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0181001#sec005
+
+```{r}
+# Load in dataset
+heart <- read_csv("data/S1Data.csv")
+```
+
+First, lets view the firt 6 survival times. 
+
+```{r}
+# View some of the times
+head(Surv(heart$TIME, heart$Event))
+```
+
+Let's run a con proportional hazards model to see if blood pressure is a significant predictor of the hazard of death for heart failure patients. 
+
+```{r}
+h1 <- coxph(Surv(TIME, Event) ~ BP, data = heart, ties = "breslow")
+summary(h1)
+```
+
+As we can see, the p-value on the blood pressure variable is significant. Thus, we can conclude that high blood pressure is significantly associated with a higher hazard of death for heart failure patients. The coefficient on blood pressure in the model is 0.44, which means that the hazard of death for heart failure patients with high blood pressure is estimated to be 0.44 times higher than the hazard of death for heart failure patients with normal blood pressure.
+
+Let's look at a confidence interval to get a better understand of the impact of high blood pressure on the hazard of death for heart failure patients. We can use the `confint()` function to get a 95% confidence interval for the coefficient of blood pressure.
+
+```{r}
+conf_95 <- confint(h1)
+conf_95
+```
+
+This gives us a 95% confidence interval for the coefficient of blood pressure. It tells us that, with 95% confidence, the true value of the coefficient is between 0.025 and 0.85. That is, that the hazard of death for heart failure patients is between 0.025 and 0.85 times higher for patients with high blood pressure compared to patients with normal blood pressure.
 
 ## References

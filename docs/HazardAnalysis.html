@@ -200,11 +200,16 @@ div.csl-indent {
   <li><a href="#estimating-b" id="toc-estimating-b" class="nav-link" data-scroll-target="#estimating-b"><span class="header-section-number">3.12</span> Estimating B’</a></li>
   <li><a href="#newton-raphson-method" id="toc-newton-raphson-method" class="nav-link" data-scroll-target="#newton-raphson-method"><span class="header-section-number">3.13</span> Newton Raphson Method</a></li>
   <li><a href="#newton-raphson-example" id="toc-newton-raphson-example" class="nav-link" data-scroll-target="#newton-raphson-example"><span class="header-section-number">3.14</span> Newton Raphson Example</a></li>
-  <li><a href="#newton-raphson-in-cox-proportional-hazards-model" id="toc-newton-raphson-in-cox-proportional-hazards-model" class="nav-link" data-scroll-target="#newton-raphson-in-cox-proportional-hazards-model"><span class="header-section-number">3.15</span> Newton Raphson in Cox Proportional Hazards Model</a></li>
-  <li><a href="#multiple-predictors" id="toc-multiple-predictors" class="nav-link" data-scroll-target="#multiple-predictors"><span class="header-section-number">3.16</span> Multiple Predictors</a></li>
-  <li><a href="#hazard-analysis-in-r" id="toc-hazard-analysis-in-r" class="nav-link" data-scroll-target="#hazard-analysis-in-r"><span class="header-section-number">3.17</span> Hazard Analysis in R</a></li>
-  <li><a href="#case-study" id="toc-case-study" class="nav-link" data-scroll-target="#case-study"><span class="header-section-number">3.18</span> Case Study</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">3.19</span> References</a></li>
+  <li><a href="#newton-raphson-with-a-parameterized-function" id="toc-newton-raphson-with-a-parameterized-function" class="nav-link" data-scroll-target="#newton-raphson-with-a-parameterized-function"><span class="header-section-number">4</span> Newton Raphson with a parameterized function</a>
+  <ul class="collapse">
+  <li><a href="#gamma-distribution" id="toc-gamma-distribution" class="nav-link" data-scroll-target="#gamma-distribution"><span class="header-section-number">4.1</span> Gamma Distribution</a></li>
+  <li><a href="#newton-raphson-in-cox-proportional-hazards-model" id="toc-newton-raphson-in-cox-proportional-hazards-model" class="nav-link" data-scroll-target="#newton-raphson-in-cox-proportional-hazards-model"><span class="header-section-number">4.2</span> Newton Raphson in Cox Proportional Hazards Model</a></li>
+  <li><a href="#multiple-predictors" id="toc-multiple-predictors" class="nav-link" data-scroll-target="#multiple-predictors"><span class="header-section-number">4.3</span> Multiple Predictors</a></li>
+  <li><a href="#hazard-analysis-in-r" id="toc-hazard-analysis-in-r" class="nav-link" data-scroll-target="#hazard-analysis-in-r"><span class="header-section-number">4.4</span> Hazard Analysis in R</a></li>
+  <li><a href="#case-study-1" id="toc-case-study-1" class="nav-link" data-scroll-target="#case-study-1"><span class="header-section-number">4.5</span> Case Study 1</a></li>
+  <li><a href="#case-study-2" id="toc-case-study-2" class="nav-link" data-scroll-target="#case-study-2"><span class="header-section-number">4.6</span> Case Study 2</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">4.7</span> References</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -266,23 +271,23 @@ div.csl-indent {
 <div class="cell-output-display">
 <div id="tbl-surv3" class="anchored">
 
-<div id="yworjutjht" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#yworjutjht table {
+<div id="fdcimxfqmg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fdcimxfqmg table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#yworjutjht thead, #yworjutjht tbody, #yworjutjht tfoot, #yworjutjht tr, #yworjutjht td, #yworjutjht th {
+#fdcimxfqmg thead, #fdcimxfqmg tbody, #fdcimxfqmg tfoot, #fdcimxfqmg tr, #fdcimxfqmg td, #fdcimxfqmg th {
   border-style: none;
 }
 
-#yworjutjht p {
+#fdcimxfqmg p {
   margin: 0;
   padding: 0;
 }
 
-#yworjutjht .gt_table {
+#fdcimxfqmg .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -308,12 +313,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#yworjutjht .gt_caption {
+#fdcimxfqmg .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#yworjutjht .gt_title {
+#fdcimxfqmg .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -325,7 +330,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#yworjutjht .gt_subtitle {
+#fdcimxfqmg .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -337,7 +342,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#yworjutjht .gt_heading {
+#fdcimxfqmg .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -349,13 +354,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#yworjutjht .gt_bottom_border {
+#fdcimxfqmg .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#yworjutjht .gt_col_headings {
+#fdcimxfqmg .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -370,7 +375,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#yworjutjht .gt_col_heading {
+#fdcimxfqmg .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -390,7 +395,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#yworjutjht .gt_column_spanner_outer {
+#fdcimxfqmg .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -402,15 +407,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#yworjutjht .gt_column_spanner_outer:first-child {
+#fdcimxfqmg .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#yworjutjht .gt_column_spanner_outer:last-child {
+#fdcimxfqmg .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#yworjutjht .gt_column_spanner {
+#fdcimxfqmg .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -422,11 +427,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#yworjutjht .gt_spanner_row {
+#fdcimxfqmg .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#yworjutjht .gt_group_heading {
+#fdcimxfqmg .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -452,7 +457,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#yworjutjht .gt_empty_group_heading {
+#fdcimxfqmg .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -467,15 +472,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#yworjutjht .gt_from_md > :first-child {
+#fdcimxfqmg .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#yworjutjht .gt_from_md > :last-child {
+#fdcimxfqmg .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#yworjutjht .gt_row {
+#fdcimxfqmg .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -494,7 +499,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#yworjutjht .gt_stub {
+#fdcimxfqmg .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -507,7 +512,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#yworjutjht .gt_stub_row_group {
+#fdcimxfqmg .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -521,15 +526,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#yworjutjht .gt_row_group_first td {
+#fdcimxfqmg .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#yworjutjht .gt_row_group_first th {
+#fdcimxfqmg .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#yworjutjht .gt_summary_row {
+#fdcimxfqmg .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -539,16 +544,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#yworjutjht .gt_first_summary_row {
+#fdcimxfqmg .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#yworjutjht .gt_first_summary_row.thick {
+#fdcimxfqmg .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#yworjutjht .gt_last_summary_row {
+#fdcimxfqmg .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -558,7 +563,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#yworjutjht .gt_grand_summary_row {
+#fdcimxfqmg .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -568,7 +573,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#yworjutjht .gt_first_grand_summary_row {
+#fdcimxfqmg .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -578,7 +583,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#yworjutjht .gt_last_grand_summary_row_top {
+#fdcimxfqmg .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -588,11 +593,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#yworjutjht .gt_striped {
+#fdcimxfqmg .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#yworjutjht .gt_table_body {
+#fdcimxfqmg .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -601,7 +606,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#yworjutjht .gt_footnotes {
+#fdcimxfqmg .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -615,7 +620,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#yworjutjht .gt_footnote {
+#fdcimxfqmg .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -624,7 +629,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#yworjutjht .gt_sourcenotes {
+#fdcimxfqmg .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -638,7 +643,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#yworjutjht .gt_sourcenote {
+#fdcimxfqmg .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -646,63 +651,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#yworjutjht .gt_left {
+#fdcimxfqmg .gt_left {
   text-align: left;
 }
 
-#yworjutjht .gt_center {
+#fdcimxfqmg .gt_center {
   text-align: center;
 }
 
-#yworjutjht .gt_right {
+#fdcimxfqmg .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#yworjutjht .gt_font_normal {
+#fdcimxfqmg .gt_font_normal {
   font-weight: normal;
 }
 
-#yworjutjht .gt_font_bold {
+#fdcimxfqmg .gt_font_bold {
   font-weight: bold;
 }
 
-#yworjutjht .gt_font_italic {
+#fdcimxfqmg .gt_font_italic {
   font-style: italic;
 }
 
-#yworjutjht .gt_super {
+#fdcimxfqmg .gt_super {
   font-size: 65%;
 }
 
-#yworjutjht .gt_footnote_marks {
+#fdcimxfqmg .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#yworjutjht .gt_asterisk {
+#fdcimxfqmg .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#yworjutjht .gt_indent_1 {
+#fdcimxfqmg .gt_indent_1 {
   text-indent: 5px;
 }
 
-#yworjutjht .gt_indent_2 {
+#fdcimxfqmg .gt_indent_2 {
   text-indent: 10px;
 }
 
-#yworjutjht .gt_indent_3 {
+#fdcimxfqmg .gt_indent_3 {
   text-indent: 15px;
 }
 
-#yworjutjht .gt_indent_4 {
+#fdcimxfqmg .gt_indent_4 {
   text-indent: 20px;
 }
 
-#yworjutjht .gt_indent_5 {
+#fdcimxfqmg .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -785,7 +790,7 @@ div.csl-indent {
 </section>
 <section id="method-of-partial-likelihood" class="level2" data-number="3.6">
 <h2 data-number="3.6" class="anchored" data-anchor-id="method-of-partial-likelihood"><span class="header-section-number">3.6</span> Method of Partial Likelihood</h2>
-<p>The method of partial likelihood, first discovered by Cox himself, allows us to estimate the regression coefficients without knowing the baseline hazard function (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). As a reminder, the baseline hazard function describes the distribution of the data when no events have happened, but we only have data points at times when either an event occurs or an individual is censored. Thus, we need a way to fit a function that maximizes the likelihood of getting these data points without knowing what happens at every time. The method of partial likelihood does this by ranking the times of events in the data, and then using these ordered event times to predict the hazard ratio. It is called a partial likelihood method because it does not actually use the exact times of events but instead just their rankings (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). One key assumption of this method is that there are no ties in the data, or events at the same time . Additionally, it is important to note that this method assumes that the time intervals between each event are independent of the model parameters, or that the time intervals give no information about the model parameters (<span class="citation" data-cites="waagepetersen22">Waagepetersen (<a href="#ref-waagepetersen22" role="doc-biblioref">2022</a>)</span>).</p>
+<p>The method of partial likelihood, first discovered by Cox himself, allows us to estimate the regression coefficients without knowing the baseline hazard function (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). As a reminder, the baseline hazard function describes the distribution of the data when no events have happened, but we only have data points at times when either an event occurs or an individual is censored. Thus, we need a way to fit a function that maximizes the likelihood of getting these data points without knowing what happens at every time. The method of partial likelihood does this by ranking the times of events in the data, and then using these ordered event times to predict the hazard ratio. It is called a partial likelihood method because it does not actually use the exact times of events but instead just their rankings (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). One key assumption of this method is that there are no ties in the data, or events at the same time. Additionally, it is important to note that this method assumes that the time intervals between each event are independent of the model parameters, or that the time intervals give no information about the model parameters (<span class="citation" data-cites="waagepetersen22">Waagepetersen (<a href="#ref-waagepetersen22" role="doc-biblioref">2022</a>)</span>).</p>
 </section>
 <section id="partial-likelihood-derivation" class="level2" data-number="3.7">
 <h2 data-number="3.7" class="anchored" data-anchor-id="partial-likelihood-derivation"><span class="header-section-number">3.7</span> Partial Likelihood Derivation</h2>
@@ -811,23 +816,23 @@ div.csl-indent {
 <div class="cell-output-display">
 <div id="tbl-surv4" class="anchored">
 
-<div id="hljotnuoga" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#hljotnuoga table {
+<div id="cpzpiakpaq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#cpzpiakpaq table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#hljotnuoga thead, #hljotnuoga tbody, #hljotnuoga tfoot, #hljotnuoga tr, #hljotnuoga td, #hljotnuoga th {
+#cpzpiakpaq thead, #cpzpiakpaq tbody, #cpzpiakpaq tfoot, #cpzpiakpaq tr, #cpzpiakpaq td, #cpzpiakpaq th {
   border-style: none;
 }
 
-#hljotnuoga p {
+#cpzpiakpaq p {
   margin: 0;
   padding: 0;
 }
 
-#hljotnuoga .gt_table {
+#cpzpiakpaq .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -853,12 +858,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#hljotnuoga .gt_caption {
+#cpzpiakpaq .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#hljotnuoga .gt_title {
+#cpzpiakpaq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -870,7 +875,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#hljotnuoga .gt_subtitle {
+#cpzpiakpaq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -882,7 +887,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#hljotnuoga .gt_heading {
+#cpzpiakpaq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -894,13 +899,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#hljotnuoga .gt_bottom_border {
+#cpzpiakpaq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#hljotnuoga .gt_col_headings {
+#cpzpiakpaq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -915,7 +920,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#hljotnuoga .gt_col_heading {
+#cpzpiakpaq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -935,7 +940,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#hljotnuoga .gt_column_spanner_outer {
+#cpzpiakpaq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -947,15 +952,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#hljotnuoga .gt_column_spanner_outer:first-child {
+#cpzpiakpaq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#hljotnuoga .gt_column_spanner_outer:last-child {
+#cpzpiakpaq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#hljotnuoga .gt_column_spanner {
+#cpzpiakpaq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -967,11 +972,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#hljotnuoga .gt_spanner_row {
+#cpzpiakpaq .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#hljotnuoga .gt_group_heading {
+#cpzpiakpaq .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -997,7 +1002,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#hljotnuoga .gt_empty_group_heading {
+#cpzpiakpaq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1012,15 +1017,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#hljotnuoga .gt_from_md > :first-child {
+#cpzpiakpaq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#hljotnuoga .gt_from_md > :last-child {
+#cpzpiakpaq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#hljotnuoga .gt_row {
+#cpzpiakpaq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1039,7 +1044,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#hljotnuoga .gt_stub {
+#cpzpiakpaq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1052,7 +1057,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#hljotnuoga .gt_stub_row_group {
+#cpzpiakpaq .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1066,15 +1071,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#hljotnuoga .gt_row_group_first td {
+#cpzpiakpaq .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#hljotnuoga .gt_row_group_first th {
+#cpzpiakpaq .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#hljotnuoga .gt_summary_row {
+#cpzpiakpaq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1084,16 +1089,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#hljotnuoga .gt_first_summary_row {
+#cpzpiakpaq .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#hljotnuoga .gt_first_summary_row.thick {
+#cpzpiakpaq .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#hljotnuoga .gt_last_summary_row {
+#cpzpiakpaq .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1103,7 +1108,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#hljotnuoga .gt_grand_summary_row {
+#cpzpiakpaq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1113,7 +1118,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#hljotnuoga .gt_first_grand_summary_row {
+#cpzpiakpaq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1123,7 +1128,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#hljotnuoga .gt_last_grand_summary_row_top {
+#cpzpiakpaq .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1133,11 +1138,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#hljotnuoga .gt_striped {
+#cpzpiakpaq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#hljotnuoga .gt_table_body {
+#cpzpiakpaq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1146,7 +1151,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#hljotnuoga .gt_footnotes {
+#cpzpiakpaq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1160,7 +1165,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#hljotnuoga .gt_footnote {
+#cpzpiakpaq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1169,7 +1174,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#hljotnuoga .gt_sourcenotes {
+#cpzpiakpaq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1183,7 +1188,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#hljotnuoga .gt_sourcenote {
+#cpzpiakpaq .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1191,63 +1196,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#hljotnuoga .gt_left {
+#cpzpiakpaq .gt_left {
   text-align: left;
 }
 
-#hljotnuoga .gt_center {
+#cpzpiakpaq .gt_center {
   text-align: center;
 }
 
-#hljotnuoga .gt_right {
+#cpzpiakpaq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#hljotnuoga .gt_font_normal {
+#cpzpiakpaq .gt_font_normal {
   font-weight: normal;
 }
 
-#hljotnuoga .gt_font_bold {
+#cpzpiakpaq .gt_font_bold {
   font-weight: bold;
 }
 
-#hljotnuoga .gt_font_italic {
+#cpzpiakpaq .gt_font_italic {
   font-style: italic;
 }
 
-#hljotnuoga .gt_super {
+#cpzpiakpaq .gt_super {
   font-size: 65%;
 }
 
-#hljotnuoga .gt_footnote_marks {
+#cpzpiakpaq .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#hljotnuoga .gt_asterisk {
+#cpzpiakpaq .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#hljotnuoga .gt_indent_1 {
+#cpzpiakpaq .gt_indent_1 {
   text-indent: 5px;
 }
 
-#hljotnuoga .gt_indent_2 {
+#cpzpiakpaq .gt_indent_2 {
   text-indent: 10px;
 }
 
-#hljotnuoga .gt_indent_3 {
+#cpzpiakpaq .gt_indent_3 {
   text-indent: 15px;
 }
 
-#hljotnuoga .gt_indent_4 {
+#cpzpiakpaq .gt_indent_4 {
   text-indent: 20px;
 }
 
-#hljotnuoga .gt_indent_5 {
+#cpzpiakpaq .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1340,23 +1345,23 @@ div.csl-indent {
 <div class="cell-output-display">
 <div id="tbl-surv5" class="anchored">
 
-<div id="mirmwrqhif" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#mirmwrqhif table {
+<div id="vpaqiflfhq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#vpaqiflfhq table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#mirmwrqhif thead, #mirmwrqhif tbody, #mirmwrqhif tfoot, #mirmwrqhif tr, #mirmwrqhif td, #mirmwrqhif th {
+#vpaqiflfhq thead, #vpaqiflfhq tbody, #vpaqiflfhq tfoot, #vpaqiflfhq tr, #vpaqiflfhq td, #vpaqiflfhq th {
   border-style: none;
 }
 
-#mirmwrqhif p {
+#vpaqiflfhq p {
   margin: 0;
   padding: 0;
 }
 
-#mirmwrqhif .gt_table {
+#vpaqiflfhq .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1382,12 +1387,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#mirmwrqhif .gt_caption {
+#vpaqiflfhq .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#mirmwrqhif .gt_title {
+#vpaqiflfhq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1399,7 +1404,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#mirmwrqhif .gt_subtitle {
+#vpaqiflfhq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1411,7 +1416,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#mirmwrqhif .gt_heading {
+#vpaqiflfhq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1423,13 +1428,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#mirmwrqhif .gt_bottom_border {
+#vpaqiflfhq .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mirmwrqhif .gt_col_headings {
+#vpaqiflfhq .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1444,7 +1449,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#mirmwrqhif .gt_col_heading {
+#vpaqiflfhq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1464,7 +1469,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#mirmwrqhif .gt_column_spanner_outer {
+#vpaqiflfhq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1476,15 +1481,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#mirmwrqhif .gt_column_spanner_outer:first-child {
+#vpaqiflfhq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mirmwrqhif .gt_column_spanner_outer:last-child {
+#vpaqiflfhq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mirmwrqhif .gt_column_spanner {
+#vpaqiflfhq .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1496,11 +1501,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#mirmwrqhif .gt_spanner_row {
+#vpaqiflfhq .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#mirmwrqhif .gt_group_heading {
+#vpaqiflfhq .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1526,7 +1531,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#mirmwrqhif .gt_empty_group_heading {
+#vpaqiflfhq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1541,15 +1546,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#mirmwrqhif .gt_from_md > :first-child {
+#vpaqiflfhq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mirmwrqhif .gt_from_md > :last-child {
+#vpaqiflfhq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mirmwrqhif .gt_row {
+#vpaqiflfhq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1568,7 +1573,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#mirmwrqhif .gt_stub {
+#vpaqiflfhq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1581,7 +1586,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#mirmwrqhif .gt_stub_row_group {
+#vpaqiflfhq .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1595,15 +1600,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#mirmwrqhif .gt_row_group_first td {
+#vpaqiflfhq .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#mirmwrqhif .gt_row_group_first th {
+#vpaqiflfhq .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#mirmwrqhif .gt_summary_row {
+#vpaqiflfhq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1613,16 +1618,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#mirmwrqhif .gt_first_summary_row {
+#vpaqiflfhq .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#mirmwrqhif .gt_first_summary_row.thick {
+#vpaqiflfhq .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#mirmwrqhif .gt_last_summary_row {
+#vpaqiflfhq .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1632,7 +1637,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#mirmwrqhif .gt_grand_summary_row {
+#vpaqiflfhq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1642,7 +1647,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#mirmwrqhif .gt_first_grand_summary_row {
+#vpaqiflfhq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1652,7 +1657,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#mirmwrqhif .gt_last_grand_summary_row_top {
+#vpaqiflfhq .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1662,11 +1667,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#mirmwrqhif .gt_striped {
+#vpaqiflfhq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mirmwrqhif .gt_table_body {
+#vpaqiflfhq .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1675,7 +1680,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#mirmwrqhif .gt_footnotes {
+#vpaqiflfhq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1689,7 +1694,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#mirmwrqhif .gt_footnote {
+#vpaqiflfhq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1698,7 +1703,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#mirmwrqhif .gt_sourcenotes {
+#vpaqiflfhq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1712,7 +1717,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#mirmwrqhif .gt_sourcenote {
+#vpaqiflfhq .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1720,63 +1725,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#mirmwrqhif .gt_left {
+#vpaqiflfhq .gt_left {
   text-align: left;
 }
 
-#mirmwrqhif .gt_center {
+#vpaqiflfhq .gt_center {
   text-align: center;
 }
 
-#mirmwrqhif .gt_right {
+#vpaqiflfhq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mirmwrqhif .gt_font_normal {
+#vpaqiflfhq .gt_font_normal {
   font-weight: normal;
 }
 
-#mirmwrqhif .gt_font_bold {
+#vpaqiflfhq .gt_font_bold {
   font-weight: bold;
 }
 
-#mirmwrqhif .gt_font_italic {
+#vpaqiflfhq .gt_font_italic {
   font-style: italic;
 }
 
-#mirmwrqhif .gt_super {
+#vpaqiflfhq .gt_super {
   font-size: 65%;
 }
 
-#mirmwrqhif .gt_footnote_marks {
+#vpaqiflfhq .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#mirmwrqhif .gt_asterisk {
+#vpaqiflfhq .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#mirmwrqhif .gt_indent_1 {
+#vpaqiflfhq .gt_indent_1 {
   text-indent: 5px;
 }
 
-#mirmwrqhif .gt_indent_2 {
+#vpaqiflfhq .gt_indent_2 {
   text-indent: 10px;
 }
 
-#mirmwrqhif .gt_indent_3 {
+#vpaqiflfhq .gt_indent_3 {
   text-indent: 15px;
 }
 
-#mirmwrqhif .gt_indent_4 {
+#vpaqiflfhq .gt_indent_4 {
   text-indent: 20px;
 }
 
-#mirmwrqhif .gt_indent_5 {
+#vpaqiflfhq .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1870,26 +1875,548 @@ div.csl-indent {
 </section>
 <section id="newton-raphson-example" class="level2" data-number="3.14">
 <h2 data-number="3.14" class="anchored" data-anchor-id="newton-raphson-example"><span class="header-section-number">3.14</span> Newton Raphson Example</h2>
-<p>Let’s consider a simple example of a Newton Raphson iteration. Suppose we want to find the root of the function $f(x) =</p>
-<ul>
-<li>gamma distribution: <span class="math inline">\(f(x) = \frac{1}{\Gamma(k)\theta^k}x^{k-1}e^{-\frac{x}{\theta}}\)</span>.</li>
-</ul>
+<p>Let’s consider a simple example of a Newton Raphson iteration. Suppose we want to find the root of the function, <span class="math inline">\(f(x) = x^3 +3x + 1\)</span>. First, we will take the derivative of the function, which will be <span class="math inline">\(f'(x) = 3x^2 + 3\)</span>. We can then use the Newton Raphson method to find the root of the function. We will start with an initial estimate, <span class="math inline">\(x_0 = 3\)</span>, and use the equation <span class="math inline">\(x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\)</span> to find our second estimate for the root. In this case, <span class="math inline">\(x_{n+1} = 3 - \frac{f(3)}{f'(3)}\)</span> = $ 3 - $ = <span class="math inline">\(3 - \frac{37}{30}\)</span> = <span class="math inline">\(3 - 1.2333\)</span> = <span class="math inline">\(1.7667\)</span>. We can then use this value as our new estimate and repeat the process until the difference between <span class="math inline">\({x_n+1}\)</span> and <span class="math inline">\({x_n}\)</span> is less than a certain tolerance level. Let’s visualize this process in table <a href="#tbl-nr1">Table&nbsp;<span>3.4</span></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define function and its derivative</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">=</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> <span class="dv">3</span><span class="sc">*</span>x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>fprime <span class="ot">=</span> <span class="cf">function</span>(x) <span class="dv">3</span><span class="sc">*</span>x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose initial estimate to be 3</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="dv">3</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Use tolerance level of 0.0001</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>tol <span class="ot">=</span> <span class="fl">0.0001</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize a vector to store the results</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(x)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co"># While loop to repeat the process until the difference between ${x_n+1}$ and ${x_n}$ is less than the tolerance level</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="fu">abs</span>(<span class="fu">f</span>(x)) <span class="sc">&gt;</span> tol){</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> x <span class="sc">-</span> <span class="fu">f</span>(x)<span class="sc">/</span><span class="fu">fprime</span>(x)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> <span class="fu">round</span>(x, <span class="dv">4</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(iterations, x)  <span class="co"># Store the current value of x</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a data frame with results</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">iteration =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(iterations), <span class="at">x =</span> iterations)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Newton Raphson Example"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">iteration =</span> <span class="st">"Iteration"</span>, <span class="at">x =</span> <span class="st">"x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="tbl-nr1" class="anchored">
+
+<div id="yioashoepd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yioashoepd table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#yioashoepd thead, #yioashoepd tbody, #yioashoepd tfoot, #yioashoepd tr, #yioashoepd td, #yioashoepd th {
+  border-style: none;
+}
+
+#yioashoepd p {
+  margin: 0;
+  padding: 0;
+}
+
+#yioashoepd .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#yioashoepd .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#yioashoepd .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#yioashoepd .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#yioashoepd .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yioashoepd .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yioashoepd .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yioashoepd .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#yioashoepd .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#yioashoepd .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#yioashoepd .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#yioashoepd .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#yioashoepd .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#yioashoepd .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#yioashoepd .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#yioashoepd .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#yioashoepd .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#yioashoepd .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#yioashoepd .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yioashoepd .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#yioashoepd .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#yioashoepd .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#yioashoepd .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yioashoepd .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#yioashoepd .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#yioashoepd .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yioashoepd .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yioashoepd .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#yioashoepd .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yioashoepd .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#yioashoepd .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yioashoepd .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yioashoepd .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yioashoepd .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yioashoepd .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yioashoepd .gt_left {
+  text-align: left;
+}
+
+#yioashoepd .gt_center {
+  text-align: center;
+}
+
+#yioashoepd .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#yioashoepd .gt_font_normal {
+  font-weight: normal;
+}
+
+#yioashoepd .gt_font_bold {
+  font-weight: bold;
+}
+
+#yioashoepd .gt_font_italic {
+  font-style: italic;
+}
+
+#yioashoepd .gt_super {
+  font-size: 65%;
+}
+
+#yioashoepd .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#yioashoepd .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#yioashoepd .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#yioashoepd .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#yioashoepd .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#yioashoepd .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#yioashoepd .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <caption>Table&nbsp;3.4:  <p>newton raphson 1</p> </caption>
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Iteration">Iteration</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="x">x</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="iteration" class="gt_row gt_right">1</td>
+<td headers="x" class="gt_row gt_right">3.0000</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">2</td>
+<td headers="x" class="gt_row gt_right">1.7667</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">3</td>
+<td headers="x" class="gt_row gt_right">0.8111</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">4</td>
+<td headers="x" class="gt_row gt_right">0.0135</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">5</td>
+<td headers="x" class="gt_row gt_right">-0.3333</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">6</td>
+<td headers="x" class="gt_row gt_right">-0.3222</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</div>
+<p>The table shows the results of the Newton Raphson method. We can see that the value of x is converging to the root of the function, which is approximately -0.32.</p>
 </section>
-<section id="newton-raphson-in-cox-proportional-hazards-model" class="level2" data-number="3.15">
-<h2 data-number="3.15" class="anchored" data-anchor-id="newton-raphson-in-cox-proportional-hazards-model"><span class="header-section-number">3.15</span> Newton Raphson in Cox Proportional Hazards Model</h2>
-<p>In the Cox Proportional Hazards Model, the Newton Raphson method is used to find the value of <span class="math inline">\(\beta\)</span> that maximizes the partial likelihood function. Let’s assume that there is only one parameter, <span class="math inline">\(\beta\)</span>, in the model. The partial likelihood function is given by:</p>
+<section id="newton-raphson-with-a-parameterized-function" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Newton Raphson with a parameterized function</h1>
+<section id="gamma-distribution" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="gamma-distribution"><span class="header-section-number">4.1</span> Gamma Distribution</h2>
+<p>The above example shows the general process for the Newton Raphson iteration, but what about when we have a function with multiple parameters? Suppose we want to find the root of the gamma distribution, <span class="math inline">\(f(x) = \frac{B^a}{\Gamma(a)}x^{a-1}e^{-Bx}\)</span>. First, we will take the natural log of the function and then take its derivative with respect to both a and B. We will then use the Newton Raphson method to find the values of B and a that maximizes the function.</p>
+<p>We would start with an estimate for the root by using other methods such as Method of Moments Estimation. The Method of Moments Estimator of the parameters of the Gamma Distribution are: <span class="math inline">\(\hat{a} = \frac{\bar{x}^2}{s^2}\)</span> and <span class="math inline">\(\hat{B} = \frac{\bar{x}}{s^2}\)</span>, where <span class="math inline">\(\bar{x}\)</span> is the sample mean and s is the sample standard deviation. We can then use these estimates as our initial estimates for the Newton Raphson method using the equation <span class="math inline">\(x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\)</span> to find our second estimate for the root and then repeating the process until our tolerance requirement is met.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># uniroot(func, c(0, 1))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="multiple-predictors" class="level2" data-number="3.16">
-<h2 data-number="3.16" class="anchored" data-anchor-id="multiple-predictors"><span class="header-section-number">3.16</span> Multiple Predictors</h2>
+<section id="newton-raphson-in-cox-proportional-hazards-model" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="newton-raphson-in-cox-proportional-hazards-model"><span class="header-section-number">4.2</span> Newton Raphson in Cox Proportional Hazards Model</h2>
+<p>In the Cox Proportional Hazards Model, the Newton Raphson method is used to find the value of <span class="math inline">\(\beta\)</span> that maximizes the partial likelihood function. Let’s assume that there is only one parameter, <span class="math inline">\(\beta\)</span>, in the model.</p>
+<p><span class="math inline">\(\frac{\partial^2 log(L(\beta))}{\partial \beta}\)</span>.</p>
+</section>
+<section id="multiple-predictors" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="multiple-predictors"><span class="header-section-number">4.3</span> Multiple Predictors</h2>
 <p>When looking at multiple predictors, such as age and group, the parameter estimates are found by the equation:</p>
 <p>We can calculate the cumulative hazard ratio, <span class="math inline">\(v\)</span> of the event occurring in the group of individuals with a status of 1 compared to the group of individuals with a status of 0. We can calculate the hazard of the event occurring for an individual in group 1 at time t, <span class="math inline">\(h_1(t)\)</span>, by dividing the number of individuals who died in the group of individuals with a status of 1 by the total number of individuals in the group of individuals with a status of 1.</p>
 <p>This can be expressed as <span class="math inline">\(v = \frac{\frac{d_1}{n_1}}{\frac{d_0}{n_0}}\)</span>.</p>
 </section>
-<section id="hazard-analysis-in-r" class="level2" data-number="3.17">
-<h2 data-number="3.17" class="anchored" data-anchor-id="hazard-analysis-in-r"><span class="header-section-number">3.17</span> Hazard Analysis in R</h2>
-<p>Similarly to before with the Kaplan Meier curve, we can use R to model the hazard function. The <code>coxph()</code> function in the <code>survival</code> package returns the coefficients of the cox proportional hazards model as well as the p value for the coefficients, allowing us to determine whether each coefficient is significant (<span class="citation" data-cites="sthda"><span>“Cox Proportional-Hazards Model”</span> (<a href="#ref-sthda" role="doc-biblioref">n.d.</a>)</span>). Below, we see that the coefficient on the age predictor is significant, but the coefficient for group is not. This means that, when controlling for the other variables, the hazard of the event occurring is not significantly different between the two groups, but the hazard of the event occurring is significantly different for individuals of different ages.</p>
+<section id="hazard-analysis-in-r" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="hazard-analysis-in-r"><span class="header-section-number">4.4</span> Hazard Analysis in R</h2>
+<p>Similarly to before with the Kaplan Meier curve, we can use R to model the hazard function. The <code>coxph()</code> function in the <code>survival</code> package returns the coefficients of the cox proportional hazards model as well as the p value for the coefficients, allowing us to determine whether each coefficient is significant (<span class="citation" data-cites="sthda"><span>“Cox Proportional-Hazards Model”</span> (<a href="#ref-sthda" role="doc-biblioref">n.d.</a>)</span>).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> group <span class="sc">+</span> age, <span class="at">data =</span> surv3, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> group, <span class="at">data =</span> surv3, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, status) ~ group, data = surv3, ties = "breslow")
+
+        coef exp(coef) se(coef)     z     p
+group 0.8606    2.3646   0.9325 0.923 0.356
+
+Likelihood ratio test=0.87  on 1 df, p=0.3496
+n= 10, number of events= 5 </code></pre>
+</div>
+</div>
+<p>Let’s add another predictor and see what happens:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> group <span class="sc">+</span> age, <span class="at">data =</span> surv3, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 coxph(formula = Surv(time, status) ~ group + age, data = surv3, 
@@ -1903,62 +2430,29 @@ Likelihood ratio test=8.79  on 2 df, p=0.01232
 n= 10, number of events= 5 </code></pre>
 </div>
 </div>
+<p>After adding age as a predictor, we see that the coefficient on the age predictor is significant, but the coefficient for group is not. This means that, when controlling for the other variables, the hazard of the event occurring is not significantly different between the two groups, but the hazard of the event occurring is significantly different for individuals of different ages.</p>
 </section>
-<section id="case-study" class="level2" data-number="3.18">
-<h2 data-number="3.18" class="anchored" data-anchor-id="case-study"><span class="header-section-number">3.18</span> Case Study</h2>
+<section id="case-study-1" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="case-study-1"><span class="header-section-number">4.5</span> Case Study 1</h2>
 <p>Let’s look back at the Cirrhosis data set.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load in the data and select the variables we need</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>cirrhosis <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/cirrhosis.csv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>cirrhosis <span class="ot">&lt;-</span> cirrhosis <span class="sc">%&gt;%</span> </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">event =</span> <span class="fu">if_else</span>(Status <span class="sc">==</span> <span class="st">'D'</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(event, Drug, N_Days)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load in the data and select the variables we need</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>cirrhosis <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/cirrhosis.csv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>cirrhosis <span class="ot">&lt;-</span> cirrhosis <span class="sc">%&gt;%</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">event =</span> <span class="fu">if_else</span>(Status <span class="sc">==</span> <span class="st">'D'</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(event, Drug, N_Days)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Recall that we can look at the times using the <code>Surv()</code> function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Surv</span>(cirrhosis<span class="sc">$</span>N_Days, cirrhosis<span class="sc">$</span>event)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">Surv</span>(cirrhosis<span class="sc">$</span>N_Days, cirrhosis<span class="sc">$</span>event))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  [1]  400  4500+ 1012  1925  1504+ 2503  1832+ 2466  2400    51  3762   304 
- [13] 3577+ 1217  3584  3672+  769   131  4232+ 1356  3445+  673   264  4079 
- [25] 4127+ 1444    77   549  4509+  321  3839  4523+ 3170  3933+ 2847  3611+
- [37]  223  3244  2297  4467+ 1350  4453+ 4556+ 3428  4025+ 2256  2576+ 4427+
- [49]  708  2598  3853  2386  1000  1434  1360  1847  3282  4459+ 2224  4365+
- [61] 4256+ 3090   859  1487  3992+ 4191  2769  4039+ 1170  3458+ 4196+ 4184+
- [73] 4190+ 1827  1191    71   326  1690  3707+  890  2540  3574  4050+ 4032+
- [85] 3358  1657   198  2452+ 1741  2689   460   388  3913+  750   130  3850+
- [97]  611  3823+ 3820+  552  3581+ 3099+  110  3086  3092+ 3222  3388+ 2583 
-[109] 2504+ 2105  2350+ 3445   980  3395  3422+ 3336+ 1083  2288   515  2033+
-[121]  191  3297+  971  3069+ 2468+  824  3255+ 1037  3239+ 1413   850  2944+
-[133] 2796  3149+ 3150+ 3098+ 2990+ 1297  2106+ 3059+ 3050+ 2419   786   943 
-[145] 2976+ 2615+ 2995+ 1427   762  2891+ 2870+ 1152  2863+  140  2666+  853 
-[157] 2835+ 2475+ 1536  2772+ 2797+  186  2055   264  1077  2721+ 1682  2713+
-[169] 1212  2692+ 2574+ 2301+ 2657+ 2644+ 2624+ 1492  2609+ 2580+ 2573+ 2563+
-[181] 2556+ 2555+ 2241+  974  2527+ 1576   733  2332+ 2456+ 2504+  216  2443+
-[193]  797  2449+ 2330+ 2363+ 2365+ 2357+ 1592+ 2318+ 2294+ 2272+ 2221+ 2090 
-[205] 2081  2255+ 2171+  904  2216+ 2224+ 2195+ 2176+ 2178+ 1786  1080  2168+
-[217]  790  2170+ 2157+ 1235  2050+  597   334  1945+ 2022+ 1978+  999  1967+
-[229]  348  1979+ 1165  1951+ 1932+ 1776+ 1882+ 1908+ 1882+ 1874+  694  1831+
-[241]  837+ 1810+  930  1690  1790+ 1435+  732+ 1785+ 1783+ 1769+ 1457+ 1770+
-[253] 1765+  737+ 1735+ 1701+ 1614+ 1702+ 1615+ 1656+ 1677+ 1666+ 1301+ 1542+
-[265] 1084+ 1614+  179  1191  1363+ 1568+ 1569+ 1525+ 1558+ 1447+ 1349+ 1481+
-[277] 1434+ 1420+ 1433+ 1412+   41  1455+ 1030+ 1418+ 1401+ 1408+ 1234+ 1067+
-[289]  799  1363+  901+ 1329+ 1320+ 1302+  877+ 1321+  533+ 1300+ 1293+  207 
-[301] 1295+ 1271+ 1250+ 1230+ 1216+ 1216+ 1149+ 1153+  994+  939+  839+  788+
-[313] 4062+ 3561  2844+ 2071  3030+ 1680+   41  2403+ 1170+ 2011  3523+ 3468+
-[325] 4795+ 1236+ 4214+ 2111  1462  1746    94   785  1518   466  3527+ 2635+
-[337] 2286   791  3492+ 3495+  111  3231+  625  3157+ 3021+  559  2812  2834+
-[349] 2855+  662   727  2716+ 2698+  990  2338+ 1616  2563+ 2537+ 2534+  778 
-[361]  617+ 2267+ 2249+  359  1925+  249  2202+   43  1197  1095   489  2149+
-[373] 2103+ 1980+ 1347+ 1478  1987+ 1168   597  1725+ 1899+  221  1022+ 1639+
-[385] 1635+ 1654+ 1653+ 1560+ 1581+ 1419+ 1443+ 1368+  193  1367+ 1329+ 1343+
-[397] 1328+ 1375+ 1260+ 1223+  935   943+ 1141+ 1092+ 1150+  703  1129+ 1086+
-[409] 1067+ 1072+ 1119+ 1097+  989+  681  1103+ 1055+  691+  976+</code></pre>
+<pre><code>[1]  400  4500+ 1012  1925  1504+ 2503 </code></pre>
 </div>
 </div>
 <p>Let’s see what the Cox Analysis will tell us about the relationship between the drug and the number of days until death.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>s4 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(N_Days, event) <span class="sc">~</span> Drug, <span class="at">data =</span> cirrhosis, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(s4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>s4 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(N_Days, event) <span class="sc">~</span> Drug, <span class="at">data =</span> cirrhosis, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(s4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 coxph(formula = Surv(N_Days, event) ~ Drug, data = cirrhosis, 
@@ -1981,8 +2475,69 @@ Score (logrank) test = 0.1  on 1 df,   p=0.7</code></pre>
 </div>
 <p>The p value for the drug is not less than 0.05, so we can not conclude that the drug has a significant effect on the number of days until death.</p>
 </section>
-<section id="references" class="level2" data-number="3.19">
-<h2 data-number="3.19" class="anchored" data-anchor-id="references"><span class="header-section-number">3.19</span> References</h2>
+<section id="case-study-2" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="case-study-2"><span class="header-section-number">4.6</span> Case Study 2</h2>
+<p>Let’s look at a new data set which contains information on patients with heart failure.</p>
+<p>https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0181001#sec005</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load in dataset</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>heart <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/S1Data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 299 Columns: 13
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (13): TIME, Event, Gender, Smoking, Diabetes, BP, Anaemia, Age, Ejection...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<p>First, lets view the firt 6 survival times.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View some of the times</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">Surv</span>(heart<span class="sc">$</span>TIME, heart<span class="sc">$</span>Event))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  97+ 180+  31   87+ 113+  10 </code></pre>
+</div>
+</div>
+<p>Let’s run a con proportional hazards model to see if blood pressure is a significant predictor of the hazard of death for heart failure patients.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>h1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(TIME, Event) <span class="sc">~</span> BP, <span class="at">data =</span> heart, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(h1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(TIME, Event) ~ BP, data = heart, ties = "breslow")
+
+  n= 299, number of events= 96 
+
+     coef exp(coef) se(coef)     z Pr(&gt;|z|)  
+BP 0.4354    1.5456   0.2094 2.079   0.0376 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+   exp(coef) exp(-coef) lower .95 upper .95
+BP     1.546      0.647     1.025      2.33
+
+Concordance= 0.556  (se = 0.026 )
+Likelihood ratio test= 4.18  on 1 df,   p=0.04
+Wald test            = 4.32  on 1 df,   p=0.04
+Score (logrank) test = 4.39  on 1 df,   p=0.04</code></pre>
+</div>
+</div>
+<p>As we can see, the p-value on the blood pressure variable is significant. Thus, we can conclude that high blood pressure is significantly associated with a higher hazard of death for heart failure patients. The coefficient on blood pressure in the model is 0.44, which means that the hazard of death for heart failure patients with high blood pressure is estimated to be 0.44 times higher than the hazard of death for heart failure patients with normal blood pressure.</p>
+<p>Let’s look at a confidence interval to get a better understand of the impact of high blood pressure on the hazard of death for heart failure patients. We can use the <code>confint()</code> function to get a 95% confidence interval for the coefficient of blood pressure.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>conf_95 <span class="ot">&lt;-</span> <span class="fu">confint</span>(h1)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>conf_95</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       2.5 %   97.5 %
+BP 0.0249765 0.845819</code></pre>
+</div>
+</div>
+<p>This gives us a 95% confidence interval for the coefficient of blood pressure. It tells us that, with 95% confidence, the true value of the coefficient is between 0.025 and 0.85. That is, that the hazard of death for heart failure patients is between 0.025 and 0.85 times higher for patients with high blood pressure compared to patients with normal blood pressure.</p>
+</section>
+<section id="references" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="references"><span class="header-section-number">4.7</span> References</h2>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
@@ -2008,6 +2563,7 @@ Collet, David. 2003. <em>Modelling Survival Data in Medical Research</em>. Chapm
 Waagepetersen, Rasmus. 2022. <span>“Cox’s Proportional Hazards Model and Cox’s Partial Likelihood.”</span> <a href="https://people.math.aau.dk/~rw/Undervisning/DurationAnalysis/Slides/lektion3.pdf">https://people.math.aau.dk/~rw/Undervisning/DurationAnalysis/Slides/lektion3.pdf</a>.
 </div>
 </div>
+</section>
 </section>
 
 </main> <!-- /main -->
