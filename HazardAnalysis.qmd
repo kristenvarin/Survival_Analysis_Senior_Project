@@ -184,7 +184,7 @@ The table shows the results of the Newton Raphson method. We can see that the va
 
 The above example shows the general process for the Newton Raphson iteration, but what about when we have a function with multiple parameters? Suppose we want to find the root of the gamma distribution, $f(x) = \frac{B^a}{\Gamma(a)}x^{a-1}e^{-Bx}$. First, we will take the natural log of the function and then take its derivative with respect to both a and B. We will then use the Newton Raphson method to find the values of B and a that maximizes the function.
 
-We would start with an estimate for the root by using other methods such as Method of Moments Estimation. The Method of Moments Estimator of the parameters of the Gamma Distribution are: $\hat{a} = \frac{\bar{x}^2}{s^2}$ and $\hat{B} = \frac{\bar{x}}{s^2}$, where $\bar{x}$ is the sample mean and s is the sample standard deviation. We can then use these estimates as our initial estimates for the Newton Raphson method using the equation $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$ to find our second estimate for the root and then repeating the process until our tolerance requirement is met. Let's visualize this process in table @tbl-nr2.
+We would start with an estimate for the root by using other methods such as Method of Moments Estimation. The Method of Moments Estimator of the parameters of the Gamma Distribution are: $\hat{a} = \frac{\bar{x}^2}{s^2}$ and $\hat{B} = \frac{\bar{x}}{s^2}$, where $\bar{x}$ is the sample mean and s is the sample standard deviation. We can then use these estimates as our initial estimates for the Newton Raphson method using the equation $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$ to find our second estimate for the root and then repeating the process until our tolerance requirement is met. 
 
 ```{r}
 set.seed(1)
@@ -195,31 +195,32 @@ sum(log(gamma))
 mean(gamma)
 var(gamma)
 ```
+
 ```{r}
 #| label: tbl-nr2
 #| tbl-cap: "Newton Raphson for Gamma Distribution"
 
-# define functions
-a = function(a, L, n, sum_ln_x) a - ((n*log(L) - n * digamma(a) + sum_ln_x) / (-n * trigamma(a)))
-L = function(a, L, n, sum_x) L - (((n*a/L) - sum_x) / (-n * a / L^2))
+# Define functions
+afunc = function(a, L, n, sum_ln_x) a - ((n*log(L) - n * digamma(a) + sum_ln_x) / (-n * trigamma(a)))
+Lfunc = function(a, L, n, sum_x) L - (((n*a/L) - sum_x) / (-n * a / L^2))
 
 # Choose initial estimates
-a = 7
-L = 2
+a = 3.5
+L = .7
 n = 10
 sum_ln_x = sum(log(gamma))
 sum_x = sum(gamma)
 
-# Use tolerance level of 0.0001
-tol = 0.0001
+# Use tolerance level of 0.1
+tol = 0.1
 
 # Initialize a vector to store the results
 iterations <- c(a, L)
 
 # While loop to repeat the process until the difference between a and a1 and L and L1 is less than the tolerance level
 while (TRUE) {
-  a1 <- a_func(a, L, n, sum_ln_x)
-  L1 <- L_func(a, L, n, sum_x)
+  a1 <- afunc(a, L, n, sum_ln_x)
+  L1 <- Lfunc(a, L, n, sum_x)
   if (abs(a - a1) < tol & abs(L - L1) < tol) {
     break
   }
@@ -228,13 +229,18 @@ while (TRUE) {
   iterations <- c(iterations, a, L)  # Store the current values of a and L
 }
 
-# present results in a table
-results<- data.frame(iteration = 1:length(iterations), a = iterations[seq(1, length(iterations), 2)], L = iterations[seq(2, length(iterations), 2)])
+# put the results into a table with every 10th value
+results <- data.frame(iteration = 1:length(iterations), 
+                      a = iterations[seq(1, length(iterations), 2)], 
+                      L = iterations[seq(2, length(iterations), 2)])
 
+# print the table
 results %>%
-  gt(caption = "Newton Raphson for Gamma Distribution") %>% 
+  gt(caption = "Newton Raphson for Gamma Distribution") %>%
   cols_label(iteration = "Iteration", a = "a", L = "L")
 ```
+
+As we can see, we didn't quite reach the original values of a = 3 and L = 0.5, but with a tolerance of 0.1, we got close. Usually, a lower tolerance is used and many more iterations are needed, but this example demonstrates a similar process to how our statistical software will find the maximum likelihood estimates for our parameters. 
 
 ## Hazard Analysis in R
 
