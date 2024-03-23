@@ -26,7 +26,7 @@ surv3 <- data.frame(time, status, group, age)
 
 ```{r}
 #| label: tbl-surv3
-#| tbl-cap: surv table 3
+#| tbl-cap: "Example Data Set with Status, Time, Group, and Age"
 
 surv3 %>% gt(caption = "Example Data Set with Status, Time, Group, and Age") %>%
   cols_label(time = "Time", status = "Status", group = "Group", age = "Age") 
@@ -72,7 +72,7 @@ For the first example, lets only use one predictor variable, group. The data we 
 
 ```{r}
 #| label: tbl-surv4
-#| tbl-cap: surv table 4
+#| tbl-cap: "Example Data Set with ID, Time, Status, and Group"
 
 surv4 <- surv3 %>% 
   mutate(id = row_number()) %>%
@@ -104,7 +104,7 @@ To fit our likelihood function, we must order all of the event times. For group 
 
 ```{r}
 #| label: tbl-surv5
-#| tbl-cap: surv table 5
+#| tbl-cap: "Example Data Set with Status, Group, Time, and Risk Set"
 
 risk <- c(10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
 
@@ -115,7 +115,8 @@ surv5 <- surv4 %>%
 
 surv5 %>%
   gt(caption = "Example Data Set with Status, Group, Time, and Risk Set") %>%
-  cols_label(id = "ID", group = "Group", time = "Time", status = "Status", risk_set = "Risk Set")
+  cols_label(id = "ID", group = "Group", time = "Time", status = "Status", 
+             risk_set = "Risk Set")
 ```
 
 To estimate the parameters, we will need to use the natural log of our partial likelihood function, which we derived as: $log(L(\beta)) = \sum_{i=1}^r δ_i [\beta' x_i - log \sum_{l \in R(t_i)} exp(\beta' x_l)]$.
@@ -148,7 +149,7 @@ Let's consider a simple example of a Newton Raphson iteration. Suppose we want t
 
 ```{r}
 #| label: tbl-nr1
-#| tbl-cap: newton raphson 1
+#| tbl-cap: "Newton Raphson Iteration"
 
 # define function and its derivative
 f = function(x) x^3 + 3*x + 1
@@ -173,37 +174,67 @@ while (abs(f(x)) > tol){
 # Create a data frame with results
 results <- data.frame(iteration = 1:length(iterations), x = iterations)
 results %>%
-  gt(caption = "Newton Raphson Example") %>%
+  gt(caption = "Newton Raphson Iteration") %>%
   cols_label(iteration = "Iteration", x = "x")
 ```
 
 The table shows the results of the Newton Raphson method. We can see that the value of x is converging to the root of the function, which is approximately -0.32. 
 
-# Newton Raphson with a parameterized function
-
-## Gamma Distribution
+## Newton Raphson for Parametized Functions: Gamma Distribution
 
 The above example shows the general process for the Newton Raphson iteration, but what about when we have a function with multiple parameters? Suppose we want to find the root of the gamma distribution, $f(x) = \frac{B^a}{\Gamma(a)}x^{a-1}e^{-Bx}$. First, we will take the natural log of the function and then take its derivative with respect to both a and B. We will then use the Newton Raphson method to find the values of B and a that maximizes the function.
 
-We would start with an estimate for the root by using other methods such as Method of Moments Estimation. The Method of Moments Estimator of the parameters of the Gamma Distribution are: $\hat{a} = \frac{\bar{x}^2}{s^2}$ and $\hat{B} = \frac{\bar{x}}{s^2}$, where $\bar{x}$ is the sample mean and s is the sample standard deviation. We can then use these estimates as our initial estimates for the Newton Raphson method using the equation $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$ to find our second estimate for the root and then repeating the process until our tolerance requirement is met. 
+We would start with an estimate for the root by using other methods such as Method of Moments Estimation. The Method of Moments Estimator of the parameters of the Gamma Distribution are: $\hat{a} = \frac{\bar{x}^2}{s^2}$ and $\hat{B} = \frac{\bar{x}}{s^2}$, where $\bar{x}$ is the sample mean and s is the sample standard deviation. We can then use these estimates as our initial estimates for the Newton Raphson method using the equation $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$ to find our second estimate for the root and then repeating the process until our tolerance requirement is met. Let's visualize this process in table @tbl-nr2.
 
 ```{r}
-# uniroot(func, c(0, 1))
+set.seed(1)
+gamma<- round(rgamma(10, shape = 3, rate = .5), 1)
+
+sum(gamma)
+sum(log(gamma))
+mean(gamma)
+var(gamma)
 ```
+```{r}
+#| label: tbl-nr2
+#| tbl-cap: "Newton Raphson for Gamma Distribution"
 
-## Newton Raphson in Cox Proportional Hazards Model
+# define functions
+a = function(a, L, n, sum_ln_x) a - ((n*log(L) - n * digamma(a) + sum_ln_x) / (-n * trigamma(a)))
+L = function(a, L, n, sum_x) L - (((n*a/L) - sum_x) / (-n * a / L^2))
 
-In the Cox Proportional Hazards Model, the Newton Raphson method is used to find the value of $\beta$ that maximizes the partial likelihood function. Let's assume that there is only one parameter, $\beta$, in the model. 
+# Choose initial estimates
+a = 7
+L = 2
+n = 10
+sum_ln_x = sum(log(gamma))
+sum_x = sum(gamma)
 
-$\frac{\partial^2 log(L(\beta))}{\partial \beta}$.
+# Use tolerance level of 0.0001
+tol = 0.0001
 
-## Multiple Predictors
+# Initialize a vector to store the results
+iterations <- c(a, L)
 
-When looking at multiple predictors, such as age and group, the parameter estimates are found by the equation:
+# While loop to repeat the process until the difference between a and a1 and L and L1 is less than the tolerance level
+while (TRUE) {
+  a1 <- a_func(a, L, n, sum_ln_x)
+  L1 <- L_func(a, L, n, sum_x)
+  if (abs(a - a1) < tol & abs(L - L1) < tol) {
+    break
+  }
+  a <- a1
+  L <- L1
+  iterations <- c(iterations, a, L)  # Store the current values of a and L
+}
 
-We can calculate the cumulative hazard ratio, $v$ of the event occurring in the group of individuals with a status of 1 compared to the group of individuals with a status of 0. We can calculate the hazard of the event occurring for an individual in group 1 at time t, $h_1(t)$, by dividing the number of individuals who died in the group of individuals with a status of 1 by the total number of individuals in the group of individuals with a status of 1.
+# present results in a table
+results<- data.frame(iteration = 1:length(iterations), a = iterations[seq(1, length(iterations), 2)], L = iterations[seq(2, length(iterations), 2)])
 
-This can be expressed as $v = \frac{\frac{d_1}{n_1}}{\frac{d_0}{n_0}}$.
+results %>%
+  gt(caption = "Newton Raphson for Gamma Distribution") %>% 
+  cols_label(iteration = "Iteration", a = "a", L = "L")
+```
 
 ## Hazard Analysis in R
 
