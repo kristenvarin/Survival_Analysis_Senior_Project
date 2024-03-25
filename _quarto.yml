@@ -10,6 +10,7 @@ book:
     - index.qmd
     - KaplanMeier.qmd
     - HazardAnalysis.qmd
+    - Applications.qmd
 
 bibliography: references.bib
 

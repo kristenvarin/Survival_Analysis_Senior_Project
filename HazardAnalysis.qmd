@@ -145,7 +145,7 @@ The equation used for this iteration looks like: $x_{n+1} = x_n - \frac{f(x_n)}{
 
 ## Newton Raphson Example
 
-Let's consider a simple example of a Newton Raphson iteration. Suppose we want to find the root of the function, $f(x) = x^3 +3x + 1$. First, we will take the derivative of the function, which will be $f'(x) = 3x^2 + 3$. We can then use the Newton Raphson method to find the root of the function. We will start with an initial estimate, $x_0 = 3$, and use the equation $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$ to find our second estimate for the root. In this case, $x_{n+1} = 3 - \frac{f(3)}{f'(3)}$ = $ 3 - \frac{3^3 + 3*3 + 1}{3*3^2 + 3}$ = $3 - \frac{37}{30}$ = $3 - 1.2333$ = $1.7667$. We can then use this value as our new estimate and repeat the process until the difference between ${x_n+1}$ and ${x_n}$ is less than a certain tolerance level. Let's visualize this process in table @tbl-nr1.
+Let's consider a simple example of a Newton Raphson iteration. Suppose we want to find the root of the function, $f(x) = x^3 +3x + 1$. First, we will take the derivative of the function, which will be $f'(x) = 3x^2 + 3$. We can then use the Newton Raphson method to find the root of the function. We will start with an initial estimate, $x_0 = 3$, and use the equation $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$ to find our second estimate for the root. In this case, $x_{n+1} = 3 - \frac{f(3)}{f'(3)}$ = \$ 3 - \frac{3^3 + 3*3 + 1}{3*3^2 + 3}\$ = $3 - \frac{37}{30}$ = $3 - 1.2333$ = $1.7667$. We can then use this value as our new estimate and repeat the process until the difference between ${x_n+1}$ and ${x_n}$ is less than a certain tolerance level. Let's visualize this process in table @tbl-nr1.
 
 ```{r}
 #| label: tbl-nr1
@@ -178,15 +178,16 @@ results %>%
   cols_label(iteration = "Iteration", x = "x")
 ```
 
-The table shows the results of the Newton Raphson method. We can see that the value of x is converging to the root of the function, which is approximately -0.32. 
+The table shows the results of the Newton Raphson method. We can see that the value of x is converging to the root of the function, which is approximately -0.32.
 
 ## Newton Raphson for Parametized Functions: Gamma Distribution
 
 The above example shows the general process for the Newton Raphson iteration, but what about when we have a function with multiple parameters? Suppose we want to find the root of the gamma distribution, $f(x) = \frac{B^a}{\Gamma(a)}x^{a-1}e^{-Bx}$. First, we will take the natural log of the function and then take its derivative with respect to both a and B. We will then use the Newton Raphson method to find the values of B and a that maximizes the function.
 
-We would start with an estimate for the root by using other methods such as Method of Moments Estimation. The Method of Moments Estimator of the parameters of the Gamma Distribution are: $\hat{a} = \frac{\bar{x}^2}{s^2}$ and $\hat{B} = \frac{\bar{x}}{s^2}$, where $\bar{x}$ is the sample mean and s is the sample standard deviation. We can then use these estimates as our initial estimates for the Newton Raphson method using the equation $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$ to find our second estimate for the root and then repeating the process until our tolerance requirement is met. 
+We would start with an estimate for the root by using other methods such as Method of Moments Estimation. The Method of Moments Estimator of the parameters of the Gamma Distribution are: $\hat{a} = \frac{\bar{x}^2}{s^2}$ and $\hat{B} = \frac{\bar{x}}{s^2}$, where $\bar{x}$ is the sample mean and s is the sample standard deviation. We can then use these estimates as our initial estimates for the Newton Raphson method using the equation $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$ to find our second estimate for the root and then repeating the process until our tolerance requirement is met. Let's visualize this process in table @tbl-nr2 using the generated statistics below.
 
 ```{r}
+# Generate random gamma distribution and summary statistics
 set.seed(1)
 gamma<- round(rgamma(10, shape = 3, rate = .5), 1)
 
@@ -240,84 +241,58 @@ results %>%
   cols_label(iteration = "Iteration", a = "a", L = "L")
 ```
 
-As we can see, we didn't quite reach the original values of a = 3 and L = 0.5, but with a tolerance of 0.1, we got close. Usually, a lower tolerance is used and many more iterations are needed, but this example demonstrates a similar process to how our statistical software will find the maximum likelihood estimates for our parameters. 
+As we can see, we didn't quite reach the original values of a = 3 and L = 0.5, but with a tolerance of 0.1, we got close. Usually, a lower tolerance is used and many more iterations are needed, but this example demonstrates a similar process to how our statistical software will find the maximum likelihood estimates for our parameters.
 
 ## Hazard Analysis in R
 
-Similarly to before with the Kaplan Meier curve, we can use R to model the hazard function. The `coxph()` function in the `survival` package returns the coefficients of the cox proportional hazards model as well as the p value for the coefficients, allowing us to determine whether each coefficient is significant (@sthda). 
+Similarly to before with the Kaplan Meier curve, we can use R to model the hazard function. The `coxph()` function in the `survival` package returns the coefficients of the cox proportional hazards model as well as the p value for the coefficients, allowing us to determine whether each coefficient is significant (@sthda).
 
 ```{r}
 coxph(Surv(time, status) ~ group, data = surv3, ties = "breslow")
 ```
 
-Let's add another predictor and see what happens: 
+As we can see, the coefficient for group is not significant, meaning that the hazard of the event occurring is not significantly different between the two groups. Let's add another predictor and see what happens:
 
 ```{r}
 coxph(Surv(time, status) ~ group + age, data = surv3, ties = "breslow")
 ```
-After adding age as a predictor, we see that the coefficient on the age predictor is significant, but the coefficient for group is not. This means that, when controlling for the other variables, the hazard of the event occurring is not significantly different between the two groups, but the hazard of the event occurring is significantly different for individuals of different ages.
 
-## Case Study 1
+After adding age as a predictor, we see that our model is significant, meaning that the hazard of the event occurring is significantly different for individuals of different groups and ages. We can further interpret the results by looking at the hazard ratios for each predictor. The 'coef' column tells us the natural log of the haard ratio on the predictor, so we are interested in the 'exp(coef)' column, which exponentiates the log hazard ratio to give us the hazard ratio. For group, the hazard ratio is 13.48, meaning that the hazard of the event occurring is 13.48 times higher for the second group compared to the first group. For age, the hazard ratio is 1.21, meaning that the hazard of the event occurring is 1.21 times higher for each additional year of age. The coefficient on the age predictor is significant, but the coefficient for group is not. This means that, when controlling for the other variables, the hazard of the event occurring is not significantly different between the two groups, but the hazard of the event occurring is significantly different for individuals of different ages.
 
-Let's look back at the Cirrhosis data set.
+Now that we can interpret the results, let's take a look at some real data.
 
-```{r}
-# Load in the data and select the variables we need
-cirrhosis <- read_csv("data/cirrhosis.csv", show_col_types = FALSE)
-cirrhosis <- cirrhosis %>% 
-  mutate(event = if_else(Status == 'D', 1, 0)) %>% 
-  select(event, Drug, N_Days)
-```
-
-Recall that we can look at the times using the `Surv()` function.
-
-```{r}
-head(Surv(cirrhosis$N_Days, cirrhosis$event))
-```
-
-Let's see what the Cox Analysis will tell us about the relationship between the drug and the number of days until death.
-
-```{r}
-s4 <- coxph(Surv(N_Days, event) ~ Drug, data = cirrhosis, ties = "breslow")
-summary(s4)
-```
-
-The p value for the drug is not less than 0.05, so we can not conclude that the drug has a significant effect on the number of days until death.
-
-## Case Study 2
+## Case Study
 
 Let's look at a new data set which contains information on patients with heart failure.
 
 https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0181001#sec005
 
 ```{r}
-# Load in dataset
 heart <- read_csv("data/S1Data.csv")
 ```
 
-First, lets view the firt 6 survival times. 
+First, lets view the first 6 survival times.
 
 ```{r}
-# View some of the times
 head(Surv(heart$TIME, heart$Event))
 ```
 
-Let's run a con proportional hazards model to see if blood pressure is a significant predictor of the hazard of death for heart failure patients. 
+Let's run a cox proportional hazards model to see if blood pressure is a significant predictor of the hazard of death for heart failure patients. In this data set, blood pressure is a binary variable where 0 indicates normal blood pressure and 1 indicates high blood pressure. It is called BP in the data set.
 
 ```{r}
 h1 <- coxph(Surv(TIME, Event) ~ BP, data = heart, ties = "breslow")
 summary(h1)
 ```
 
-As we can see, the p-value on the blood pressure variable is significant. Thus, we can conclude that high blood pressure is significantly associated with a higher hazard of death for heart failure patients. The coefficient on blood pressure in the model is 0.44, which means that the hazard of death for heart failure patients with high blood pressure is estimated to be 0.44 times higher than the hazard of death for heart failure patients with normal blood pressure.
+As we can see, the p-value for this model is significant. Thus, we can conclude that high blood pressure is significantly associated with a higher hazard of death for heart failure patients. The coefficient of interest, exp(coef), on blood pressure in the model is 1.55, which means that the hazard of death for heart failure patients with high blood pressure is estimated to be 1.55 times higher than the hazard of death for heart failure patients with normal blood pressure.
 
-Let's look at a confidence interval to get a better understand of the impact of high blood pressure on the hazard of death for heart failure patients. We can use the `confint()` function to get a 95% confidence interval for the coefficient of blood pressure.
+Let's look at a confidence interval to get a better understand of the impact of high blood pressure on the hazard of death for heart failure patients. We can use the `confint()` function to get a 95% confidence interval for the coefficient on blood pressure. Recall that we are interested in the exponentiated coefficient, so we will exponentiate the confidence interval for the coefficient to get a confidence interval for exp(coef).
 
 ```{r}
-conf_95 <- confint(h1)
+conf_95 <- exp(confint(h1))
 conf_95
 ```
 
-This gives us a 95% confidence interval for the coefficient of blood pressure. It tells us that, with 95% confidence, the true value of the coefficient is between 0.025 and 0.85. That is, that the hazard of death for heart failure patients is between 0.025 and 0.85 times higher for patients with high blood pressure compared to patients with normal blood pressure.
+This tells us that, with 95% confidence, the true value of the coefficient is between 1.03 and 2.33. That is, that the hazard of death for heart failure patients is between 1.03 and 2.33 times higher for patients with high blood pressure compared to patients with normal blood pressure.
 
 ## References
