@@ -83,7 +83,6 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./Applications.html" rel="next">
 <link href="./KaplanMeier.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -177,12 +176,6 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Cox Proportional Hazards Regression</span></span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./Applications.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Applications</span></span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
@@ -267,28 +260,29 @@ div.csl-indent {
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>surv3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(time, status, group, age) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>surv3 <span class="sc">%&gt;%</span> <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with Status, Time, Group, and Age"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>, <span class="at">group =</span> <span class="st">"Group"</span>, <span class="at">age =</span> <span class="st">"Age"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>surv3 <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with Status, Time, Group, and Age"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>, <span class="at">group =</span> <span class="st">"Group"</span>, <span class="at">age =</span> <span class="st">"Age"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="tbl-surv3" class="anchored">
 
-<div id="svowhgzrxa" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#svowhgzrxa table {
+<div id="oeshstoxtp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#oeshstoxtp table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#svowhgzrxa thead, #svowhgzrxa tbody, #svowhgzrxa tfoot, #svowhgzrxa tr, #svowhgzrxa td, #svowhgzrxa th {
+#oeshstoxtp thead, #oeshstoxtp tbody, #oeshstoxtp tfoot, #oeshstoxtp tr, #oeshstoxtp td, #oeshstoxtp th {
   border-style: none;
 }
 
-#svowhgzrxa p {
+#oeshstoxtp p {
   margin: 0;
   padding: 0;
 }
 
-#svowhgzrxa .gt_table {
+#oeshstoxtp .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -314,12 +308,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#svowhgzrxa .gt_caption {
+#oeshstoxtp .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#svowhgzrxa .gt_title {
+#oeshstoxtp .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -331,7 +325,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#svowhgzrxa .gt_subtitle {
+#oeshstoxtp .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -343,7 +337,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#svowhgzrxa .gt_heading {
+#oeshstoxtp .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -355,13 +349,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#svowhgzrxa .gt_bottom_border {
+#oeshstoxtp .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#svowhgzrxa .gt_col_headings {
+#oeshstoxtp .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -376,7 +370,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#svowhgzrxa .gt_col_heading {
+#oeshstoxtp .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -396,7 +390,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#svowhgzrxa .gt_column_spanner_outer {
+#oeshstoxtp .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -408,15 +402,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#svowhgzrxa .gt_column_spanner_outer:first-child {
+#oeshstoxtp .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#svowhgzrxa .gt_column_spanner_outer:last-child {
+#oeshstoxtp .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#svowhgzrxa .gt_column_spanner {
+#oeshstoxtp .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -428,11 +422,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#svowhgzrxa .gt_spanner_row {
+#oeshstoxtp .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#svowhgzrxa .gt_group_heading {
+#oeshstoxtp .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -458,7 +452,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#svowhgzrxa .gt_empty_group_heading {
+#oeshstoxtp .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -473,15 +467,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#svowhgzrxa .gt_from_md > :first-child {
+#oeshstoxtp .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#svowhgzrxa .gt_from_md > :last-child {
+#oeshstoxtp .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#svowhgzrxa .gt_row {
+#oeshstoxtp .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -500,7 +494,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#svowhgzrxa .gt_stub {
+#oeshstoxtp .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -513,7 +507,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#svowhgzrxa .gt_stub_row_group {
+#oeshstoxtp .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -527,15 +521,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#svowhgzrxa .gt_row_group_first td {
+#oeshstoxtp .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#svowhgzrxa .gt_row_group_first th {
+#oeshstoxtp .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#svowhgzrxa .gt_summary_row {
+#oeshstoxtp .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -545,16 +539,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#svowhgzrxa .gt_first_summary_row {
+#oeshstoxtp .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#svowhgzrxa .gt_first_summary_row.thick {
+#oeshstoxtp .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#svowhgzrxa .gt_last_summary_row {
+#oeshstoxtp .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -564,7 +558,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#svowhgzrxa .gt_grand_summary_row {
+#oeshstoxtp .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -574,7 +568,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#svowhgzrxa .gt_first_grand_summary_row {
+#oeshstoxtp .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -584,7 +578,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#svowhgzrxa .gt_last_grand_summary_row_top {
+#oeshstoxtp .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -594,11 +588,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#svowhgzrxa .gt_striped {
+#oeshstoxtp .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#svowhgzrxa .gt_table_body {
+#oeshstoxtp .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -607,7 +601,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#svowhgzrxa .gt_footnotes {
+#oeshstoxtp .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -621,7 +615,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#svowhgzrxa .gt_footnote {
+#oeshstoxtp .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -630,7 +624,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#svowhgzrxa .gt_sourcenotes {
+#oeshstoxtp .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -644,7 +638,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#svowhgzrxa .gt_sourcenote {
+#oeshstoxtp .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -652,63 +646,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#svowhgzrxa .gt_left {
+#oeshstoxtp .gt_left {
   text-align: left;
 }
 
-#svowhgzrxa .gt_center {
+#oeshstoxtp .gt_center {
   text-align: center;
 }
 
-#svowhgzrxa .gt_right {
+#oeshstoxtp .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#svowhgzrxa .gt_font_normal {
+#oeshstoxtp .gt_font_normal {
   font-weight: normal;
 }
 
-#svowhgzrxa .gt_font_bold {
+#oeshstoxtp .gt_font_bold {
   font-weight: bold;
 }
 
-#svowhgzrxa .gt_font_italic {
+#oeshstoxtp .gt_font_italic {
   font-style: italic;
 }
 
-#svowhgzrxa .gt_super {
+#oeshstoxtp .gt_super {
   font-size: 65%;
 }
 
-#svowhgzrxa .gt_footnote_marks {
+#oeshstoxtp .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#svowhgzrxa .gt_asterisk {
+#oeshstoxtp .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#svowhgzrxa .gt_indent_1 {
+#oeshstoxtp .gt_indent_1 {
   text-indent: 5px;
 }
 
-#svowhgzrxa .gt_indent_2 {
+#oeshstoxtp .gt_indent_2 {
   text-indent: 10px;
 }
 
-#svowhgzrxa .gt_indent_3 {
+#oeshstoxtp .gt_indent_3 {
   text-indent: 15px;
 }
 
-#svowhgzrxa .gt_indent_4 {
+#oeshstoxtp .gt_indent_4 {
   text-indent: 20px;
 }
 
-#svowhgzrxa .gt_indent_5 {
+#oeshstoxtp .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -817,23 +811,23 @@ div.csl-indent {
 <div class="cell-output-display">
 <div id="tbl-surv4" class="anchored">
 
-<div id="bsodqihrqj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#bsodqihrqj table {
+<div id="tgheztibgk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#tgheztibgk table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#bsodqihrqj thead, #bsodqihrqj tbody, #bsodqihrqj tfoot, #bsodqihrqj tr, #bsodqihrqj td, #bsodqihrqj th {
+#tgheztibgk thead, #tgheztibgk tbody, #tgheztibgk tfoot, #tgheztibgk tr, #tgheztibgk td, #tgheztibgk th {
   border-style: none;
 }
 
-#bsodqihrqj p {
+#tgheztibgk p {
   margin: 0;
   padding: 0;
 }
 
-#bsodqihrqj .gt_table {
+#tgheztibgk .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -859,12 +853,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#bsodqihrqj .gt_caption {
+#tgheztibgk .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#bsodqihrqj .gt_title {
+#tgheztibgk .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -876,7 +870,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#bsodqihrqj .gt_subtitle {
+#tgheztibgk .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -888,7 +882,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#bsodqihrqj .gt_heading {
+#tgheztibgk .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -900,13 +894,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#bsodqihrqj .gt_bottom_border {
+#tgheztibgk .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#bsodqihrqj .gt_col_headings {
+#tgheztibgk .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -921,7 +915,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#bsodqihrqj .gt_col_heading {
+#tgheztibgk .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -941,7 +935,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#bsodqihrqj .gt_column_spanner_outer {
+#tgheztibgk .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -953,15 +947,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#bsodqihrqj .gt_column_spanner_outer:first-child {
+#tgheztibgk .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#bsodqihrqj .gt_column_spanner_outer:last-child {
+#tgheztibgk .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#bsodqihrqj .gt_column_spanner {
+#tgheztibgk .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -973,11 +967,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#bsodqihrqj .gt_spanner_row {
+#tgheztibgk .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#bsodqihrqj .gt_group_heading {
+#tgheztibgk .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1003,7 +997,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#bsodqihrqj .gt_empty_group_heading {
+#tgheztibgk .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1018,15 +1012,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#bsodqihrqj .gt_from_md > :first-child {
+#tgheztibgk .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#bsodqihrqj .gt_from_md > :last-child {
+#tgheztibgk .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#bsodqihrqj .gt_row {
+#tgheztibgk .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1045,7 +1039,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#bsodqihrqj .gt_stub {
+#tgheztibgk .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1058,7 +1052,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#bsodqihrqj .gt_stub_row_group {
+#tgheztibgk .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1072,15 +1066,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#bsodqihrqj .gt_row_group_first td {
+#tgheztibgk .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#bsodqihrqj .gt_row_group_first th {
+#tgheztibgk .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#bsodqihrqj .gt_summary_row {
+#tgheztibgk .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1090,16 +1084,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#bsodqihrqj .gt_first_summary_row {
+#tgheztibgk .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#bsodqihrqj .gt_first_summary_row.thick {
+#tgheztibgk .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#bsodqihrqj .gt_last_summary_row {
+#tgheztibgk .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1109,7 +1103,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#bsodqihrqj .gt_grand_summary_row {
+#tgheztibgk .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1119,7 +1113,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#bsodqihrqj .gt_first_grand_summary_row {
+#tgheztibgk .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1129,7 +1123,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#bsodqihrqj .gt_last_grand_summary_row_top {
+#tgheztibgk .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1139,11 +1133,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#bsodqihrqj .gt_striped {
+#tgheztibgk .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#bsodqihrqj .gt_table_body {
+#tgheztibgk .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1152,7 +1146,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#bsodqihrqj .gt_footnotes {
+#tgheztibgk .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1166,7 +1160,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#bsodqihrqj .gt_footnote {
+#tgheztibgk .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1175,7 +1169,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#bsodqihrqj .gt_sourcenotes {
+#tgheztibgk .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1189,7 +1183,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#bsodqihrqj .gt_sourcenote {
+#tgheztibgk .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1197,63 +1191,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#bsodqihrqj .gt_left {
+#tgheztibgk .gt_left {
   text-align: left;
 }
 
-#bsodqihrqj .gt_center {
+#tgheztibgk .gt_center {
   text-align: center;
 }
 
-#bsodqihrqj .gt_right {
+#tgheztibgk .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#bsodqihrqj .gt_font_normal {
+#tgheztibgk .gt_font_normal {
   font-weight: normal;
 }
 
-#bsodqihrqj .gt_font_bold {
+#tgheztibgk .gt_font_bold {
   font-weight: bold;
 }
 
-#bsodqihrqj .gt_font_italic {
+#tgheztibgk .gt_font_italic {
   font-style: italic;
 }
 
-#bsodqihrqj .gt_super {
+#tgheztibgk .gt_super {
   font-size: 65%;
 }
 
-#bsodqihrqj .gt_footnote_marks {
+#tgheztibgk .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#bsodqihrqj .gt_asterisk {
+#tgheztibgk .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#bsodqihrqj .gt_indent_1 {
+#tgheztibgk .gt_indent_1 {
   text-indent: 5px;
 }
 
-#bsodqihrqj .gt_indent_2 {
+#tgheztibgk .gt_indent_2 {
   text-indent: 10px;
 }
 
-#bsodqihrqj .gt_indent_3 {
+#tgheztibgk .gt_indent_3 {
   text-indent: 15px;
 }
 
-#bsodqihrqj .gt_indent_4 {
+#tgheztibgk .gt_indent_4 {
   text-indent: 20px;
 }
 
-#bsodqihrqj .gt_indent_5 {
+#tgheztibgk .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1347,23 +1341,23 @@ div.csl-indent {
 <div class="cell-output-display">
 <div id="tbl-surv5" class="anchored">
 
-<div id="ktjskmqgqr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ktjskmqgqr table {
+<div id="zlbgxyfyob" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#zlbgxyfyob table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ktjskmqgqr thead, #ktjskmqgqr tbody, #ktjskmqgqr tfoot, #ktjskmqgqr tr, #ktjskmqgqr td, #ktjskmqgqr th {
+#zlbgxyfyob thead, #zlbgxyfyob tbody, #zlbgxyfyob tfoot, #zlbgxyfyob tr, #zlbgxyfyob td, #zlbgxyfyob th {
   border-style: none;
 }
 
-#ktjskmqgqr p {
+#zlbgxyfyob p {
   margin: 0;
   padding: 0;
 }
 
-#ktjskmqgqr .gt_table {
+#zlbgxyfyob .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1389,12 +1383,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#ktjskmqgqr .gt_caption {
+#zlbgxyfyob .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ktjskmqgqr .gt_title {
+#zlbgxyfyob .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1406,7 +1400,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#ktjskmqgqr .gt_subtitle {
+#zlbgxyfyob .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1418,7 +1412,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#ktjskmqgqr .gt_heading {
+#zlbgxyfyob .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1430,13 +1424,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#ktjskmqgqr .gt_bottom_border {
+#zlbgxyfyob .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ktjskmqgqr .gt_col_headings {
+#zlbgxyfyob .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1451,7 +1445,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#ktjskmqgqr .gt_col_heading {
+#zlbgxyfyob .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1471,7 +1465,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#ktjskmqgqr .gt_column_spanner_outer {
+#zlbgxyfyob .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1483,15 +1477,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#ktjskmqgqr .gt_column_spanner_outer:first-child {
+#zlbgxyfyob .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ktjskmqgqr .gt_column_spanner_outer:last-child {
+#zlbgxyfyob .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ktjskmqgqr .gt_column_spanner {
+#zlbgxyfyob .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1503,11 +1497,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#ktjskmqgqr .gt_spanner_row {
+#zlbgxyfyob .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ktjskmqgqr .gt_group_heading {
+#zlbgxyfyob .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1533,7 +1527,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#ktjskmqgqr .gt_empty_group_heading {
+#zlbgxyfyob .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1548,15 +1542,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#ktjskmqgqr .gt_from_md > :first-child {
+#zlbgxyfyob .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ktjskmqgqr .gt_from_md > :last-child {
+#zlbgxyfyob .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ktjskmqgqr .gt_row {
+#zlbgxyfyob .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1575,7 +1569,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#ktjskmqgqr .gt_stub {
+#zlbgxyfyob .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1588,7 +1582,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#ktjskmqgqr .gt_stub_row_group {
+#zlbgxyfyob .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1602,15 +1596,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#ktjskmqgqr .gt_row_group_first td {
+#zlbgxyfyob .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ktjskmqgqr .gt_row_group_first th {
+#zlbgxyfyob .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ktjskmqgqr .gt_summary_row {
+#zlbgxyfyob .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1620,16 +1614,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#ktjskmqgqr .gt_first_summary_row {
+#zlbgxyfyob .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ktjskmqgqr .gt_first_summary_row.thick {
+#zlbgxyfyob .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ktjskmqgqr .gt_last_summary_row {
+#zlbgxyfyob .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1639,7 +1633,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#ktjskmqgqr .gt_grand_summary_row {
+#zlbgxyfyob .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1649,7 +1643,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#ktjskmqgqr .gt_first_grand_summary_row {
+#zlbgxyfyob .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1659,7 +1653,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#ktjskmqgqr .gt_last_grand_summary_row_top {
+#zlbgxyfyob .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1669,11 +1663,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#ktjskmqgqr .gt_striped {
+#zlbgxyfyob .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ktjskmqgqr .gt_table_body {
+#zlbgxyfyob .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1682,7 +1676,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#ktjskmqgqr .gt_footnotes {
+#zlbgxyfyob .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1696,7 +1690,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#ktjskmqgqr .gt_footnote {
+#zlbgxyfyob .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1705,7 +1699,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#ktjskmqgqr .gt_sourcenotes {
+#zlbgxyfyob .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1719,7 +1713,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#ktjskmqgqr .gt_sourcenote {
+#zlbgxyfyob .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1727,63 +1721,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#ktjskmqgqr .gt_left {
+#zlbgxyfyob .gt_left {
   text-align: left;
 }
 
-#ktjskmqgqr .gt_center {
+#zlbgxyfyob .gt_center {
   text-align: center;
 }
 
-#ktjskmqgqr .gt_right {
+#zlbgxyfyob .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ktjskmqgqr .gt_font_normal {
+#zlbgxyfyob .gt_font_normal {
   font-weight: normal;
 }
 
-#ktjskmqgqr .gt_font_bold {
+#zlbgxyfyob .gt_font_bold {
   font-weight: bold;
 }
 
-#ktjskmqgqr .gt_font_italic {
+#zlbgxyfyob .gt_font_italic {
   font-style: italic;
 }
 
-#ktjskmqgqr .gt_super {
+#zlbgxyfyob .gt_super {
   font-size: 65%;
 }
 
-#ktjskmqgqr .gt_footnote_marks {
+#zlbgxyfyob .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ktjskmqgqr .gt_asterisk {
+#zlbgxyfyob .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ktjskmqgqr .gt_indent_1 {
+#zlbgxyfyob .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ktjskmqgqr .gt_indent_2 {
+#zlbgxyfyob .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ktjskmqgqr .gt_indent_3 {
+#zlbgxyfyob .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ktjskmqgqr .gt_indent_4 {
+#zlbgxyfyob .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ktjskmqgqr .gt_indent_5 {
+#zlbgxyfyob .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1892,38 +1886,39 @@ div.csl-indent {
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize a vector to store the results</span></span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(x)</span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co"># While loop to repeat the process until the difference between ${x_n+1}$ and ${x_n}$ is less than the tolerance level</span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="fu">abs</span>(<span class="fu">f</span>(x)) <span class="sc">&gt;</span> tol){</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> x <span class="sc">-</span> <span class="fu">f</span>(x)<span class="sc">/</span><span class="fu">fprime</span>(x)</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> <span class="fu">round</span>(x, <span class="dv">4</span>)</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(iterations, x)  <span class="co"># Store the current value of x</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a data frame with results</span></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">iteration =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(iterations), <span class="at">x =</span> iterations)</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Newton Raphson Iteration"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">iteration =</span> <span class="st">"Iteration"</span>, <span class="at">x =</span> <span class="st">"x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co"># While loop to repeat the process until the difference between </span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ${x_n+1}$ and ${x_n}$ is less than the tolerance level</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="fu">abs</span>(<span class="fu">f</span>(x)) <span class="sc">&gt;</span> tol){</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> x <span class="sc">-</span> <span class="fu">f</span>(x)<span class="sc">/</span><span class="fu">fprime</span>(x)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> <span class="fu">round</span>(x, <span class="dv">4</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(iterations, x)  <span class="co"># Store the current value of x</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a data frame with results</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">iteration =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(iterations), <span class="at">x =</span> iterations)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Newton Raphson Iteration"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">iteration =</span> <span class="st">"Iteration"</span>, <span class="at">x =</span> <span class="st">"x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="tbl-nr1" class="anchored">
 
-<div id="juahwbxahp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#juahwbxahp table {
+<div id="keookdzztm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#keookdzztm table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#juahwbxahp thead, #juahwbxahp tbody, #juahwbxahp tfoot, #juahwbxahp tr, #juahwbxahp td, #juahwbxahp th {
+#keookdzztm thead, #keookdzztm tbody, #keookdzztm tfoot, #keookdzztm tr, #keookdzztm td, #keookdzztm th {
   border-style: none;
 }
 
-#juahwbxahp p {
+#keookdzztm p {
   margin: 0;
   padding: 0;
 }
 
-#juahwbxahp .gt_table {
+#keookdzztm .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1949,12 +1944,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#juahwbxahp .gt_caption {
+#keookdzztm .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#juahwbxahp .gt_title {
+#keookdzztm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1966,7 +1961,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#juahwbxahp .gt_subtitle {
+#keookdzztm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1978,7 +1973,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#juahwbxahp .gt_heading {
+#keookdzztm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1990,13 +1985,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#juahwbxahp .gt_bottom_border {
+#keookdzztm .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#juahwbxahp .gt_col_headings {
+#keookdzztm .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2011,7 +2006,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#juahwbxahp .gt_col_heading {
+#keookdzztm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2031,7 +2026,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#juahwbxahp .gt_column_spanner_outer {
+#keookdzztm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2043,15 +2038,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#juahwbxahp .gt_column_spanner_outer:first-child {
+#keookdzztm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#juahwbxahp .gt_column_spanner_outer:last-child {
+#keookdzztm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#juahwbxahp .gt_column_spanner {
+#keookdzztm .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2063,11 +2058,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#juahwbxahp .gt_spanner_row {
+#keookdzztm .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#juahwbxahp .gt_group_heading {
+#keookdzztm .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2093,7 +2088,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#juahwbxahp .gt_empty_group_heading {
+#keookdzztm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2108,15 +2103,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#juahwbxahp .gt_from_md > :first-child {
+#keookdzztm .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#juahwbxahp .gt_from_md > :last-child {
+#keookdzztm .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#juahwbxahp .gt_row {
+#keookdzztm .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2135,7 +2130,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#juahwbxahp .gt_stub {
+#keookdzztm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2148,7 +2143,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#juahwbxahp .gt_stub_row_group {
+#keookdzztm .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2162,15 +2157,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#juahwbxahp .gt_row_group_first td {
+#keookdzztm .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#juahwbxahp .gt_row_group_first th {
+#keookdzztm .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#juahwbxahp .gt_summary_row {
+#keookdzztm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2180,16 +2175,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#juahwbxahp .gt_first_summary_row {
+#keookdzztm .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#juahwbxahp .gt_first_summary_row.thick {
+#keookdzztm .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#juahwbxahp .gt_last_summary_row {
+#keookdzztm .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2199,7 +2194,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#juahwbxahp .gt_grand_summary_row {
+#keookdzztm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2209,7 +2204,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#juahwbxahp .gt_first_grand_summary_row {
+#keookdzztm .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2219,7 +2214,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#juahwbxahp .gt_last_grand_summary_row_top {
+#keookdzztm .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2229,11 +2224,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#juahwbxahp .gt_striped {
+#keookdzztm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#juahwbxahp .gt_table_body {
+#keookdzztm .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2242,7 +2237,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#juahwbxahp .gt_footnotes {
+#keookdzztm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2256,7 +2251,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#juahwbxahp .gt_footnote {
+#keookdzztm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2265,7 +2260,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#juahwbxahp .gt_sourcenotes {
+#keookdzztm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2279,7 +2274,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#juahwbxahp .gt_sourcenote {
+#keookdzztm .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2287,63 +2282,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#juahwbxahp .gt_left {
+#keookdzztm .gt_left {
   text-align: left;
 }
 
-#juahwbxahp .gt_center {
+#keookdzztm .gt_center {
   text-align: center;
 }
 
-#juahwbxahp .gt_right {
+#keookdzztm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#juahwbxahp .gt_font_normal {
+#keookdzztm .gt_font_normal {
   font-weight: normal;
 }
 
-#juahwbxahp .gt_font_bold {
+#keookdzztm .gt_font_bold {
   font-weight: bold;
 }
 
-#juahwbxahp .gt_font_italic {
+#keookdzztm .gt_font_italic {
   font-style: italic;
 }
 
-#juahwbxahp .gt_super {
+#keookdzztm .gt_super {
   font-size: 65%;
 }
 
-#juahwbxahp .gt_footnote_marks {
+#keookdzztm .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#juahwbxahp .gt_asterisk {
+#keookdzztm .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#juahwbxahp .gt_indent_1 {
+#keookdzztm .gt_indent_1 {
   text-indent: 5px;
 }
 
-#juahwbxahp .gt_indent_2 {
+#keookdzztm .gt_indent_2 {
   text-indent: 10px;
 }
 
-#juahwbxahp .gt_indent_3 {
+#keookdzztm .gt_indent_3 {
   text-indent: 15px;
 }
 
-#juahwbxahp .gt_indent_4 {
+#keookdzztm .gt_indent_4 {
   text-indent: 20px;
 }
 
-#juahwbxahp .gt_indent_5 {
+#keookdzztm .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2381,71 +2376,37 @@ div.csl-indent {
 </section>
 <section id="newton-raphson-for-parametized-functions-gamma-distribution" class="level2" data-number="3.15">
 <h2 data-number="3.15" class="anchored" data-anchor-id="newton-raphson-for-parametized-functions-gamma-distribution"><span class="header-section-number">3.15</span> Newton Raphson for Parametized Functions: Gamma Distribution</h2>
-<p>The above example shows the general process for the Newton Raphson iteration, but what about when we have a function with multiple parameters? Suppose we want to find the root of the gamma distribution, <span class="math inline">\(f(x) = \frac{B^a}{\Gamma(a)}x^{a-1}e^{-Bx}\)</span>. First, we will take the natural log of the function and then take its derivative with respect to both a and B. We will then use the Newton Raphson method to find the values of B and a that maximizes the function.</p>
-<p>We would start with an estimate for the root by using other methods such as Method of Moments Estimation. The Method of Moments Estimator of the parameters of the Gamma Distribution are: <span class="math inline">\(\hat{a} = \frac{\bar{x}^2}{s^2}\)</span> and <span class="math inline">\(\hat{B} = \frac{\bar{x}}{s^2}\)</span>, where <span class="math inline">\(\bar{x}\)</span> is the sample mean and s is the sample standard deviation. We can then use these estimates as our initial estimates for the Newton Raphson method using the equation <span class="math inline">\(x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\)</span> to find our second estimate for the root and then repeating the process until our tolerance requirement is met. Let’s visualize this process in table <a href="#tbl-nr2">Table&nbsp;<span>3.5</span></a> using the generated statistics below.</p>
+<p>The above example shows the general process for the Newton Raphson iteration, but what about when we have a function with multiple parameters? Suppose we want to find the root of the gamma distribution, <span class="math inline">\(f(x) = \frac{\lambda ^\alpha }{\Gamma(\alpha )}x^{\alpha -1}e^{-\lambda x}\)</span>. First, we will need to define a likelihood function for the gamma distribution. This function takes the product of the probability density function of the gamma distribution for each observation. The likelihood function for the gamma distribution is: <span class="math inline">\(L(\alpha, \lambda) = \prod_{i=1}^{n} \frac{\lambda ^\alpha}{\Gamma(\alpha)}x_i^{\alpha-1}e^{-\lambda x_i}\)</span>.</p>
+<p>We will take the natural log of the likelihood function which comes to be <span class="math inline">\(ln(L(\alpha, \lambda)) = n\alpha ln(\lambda) - n ln(\Gamma(\alpha)) + (\alpha - 1)\sum_{i=1}^{n}ln(x_i) - \lambda \sum_{i=1}^{n}x_i\)</span>.</p>
+<p>We will then need the partial derivatives and the second partial derivatives of the natural log of the likelihood function with respect to <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span>.</p>
+<p>The first partial derivative with respect to <span class="math inline">\(\alpha\)</span> is: <span class="math inline">\(\frac{\partial ln(L(\alpha, \lambda))}{\partial \alpha} = n ln(\lambda) - n \psi(\alpha) + \sum_{i=1}^{n}ln(x_i)\)</span>, where <span class="math inline">\(\psi\)</span> is the digamma function, or the derivative of the natural log of the gamma function.</p>
+<p>The first partial derivative with respect to <span class="math inline">\(\lambda\)</span> is: <span class="math inline">\(\frac{\partial ln(L(\alpha, \lambda))}{\partial \lambda} = \frac{n\alpha}{\lambda} - \sum_{i=1}^{n}x_i\)</span>.</p>
+<p>The second partial derivative with respect to <span class="math inline">\(\alpha\)</span> is: <span class="math inline">\(\frac{\partial^2 ln(L(\alpha, \lambda))}{\partial \alpha^2} = -n \psi'(\alpha)\)</span>, where <span class="math inline">\(\psi'\)</span> is the trigamma function, or the second derivative of the natural log of the gamma function.</p>
+<p>The second partial derivative with respect to <span class="math inline">\(\lambda\)</span> is: <span class="math inline">\(\frac{\partial^2 ln(L(\alpha, \lambda))}{\partial \lambda^2} = -\frac{n\alpha}{\lambda^2}\)</span>.</p>
+<p>Now, we will use the Newton Raphson method to find the values of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span> that maximize the function. Recall that the Newton Raphson method used the equation <span class="math inline">\(x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\)</span>. In this case, we will have two equations, one for <span class="math inline">\(\alpha\)</span> and one for <span class="math inline">\(\lambda\)</span>. We will first need to choose initial estimates for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span>. These initial estimates can be chosen using other methods such as Method of Moments Estimation. The Method of Moments Estimator of the parameters of the Gamma Distribution are: <span class="math inline">\(\hat{\alpha} = \frac{\bar{x}^2}{s^2}\)</span> and <span class="math inline">\(\hat{\lambda} = \frac{\bar{x}}{s^2}\)</span>, where <span class="math inline">\(\bar{x}\)</span> is the sample mean and s is the sample standard deviation. We can then use these estimates as our initial estimates for the Newton Raphson method using the equation <span class="math inline">\(x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\)</span> to find our second estimate for the root and then repeating the process until our tolerance requirement is met. Let’s use R to generate a random sample from a gamma distribution and find the sample mean and sample standard deviation. These statistics are in <a href="#tbl-gamma">Table&nbsp;<span>3.5</span></a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate random gamma distribution and summary statistics</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>gamma<span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">rgamma</span>(<span class="dv">10</span>, <span class="at">shape =</span> <span class="dv">3</span>, <span class="at">rate =</span> .<span class="dv">5</span>), <span class="dv">1</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">rgamma</span>(<span class="dv">10</span>, <span class="at">shape =</span> <span class="dv">3</span>, <span class="at">rate =</span> .<span class="dv">5</span>), <span class="dv">1</span>)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(gamma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 67.7</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">log</span>(gamma))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 17.79487</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(gamma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 6.77</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(gamma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 12.75789</code></pre>
-</div>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Put these values into a data frame</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>gamma_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"n"</span> <span class="ot">=</span> <span class="dv">10</span>, </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"sum_x"</span> <span class="ot">=</span> <span class="fu">sum</span>(gamma), </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"sum_ln_x"</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">log</span>(gamma)), </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"mean"</span> <span class="ot">=</span> <span class="fu">mean</span>(gamma), </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"variance"</span> <span class="ot">=</span> <span class="fu">var</span>(gamma))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define functions</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>afunc <span class="ot">=</span> <span class="cf">function</span>(a, L, n, sum_ln_x) a <span class="sc">-</span> ((n<span class="sc">*</span><span class="fu">log</span>(L) <span class="sc">-</span> n <span class="sc">*</span> <span class="fu">digamma</span>(a) <span class="sc">+</span> sum_ln_x) <span class="sc">/</span> (<span class="sc">-</span>n <span class="sc">*</span> <span class="fu">trigamma</span>(a)))</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>Lfunc <span class="ot">=</span> <span class="cf">function</span>(a, L, n, sum_x) L <span class="sc">-</span> (((n<span class="sc">*</span>a<span class="sc">/</span>L) <span class="sc">-</span> sum_x) <span class="sc">/</span> (<span class="sc">-</span>n <span class="sc">*</span> a <span class="sc">/</span> L<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose initial estimates</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> <span class="fl">3.5</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>L <span class="ot">=</span> .<span class="dv">7</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">10</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>sum_ln_x <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">log</span>(gamma))</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>sum_x <span class="ot">=</span> <span class="fu">sum</span>(gamma)</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Use tolerance level of 0.1</span></span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>tol <span class="ot">=</span> <span class="fl">0.1</span></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize a vector to store the results</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(a, L)</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co"># While loop to repeat the process until the difference between a and a1 and L and L1 is less than the tolerance level</span></span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="cn">TRUE</span>) {</span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  a1 <span class="ot">&lt;-</span> <span class="fu">afunc</span>(a, L, n, sum_ln_x)</span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>  L1 <span class="ot">&lt;-</span> <span class="fu">Lfunc</span>(a, L, n, sum_x)</span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">abs</span>(a <span class="sc">-</span> a1) <span class="sc">&lt;</span> tol <span class="sc">&amp;</span> <span class="fu">abs</span>(L <span class="sc">-</span> L1) <span class="sc">&lt;</span> tol) {</span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> a1</span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>  L <span class="ot">&lt;-</span> L1</span>
-<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>  iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(iterations, a, L)  <span class="co"># Store the current values of a and L</span></span>
-<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a><span class="co"># put the results into a table with every 10th value</span></span>
-<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">iteration =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(iterations), </span>
-<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>                      <span class="at">a =</span> iterations[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">length</span>(iterations), <span class="dv">2</span>)], </span>
-<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>                      <span class="at">L =</span> iterations[<span class="fu">seq</span>(<span class="dv">2</span>, <span class="fu">length</span>(iterations), <span class="dv">2</span>)])</span>
-<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a><span class="co"># print the table</span></span>
-<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span></span>
-<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Newton Raphson for Gamma Distribution"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">iteration =</span> <span class="st">"Iteration"</span>, <span class="at">a =</span> <span class="st">"a"</span>, <span class="at">L =</span> <span class="st">"L"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View data in a table</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>gamma_data <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Summary Statistics for Gamma Distribution"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">n =</span> <span class="st">"Number of Observations"</span>, </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">sum_x =</span> <span class="st">"Sum of x"</span>, </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">sum_ln_x =</span> <span class="st">"Sum of ln(x)"</span>, </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">mean =</span> <span class="st">"Mean"</span>, </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">variance =</span> <span class="st">"Variance"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="tbl-nr2" class="anchored">
+<div id="tbl-gamma" class="anchored">
 
 <div id="eebjyloatc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#eebjyloatc table {
@@ -2888,100 +2849,23 @@ div.csl-indent {
 }
 </style>
 <table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-  <caption>Table&nbsp;3.5:  <p>Newton Raphson for Gamma Distribution</p> </caption>
+  <caption>Table&nbsp;3.5:  <p>Summary Statistics for Gamma Distribution</p> </caption>
   <thead>
     
     <tr class="gt_col_headings">
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Iteration">Iteration</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="a">a</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="L">L</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Number of Observations">Number of Observations</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Sum of x">Sum of x</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Sum of ln(x)">Sum of ln(x)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Mean">Mean</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Variance">Variance</th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
-    <tr><td headers="iteration" class="gt_row gt_right">1</td>
-<td headers="a" class="gt_row gt_right">3.500000</td>
-<td headers="L" class="gt_row gt_right">0.7000000</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">2</td>
-<td headers="a" class="gt_row gt_right">4.467604</td>
-<td headers="L" class="gt_row gt_right">0.4522000</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">3</td>
-<td headers="a" class="gt_row gt_right">2.892540</td>
-<td headers="L" class="gt_row gt_right">0.5945332</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">4</td>
-<td headers="a" class="gt_row gt_right">3.814589</td>
-<td headers="L" class="gt_row gt_right">0.3617692</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">5</td>
-<td headers="a" class="gt_row gt_right">2.347595</td>
-<td headers="L" class="gt_row gt_right">0.4912625</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">6</td>
-<td headers="a" class="gt_row gt_right">3.185098</td>
-<td headers="L" class="gt_row gt_right">0.2865514</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">7</td>
-<td headers="a" class="gt_row gt_right">1.926065</td>
-<td headers="L" class="gt_row gt_right">0.3985724</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">8</td>
-<td headers="a" class="gt_row gt_right">2.644257</td>
-<td headers="L" class="gt_row gt_right">0.2387619</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">9</td>
-<td headers="a" class="gt_row gt_right">1.718683</td>
-<td headers="L" class="gt_row gt_right">0.3315701</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">10</td>
-<td headers="a" class="gt_row gt_right">2.297008</td>
-<td headers="L" class="gt_row gt_right">0.2300847</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">11</td>
-<td headers="a" class="gt_row gt_right">1.766578</td>
-<td headers="L" class="gt_row gt_right">0.3041417</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">12</td>
-<td headers="a" class="gt_row gt_right">2.202615</td>
-<td headers="L" class="gt_row gt_right">0.2537903</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">13</td>
-<td headers="a" class="gt_row gt_right">1.962183</td>
-<td headers="L" class="gt_row gt_right">0.3096103</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">14</td>
-<td headers="a" class="gt_row gt_right">2.278489</td>
-<td headers="L" class="gt_row gt_right">0.2884857</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">15</td>
-<td headers="a" class="gt_row gt_right">3.500000</td>
-<td headers="L" class="gt_row gt_right">0.7000000</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">16</td>
-<td headers="a" class="gt_row gt_right">4.467604</td>
-<td headers="L" class="gt_row gt_right">0.4522000</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">17</td>
-<td headers="a" class="gt_row gt_right">2.892540</td>
-<td headers="L" class="gt_row gt_right">0.5945332</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">18</td>
-<td headers="a" class="gt_row gt_right">3.814589</td>
-<td headers="L" class="gt_row gt_right">0.3617692</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">19</td>
-<td headers="a" class="gt_row gt_right">2.347595</td>
-<td headers="L" class="gt_row gt_right">0.4912625</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">20</td>
-<td headers="a" class="gt_row gt_right">3.185098</td>
-<td headers="L" class="gt_row gt_right">0.2865514</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">21</td>
-<td headers="a" class="gt_row gt_right">1.926065</td>
-<td headers="L" class="gt_row gt_right">0.3985724</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">22</td>
-<td headers="a" class="gt_row gt_right">2.644257</td>
-<td headers="L" class="gt_row gt_right">0.2387619</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">23</td>
-<td headers="a" class="gt_row gt_right">1.718683</td>
-<td headers="L" class="gt_row gt_right">0.3315701</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">24</td>
-<td headers="a" class="gt_row gt_right">2.297008</td>
-<td headers="L" class="gt_row gt_right">0.2300847</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">25</td>
-<td headers="a" class="gt_row gt_right">1.766578</td>
-<td headers="L" class="gt_row gt_right">0.3041417</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">26</td>
-<td headers="a" class="gt_row gt_right">2.202615</td>
-<td headers="L" class="gt_row gt_right">0.2537903</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">27</td>
-<td headers="a" class="gt_row gt_right">1.962183</td>
-<td headers="L" class="gt_row gt_right">0.3096103</td></tr>
-    <tr><td headers="iteration" class="gt_row gt_right">28</td>
-<td headers="a" class="gt_row gt_right">2.278489</td>
-<td headers="L" class="gt_row gt_right">0.2884857</td></tr>
+    <tr><td headers="n" class="gt_row gt_right">10</td>
+<td headers="sum_x" class="gt_row gt_right">67.7</td>
+<td headers="sum_ln_x" class="gt_row gt_right">17.79487</td>
+<td headers="mean" class="gt_row gt_right">6.77</td>
+<td headers="variance" class="gt_row gt_right">12.75789</td></tr>
   </tbody>
   
   
@@ -2990,7 +2874,1036 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>As we can see, we didn’t quite reach the original values of a = 3 and L = 0.5, but with a tolerance of 0.1, we got close. Usually, a lower tolerance is used and many more iterations are needed, but this example demonstrates a similar process to how our statistical software will find the maximum likelihood estimates for our parameters.</p>
+<p>We can now determine our initial estimates for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span> using the Method of Moments Estimation. The sample mean is 2.3 and the sample standard deviation is 1.1. We can use these values to find our initial estimates for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Method of Moments Estimation</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">=</span> <span class="fl">6.77</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>variance <span class="ot">=</span> <span class="fl">12.76</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial estimates for alpha and lambda</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> mean<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> variance</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>L <span class="ot">=</span> mean <span class="sc">/</span> variance</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Display initial estimates</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>alpha_lambda <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"alpha"</span> <span class="ot">=</span> a, <span class="st">"lambda"</span> <span class="ot">=</span> L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View data in a table</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>alpha_lambda <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Initial Estimates for Gamma Distribution"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">alpha =</span> <span class="st">"Alpha"</span>, </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">lambda =</span> <span class="st">"Lambda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="tbl-gamma2" class="anchored">
+
+<div id="fjjfottzly" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fjjfottzly table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#fjjfottzly thead, #fjjfottzly tbody, #fjjfottzly tfoot, #fjjfottzly tr, #fjjfottzly td, #fjjfottzly th {
+  border-style: none;
+}
+
+#fjjfottzly p {
+  margin: 0;
+  padding: 0;
+}
+
+#fjjfottzly .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#fjjfottzly .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#fjjfottzly .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#fjjfottzly .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#fjjfottzly .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#fjjfottzly .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#fjjfottzly .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#fjjfottzly .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#fjjfottzly .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#fjjfottzly .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#fjjfottzly .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#fjjfottzly .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#fjjfottzly .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#fjjfottzly .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#fjjfottzly .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fjjfottzly .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#fjjfottzly .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#fjjfottzly .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#fjjfottzly .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fjjfottzly .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#fjjfottzly .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fjjfottzly .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#fjjfottzly .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fjjfottzly .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fjjfottzly .gt_left {
+  text-align: left;
+}
+
+#fjjfottzly .gt_center {
+  text-align: center;
+}
+
+#fjjfottzly .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#fjjfottzly .gt_font_normal {
+  font-weight: normal;
+}
+
+#fjjfottzly .gt_font_bold {
+  font-weight: bold;
+}
+
+#fjjfottzly .gt_font_italic {
+  font-style: italic;
+}
+
+#fjjfottzly .gt_super {
+  font-size: 65%;
+}
+
+#fjjfottzly .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#fjjfottzly .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#fjjfottzly .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#fjjfottzly .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#fjjfottzly .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#fjjfottzly .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#fjjfottzly .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <caption>Table&nbsp;3.6:  <p>Initial Estimates for Gamma Distribution</p> </caption>
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Alpha">Alpha</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Lambda">Lambda</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="alpha" class="gt_row gt_right">3.59192</td>
+<td headers="lambda" class="gt_row gt_right">0.5305643</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</div>
+<p>Now that we have all the information needed, we can start the Newton Raphson method. We will walk through the first iteration and then use R to do the rest.</p>
+<p>To find the first updated estimates for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span>, we will use the equations <span class="math inline">\(\alpha_{n+1} = \alpha_n - \frac{f(\alpha_n)}{f'(\alpha_n)}\)</span> and <span class="math inline">\(\lambda_{n+1} = \lambda_n - \frac{f(\lambda_n)}{f'(\lambda_n)}\)</span>.</p>
+<p>We will start with our Method of Moments estimates of <span class="math inline">\(\hat{\alpha} = 3.59192\)</span> and <span class="math inline">\(\hat{\lambda} = 0.5305643\)</span>. For alpha, the first iteration would look like: <span class="math inline">\(\alpha_{1} = 3.59192 - \frac{n ln(\lambda) - n \psi(\alpha) + \sum_{i=1}^{n}ln(x_i)}{-n \psi'(\alpha)}\)</span>. Plugging in the values, we get <span class="math inline">\(\alpha_{1} = 3.59192 - \frac{10 * ln(0.5305643) - 10 * digamma(3.59192) + 17.79487}{-10 * trigamma(3.59192)}\)</span> = 3.631203.</p>
+<p>For lambda, the first iteration would look like: <span class="math inline">\(\lambda_{1} = 0.5305643 - \frac{\frac{n\alpha}{\lambda} - \sum_{i=1}^{n}x_i}{-\frac{n\alpha}{\lambda^2}}\)</span>. Plugging in the values, we get <span class="math inline">\(\lambda_{1} = 0.5305643 - \frac{\frac{10 * 3.59192}{0.5305643} - 67.7}{-\frac{10 * 3.59192}{0.5305643^2}}\)</span> = 0.5305643.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the first iteration for alpha</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fl">3.59192</span> <span class="sc">-</span> ((<span class="dv">10</span> <span class="sc">*</span> <span class="fu">log</span>(<span class="fl">0.5305643</span>) <span class="sc">-</span> <span class="dv">10</span> <span class="sc">*</span> <span class="fu">digamma</span>(<span class="fl">3.59192</span>) <span class="sc">+</span> <span class="fl">17.79487</span>) <span class="sc">/</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>             (<span class="sc">-</span><span class="dv">10</span> <span class="sc">*</span> <span class="fu">trigamma</span>(<span class="fl">3.59192</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.631203</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the first iteration for lambda</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fl">0.5305643</span> <span class="sc">-</span> (((<span class="dv">10</span> <span class="sc">*</span> <span class="fl">3.59192</span> <span class="sc">/</span> <span class="fl">0.5305643</span>) <span class="sc">-</span> <span class="fl">67.7</span>) <span class="sc">/</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>               (<span class="sc">-</span><span class="dv">10</span> <span class="sc">*</span> <span class="fl">3.59192</span> <span class="sc">/</span> <span class="fl">0.5305643</span><span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5305643</code></pre>
+</div>
+</div>
+<p>Now, we can continue this process using the new estimates of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span> until the difference between the current and previous estimates is less than a certain tolerance level. We will use a tolerance level of 0.005. Let’s visualize this process in table <a href="#tbl-nr2">Table&nbsp;<span>3.7</span></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define functions using a for alpha and L for lambda</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>afunc <span class="ot">=</span> <span class="cf">function</span>(a, L, n, sum_ln_x) a <span class="sc">-</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  ((n<span class="sc">*</span><span class="fu">log</span>(L) <span class="sc">-</span> n <span class="sc">*</span> <span class="fu">digamma</span>(a) <span class="sc">+</span> sum_ln_x) <span class="sc">/</span> (<span class="sc">-</span>n <span class="sc">*</span> <span class="fu">trigamma</span>(a)))</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>Lfunc <span class="ot">=</span> <span class="cf">function</span>(a, L, n, sum_x) L <span class="sc">-</span> (((n<span class="sc">*</span>a<span class="sc">/</span>L) <span class="sc">-</span> sum_x) <span class="sc">/</span> (<span class="sc">-</span>n <span class="sc">*</span> a <span class="sc">/</span> L<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose initial estimates</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> <span class="fl">3.59192</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>L <span class="ot">=</span> <span class="fl">0.5305643</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">10</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>sum_ln_x <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">log</span>(gamma))</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>sum_x <span class="ot">=</span> <span class="fu">sum</span>(gamma)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Use tolerance level of 0.005</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>tol <span class="ot">=</span> <span class="fl">0.005</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize a vector to store the results</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(a, L)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="co"># While loop to repeat the process until the difference between a and a1 and </span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="co"># L and L1 is less than the tolerance level</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="cn">TRUE</span>) {</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  a1 <span class="ot">&lt;-</span> <span class="fu">afunc</span>(a, L, n, sum_ln_x)</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>  L1 <span class="ot">&lt;-</span> <span class="fu">Lfunc</span>(a, L, n, sum_x)</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">abs</span>(a <span class="sc">-</span> a1) <span class="sc">&lt;</span> tol <span class="sc">&amp;</span> <span class="fu">abs</span>(L <span class="sc">-</span> L1) <span class="sc">&lt;</span> tol) {</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> a1</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>  L <span class="ot">&lt;-</span> L1</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>  iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(iterations, a, L)  <span class="co"># Store the current values of a and L</span></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a><span class="co"># put the results into a table with every 10th value</span></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">iteration =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(iterations), </span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>                      <span class="at">a =</span> iterations[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">length</span>(iterations), <span class="dv">2</span>)], </span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>                      <span class="at">L =</span> iterations[<span class="fu">seq</span>(<span class="dv">2</span>, <span class="fu">length</span>(iterations), <span class="dv">2</span>)])</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a><span class="co"># print the table</span></span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span></span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Newton Raphson for Gamma Distribution"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">iteration =</span> <span class="st">"Iteration"</span>, <span class="at">a =</span> <span class="st">"Alpha"</span>, <span class="at">L =</span> <span class="st">"Lambda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="tbl-nr2" class="anchored">
+
+<div id="wfyhlywxfz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#wfyhlywxfz table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#wfyhlywxfz thead, #wfyhlywxfz tbody, #wfyhlywxfz tfoot, #wfyhlywxfz tr, #wfyhlywxfz td, #wfyhlywxfz th {
+  border-style: none;
+}
+
+#wfyhlywxfz p {
+  margin: 0;
+  padding: 0;
+}
+
+#wfyhlywxfz .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#wfyhlywxfz .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#wfyhlywxfz .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#wfyhlywxfz .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#wfyhlywxfz .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#wfyhlywxfz .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#wfyhlywxfz .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#wfyhlywxfz .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#wfyhlywxfz .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#wfyhlywxfz .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#wfyhlywxfz .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#wfyhlywxfz .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#wfyhlywxfz .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#wfyhlywxfz .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#wfyhlywxfz .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wfyhlywxfz .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#wfyhlywxfz .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#wfyhlywxfz .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#wfyhlywxfz .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wfyhlywxfz .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#wfyhlywxfz .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wfyhlywxfz .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#wfyhlywxfz .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wfyhlywxfz .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wfyhlywxfz .gt_left {
+  text-align: left;
+}
+
+#wfyhlywxfz .gt_center {
+  text-align: center;
+}
+
+#wfyhlywxfz .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#wfyhlywxfz .gt_font_normal {
+  font-weight: normal;
+}
+
+#wfyhlywxfz .gt_font_bold {
+  font-weight: bold;
+}
+
+#wfyhlywxfz .gt_font_italic {
+  font-style: italic;
+}
+
+#wfyhlywxfz .gt_super {
+  font-size: 65%;
+}
+
+#wfyhlywxfz .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#wfyhlywxfz .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#wfyhlywxfz .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#wfyhlywxfz .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#wfyhlywxfz .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#wfyhlywxfz .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#wfyhlywxfz .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <caption>Table&nbsp;3.7:  <p>Newton Raphson for Gamma Distribution</p> </caption>
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Iteration">Iteration</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Alpha">Alpha</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Lambda">Lambda</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="iteration" class="gt_row gt_right">1</td>
+<td headers="a" class="gt_row gt_right">3.591920</td>
+<td headers="L" class="gt_row gt_right">0.5305643</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">2</td>
+<td headers="a" class="gt_row gt_right">3.631203</td>
+<td headers="L" class="gt_row gt_right">0.5305643</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">3</td>
+<td headers="a" class="gt_row gt_right">3.631450</td>
+<td headers="L" class="gt_row gt_right">0.5363040</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">4</td>
+<td headers="a" class="gt_row gt_right">3.665424</td>
+<td headers="L" class="gt_row gt_right">0.5364032</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">5</td>
+<td headers="a" class="gt_row gt_right">3.591920</td>
+<td headers="L" class="gt_row gt_right">0.5305643</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">6</td>
+<td headers="a" class="gt_row gt_right">3.631203</td>
+<td headers="L" class="gt_row gt_right">0.5305643</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">7</td>
+<td headers="a" class="gt_row gt_right">3.631450</td>
+<td headers="L" class="gt_row gt_right">0.5363040</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">8</td>
+<td headers="a" class="gt_row gt_right">3.665424</td>
+<td headers="L" class="gt_row gt_right">0.5364032</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</div>
+<p>As we can see, we didn’t quite reach the original values of a = 3 and L = 0.5, but with a tolerance of 0.005, we stayed close to these values. Usually, a lower tolerance such at 0.0001 is used and many more iterations are used to get the estimates closer to the true values.</p>
 </section>
 <section id="hazard-analysis-in-r" class="level2" data-number="3.16">
 <h2 data-number="3.16" class="anchored" data-anchor-id="hazard-analysis-in-r"><span class="header-section-number">3.16</span> Hazard Analysis in R</h2>
@@ -3030,7 +3943,6 @@ n= 10, number of events= 5 </code></pre>
 <section id="case-study" class="level2" data-number="3.17">
 <h2 data-number="3.17" class="anchored" data-anchor-id="case-study"><span class="header-section-number">3.17</span> Case Study</h2>
 <p>Let’s look at a new data set which contains information on patients with heart failure.</p>
-<p>https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0181001#sec005</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>heart <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/S1Data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -3471,9 +4383,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./Applications.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Applications</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

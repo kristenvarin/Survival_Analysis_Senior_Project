@@ -28,7 +28,8 @@ surv3 <- data.frame(time, status, group, age)
 #| label: tbl-surv3
 #| tbl-cap: "Example Data Set with Status, Time, Group, and Age"
 
-surv3 %>% gt(caption = "Example Data Set with Status, Time, Group, and Age") %>%
+surv3 %>% 
+  gt(caption = "Example Data Set with Status, Time, Group, and Age") %>%
   cols_label(time = "Time", status = "Status", group = "Group", age = "Age") 
 ```
 
@@ -164,7 +165,8 @@ tol = 0.0001
 # Initialize a vector to store the results
 iterations <- c(x)
 
-# While loop to repeat the process until the difference between ${x_n+1}$ and ${x_n}$ is less than the tolerance level
+# While loop to repeat the process until the difference between 
+# ${x_n+1}$ and ${x_n}$ is less than the tolerance level
 while (abs(f(x)) > tol){
   x = x - f(x)/fprime(x)
   x = round(x, 4)
@@ -182,43 +184,120 @@ The table shows the results of the Newton Raphson method. We can see that the va
 
 ## Newton Raphson for Parametized Functions: Gamma Distribution
 
-The above example shows the general process for the Newton Raphson iteration, but what about when we have a function with multiple parameters? Suppose we want to find the root of the gamma distribution, $f(x) = \frac{B^a}{\Gamma(a)}x^{a-1}e^{-Bx}$. First, we will take the natural log of the function and then take its derivative with respect to both a and B. We will then use the Newton Raphson method to find the values of B and a that maximizes the function.
+The above example shows the general process for the Newton Raphson iteration, but what about when we have a function with multiple parameters? Suppose we want to find the root of the gamma distribution, $f(x) = \frac{\lambda ^\alpha }{\Gamma(\alpha )}x^{\alpha -1}e^{-\lambda x}$. First, we will need to define a likelihood function for the gamma distribution. This function takes the product of the probability density function of the gamma distribution for each observation. The likelihood function for the gamma distribution is: $L(\alpha, \lambda) = \prod_{i=1}^{n} \frac{\lambda ^\alpha}{\Gamma(\alpha)}x_i^{\alpha-1}e^{-\lambda x_i}$. 
 
-We would start with an estimate for the root by using other methods such as Method of Moments Estimation. The Method of Moments Estimator of the parameters of the Gamma Distribution are: $\hat{a} = \frac{\bar{x}^2}{s^2}$ and $\hat{B} = \frac{\bar{x}}{s^2}$, where $\bar{x}$ is the sample mean and s is the sample standard deviation. We can then use these estimates as our initial estimates for the Newton Raphson method using the equation $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$ to find our second estimate for the root and then repeating the process until our tolerance requirement is met. Let's visualize this process in table @tbl-nr2 using the generated statistics below.
+We will take the natural log of the likelihood function which comes to be $ln(L(\alpha, \lambda)) = n\alpha ln(\lambda) - n ln(\Gamma(\alpha)) + (\alpha - 1)\sum_{i=1}^{n}ln(x_i) - \lambda \sum_{i=1}^{n}x_i$. 
+
+We will then need the partial derivatives and the second partial derivatives of the natural log of the likelihood function with respect to $\alpha$ and $\lambda$. 
+
+The first partial derivative with respect to $\alpha$ is: $\frac{\partial ln(L(\alpha, \lambda))}{\partial \alpha} = n ln(\lambda) - n \psi(\alpha) + \sum_{i=1}^{n}ln(x_i)$, where $\psi$ is the digamma function, or the derivative of the natural log of the gamma function. 
+
+The first partial derivative with respect to $\lambda$ is: $\frac{\partial ln(L(\alpha, \lambda))}{\partial \lambda} = \frac{n\alpha}{\lambda} - \sum_{i=1}^{n}x_i$.
+
+The second partial derivative with respect to $\alpha$ is: $\frac{\partial^2 ln(L(\alpha, \lambda))}{\partial \alpha^2} = -n \psi'(\alpha)$, where $\psi'$ is the trigamma function, or the second derivative of the natural log of the gamma function.
+
+The second partial derivative with respect to $\lambda$ is: $\frac{\partial^2 ln(L(\alpha, \lambda))}{\partial \lambda^2} = -\frac{n\alpha}{\lambda^2}$.
+
+Now, we will use the Newton Raphson method to find the values of $\alpha$ and $\lambda$ that maximize the function. Recall that the Newton Raphson method used the equation $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$. In this case, we will have two equations, one for $\alpha$ and one for $\lambda$. We will first need to choose initial estimates for $\alpha$ and $\lambda$. These initial estimates can be chosen using other methods such as Method of Moments Estimation. The Method of Moments Estimator of the parameters of the Gamma Distribution are: $\hat{\alpha} = \frac{\bar{x}^2}{s^2}$ and $\hat{\lambda} = \frac{\bar{x}}{s^2}$, where $\bar{x}$ is the sample mean and s is the sample standard deviation. We can then use these estimates as our initial estimates for the Newton Raphson method using the equation $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$ to find our second estimate for the root and then repeating the process until our tolerance requirement is met. Let's use R to generate a random sample from a gamma distribution and find the sample mean and sample standard deviation. These statistics are in @tbl-gamma.
 
 ```{r}
 # Generate random gamma distribution and summary statistics
 set.seed(1)
-gamma<- round(rgamma(10, shape = 3, rate = .5), 1)
+gamma <- round(rgamma(10, shape = 3, rate = .5), 1)
 
-sum(gamma)
-sum(log(gamma))
-mean(gamma)
-var(gamma)
+# Put these values into a data frame
+gamma_data <- data.frame("n" = 10, 
+                         "sum_x" = sum(gamma), 
+                         "sum_ln_x" = sum(log(gamma)), 
+                         "mean" = mean(gamma), 
+                         "variance" = var(gamma))
 ```
+
+```{r}
+#| label: tbl-gamma
+#| tbl-cap: "Summary Statistics for Gamma Distribution"
+
+# View data in a table
+gamma_data %>%
+  gt(caption = "Summary Statistics for Gamma Distribution") %>%
+  cols_label(n = "Number of Observations", 
+             sum_x = "Sum of x", 
+             sum_ln_x = "Sum of ln(x)", 
+             mean = "Mean", 
+             variance = "Variance")
+```
+
+We can now determine our initial estimates for $\alpha$ and $\lambda$ using the Method of Moments Estimation. The sample mean is 2.3 and the sample standard deviation is 1.1. We can use these values to find our initial estimates for $\alpha$ and $\lambda$. 
+
+```{r}
+# Method of Moments Estimation
+mean = 6.77
+variance = 12.76
+
+# Initial estimates for alpha and lambda
+a = mean^2 / variance
+L = mean / variance
+
+# Display initial estimates
+alpha_lambda <- data.frame("alpha" = a, "lambda" = L)
+```
+
+```{r}
+#| label: tbl-gamma2
+#| tbl-cap: "Initial Estimates for Gamma Distribution"
+
+# View data in a table
+alpha_lambda %>%
+  gt(caption = "Initial Estimates for Gamma Distribution") %>%
+  cols_label(alpha = "Alpha", 
+             lambda = "Lambda")
+```
+
+Now that we have all the information needed, we can start the Newton Raphson method. We will walk through the first iteration and then use R to do the rest. 
+
+To find the first updated estimates for $\alpha$ and $\lambda$, we will use the equations $\alpha_{n+1} = \alpha_n - \frac{f(\alpha_n)}{f'(\alpha_n)}$ and $\lambda_{n+1} = \lambda_n - \frac{f(\lambda_n)}{f'(\lambda_n)}$.
+
+We will start with our Method of Moments estimates of $\hat{\alpha} = 3.59192$ and $\hat{\lambda} = 0.5305643$. For alpha, the first iteration would look like: $\alpha_{1} = 3.59192 - \frac{n ln(\lambda) - n \psi(\alpha) + \sum_{i=1}^{n}ln(x_i)}{-n \psi'(\alpha)}$. Plugging in the values, we get $\alpha_{1} = 3.59192 - \frac{10 * ln(0.5305643) - 10 * digamma(3.59192) + 17.79487}{-10 * trigamma(3.59192)}$ = 3.631203. 
+
+For lambda, the first iteration would look like: $\lambda_{1} = 0.5305643 - \frac{\frac{n\alpha}{\lambda} - \sum_{i=1}^{n}x_i}{-\frac{n\alpha}{\lambda^2}}$. Plugging in the values, we get $\lambda_{1} = 0.5305643 - \frac{\frac{10 * 3.59192}{0.5305643} - 67.7}{-\frac{10 * 3.59192}{0.5305643^2}}$ = 0.5305643. 
+
+```{r}
+# Calculate the first iteration for alpha
+3.59192 - ((10 * log(0.5305643) - 10 * digamma(3.59192) + 17.79487) / 
+             (-10 * trigamma(3.59192)))
+
+# Calculate the first iteration for lambda
+0.5305643 - (((10 * 3.59192 / 0.5305643) - 67.7) / 
+               (-10 * 3.59192 / 0.5305643^2))
+```
+
+Now, we can continue this process using the new estimates of $\alpha$ and $\lambda$ until the difference between the current and previous estimates is less than a certain tolerance level. We will use a tolerance level of 0.005. Let's visualize this process in table @tbl-nr2. 
 
 ```{r}
 #| label: tbl-nr2
 #| tbl-cap: "Newton Raphson for Gamma Distribution"
 
-# Define functions
-afunc = function(a, L, n, sum_ln_x) a - ((n*log(L) - n * digamma(a) + sum_ln_x) / (-n * trigamma(a)))
+# Define functions using a for alpha and L for lambda
+afunc = function(a, L, n, sum_ln_x) a - 
+  ((n*log(L) - n * digamma(a) + sum_ln_x) / (-n * trigamma(a)))
+
 Lfunc = function(a, L, n, sum_x) L - (((n*a/L) - sum_x) / (-n * a / L^2))
 
 # Choose initial estimates
-a = 3.5
-L = .7
+a = 3.59192
+L = 0.5305643
 n = 10
 sum_ln_x = sum(log(gamma))
 sum_x = sum(gamma)
 
-# Use tolerance level of 0.1
-tol = 0.1
+# Use tolerance level of 0.005
+tol = 0.005
 
 # Initialize a vector to store the results
 iterations <- c(a, L)
 
-# While loop to repeat the process until the difference between a and a1 and L and L1 is less than the tolerance level
+# While loop to repeat the process until the difference between a and a1 and 
+# L and L1 is less than the tolerance level
 while (TRUE) {
   a1 <- afunc(a, L, n, sum_ln_x)
   L1 <- Lfunc(a, L, n, sum_x)
@@ -238,10 +317,10 @@ results <- data.frame(iteration = 1:length(iterations),
 # print the table
 results %>%
   gt(caption = "Newton Raphson for Gamma Distribution") %>%
-  cols_label(iteration = "Iteration", a = "a", L = "L")
+  cols_label(iteration = "Iteration", a = "Alpha", L = "Lambda")
 ```
 
-As we can see, we didn't quite reach the original values of a = 3 and L = 0.5, but with a tolerance of 0.1, we got close. Usually, a lower tolerance is used and many more iterations are needed, but this example demonstrates a similar process to how our statistical software will find the maximum likelihood estimates for our parameters.
+As we can see, we didn't quite reach the original values of a = 3 and L = 0.5, but with a tolerance of 0.005, we stayed close to these values. Usually, a lower tolerance such at 0.0001 is used and many more iterations are used to get the estimates closer to the true values. 
 
 ## Hazard Analysis in R
 
