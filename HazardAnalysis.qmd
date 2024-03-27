@@ -146,7 +146,7 @@ The equation used for this iteration looks like: $x_{n+1} = x_n - \frac{f(x_n)}{
 
 ## Newton Raphson Example
 
-Let's consider a simple example of a Newton Raphson iteration. Suppose we want to find the root of the function, $f(x) = x^3 +3x + 1$. First, we will take the derivative of the function, which will be $f'(x) = 3x^2 + 3$. We can then use the Newton Raphson method to find the root of the function. We will start with an initial estimate, $x_0 = 3$, and use the equation $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$ to find our second estimate for the root. In this case, $x_{n+1} = 3 - \frac{f(3)}{f'(3)}$ = $ 3 - \frac{3^3 + 3*3 + 1}{3*3^2 + 3}$ = $3 - \frac{37}{30}$ = $3 - 1.2333$ = $1.7667$. We can then use this value as our new estimate and repeat the process until the difference between ${x_n+1}$ and ${x_n}$ is less than a certain tolerance level. Let's visualize this process in table @tbl-nr1.
+Let's consider a simple example of a Newton Raphson iteration. Suppose we want to find the root of the function, $f(x) = x^3 +3x + 1$. First, we will take the derivative of the function, which will be $f'(x) = 3x^2 + 3$. We can then use the Newton Raphson method to find the root of the function. We will start with an initial estimate, $x_0 = 3$, and use the equation $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$ to find our second estimate for the root. In this case, $x_{n+1} = 3 - \frac{f(3)}{f'(3)} = 3 - \frac{3^3 + 3*3 + 1}{3*3^2 + 3}\ = 3 - \frac{37}{30} = 3 - 1.2333 = 1.7667$. We can then use this value as our new estimate and repeat the process until the difference between ${x_n+1}$ and ${x_n}$ is less than a certain tolerance level. Let's visualize this process in table @tbl-nr1.
 
 ```{r}
 #| label: tbl-nr1
@@ -184,13 +184,13 @@ The table shows the results of the Newton Raphson method. We can see that the va
 
 ## Newton Raphson for Parametized Functions: Gamma Distribution
 
-The above example shows the general process for the Newton Raphson iteration, but what about when we have a function with multiple parameters? Suppose we want to find the root of the gamma distribution, $f(x) = \frac{\lambda ^\alpha }{\Gamma(\alpha )}x^{\alpha -1}e^{-\lambda x}$. First, we will need to define a likelihood function for the gamma distribution. This function takes the product of the probability density function of the gamma distribution for each observation. The likelihood function for the gamma distribution is: $L(\alpha, \lambda) = \prod_{i=1}^{n} \frac{\lambda ^\alpha}{\Gamma(\alpha)}x_i^{\alpha-1}e^{-\lambda x_i}$. 
+The above example shows the general process for the Newton Raphson iteration, but what about when we have a function with multiple parameters? Suppose we want to find the root of the gamma distribution, $f(x) = \frac{\lambda ^\alpha }{\Gamma(\alpha )}x^{\alpha -1}e^{-\lambda x}$. First, we will need to define a likelihood function for the gamma distribution. This function takes the product of the probability density function of the gamma distribution for each observation. The likelihood function for the gamma distribution is: $L(\alpha, \lambda) = \prod_{i=1}^{n} \frac{\lambda ^\alpha}{\Gamma(\alpha)}x_i^{\alpha-1}e^{-\lambda x_i}$.
 
-We will take the natural log of the likelihood function which comes to be $ln(L(\alpha, \lambda)) = n\alpha ln(\lambda) - n ln(\Gamma(\alpha)) + (\alpha - 1)\sum_{i=1}^{n}ln(x_i) - \lambda \sum_{i=1}^{n}x_i$. 
+We will take the natural log of the likelihood function which comes to be $ln(L(\alpha, \lambda)) = n\alpha ln(\lambda) - n ln(\Gamma(\alpha)) + (\alpha - 1)\sum_{i=1}^{n}ln(x_i) - \lambda \sum_{i=1}^{n}x_i$.
 
-We will then need the partial derivatives and the second partial derivatives of the natural log of the likelihood function with respect to $\alpha$ and $\lambda$. 
+We will then need the partial derivatives and the second partial derivatives of the natural log of the likelihood function with respect to $\alpha$ and $\lambda$.
 
-The first partial derivative with respect to $\alpha$ is: $\frac{\partial ln(L(\alpha, \lambda))}{\partial \alpha} = n ln(\lambda) - n \psi(\alpha) + \sum_{i=1}^{n}ln(x_i)$, where $\psi$ is the digamma function, or the derivative of the natural log of the gamma function. 
+The first partial derivative with respect to $\alpha$ is: $\frac{\partial ln(L(\alpha, \lambda))}{\partial \alpha} = n ln(\lambda) - n \psi(\alpha) + \sum_{i=1}^{n}ln(x_i)$, where $\psi$ is the digamma function, or the derivative of the natural log of the gamma function.
 
 The first partial derivative with respect to $\lambda$ is: $\frac{\partial ln(L(\alpha, \lambda))}{\partial \lambda} = \frac{n\alpha}{\lambda} - \sum_{i=1}^{n}x_i$.
 
@@ -227,7 +227,7 @@ gamma_data %>%
              variance = "Variance")
 ```
 
-We can now determine our initial estimates for $\alpha$ and $\lambda$ using the Method of Moments Estimation. The sample mean is 2.3 and the sample standard deviation is 1.1. We can use these values to find our initial estimates for $\alpha$ and $\lambda$. 
+We can now determine our initial estimates for $\alpha$ and $\lambda$ using the Method of Moments Estimation. The sample mean is 2.3 and the sample standard deviation is 1.1. We can use these values to find our initial estimates for $\alpha$ and $\lambda$.
 
 ```{r}
 # Method of Moments Estimation
@@ -253,13 +253,13 @@ alpha_lambda %>%
              lambda = "Lambda")
 ```
 
-Now that we have all the information needed, we can start the Newton Raphson method. We will walk through the first iteration and then use R to do the rest. 
+Now that we have all the information needed, we can start the Newton Raphson method. We will walk through the first iteration and then use R to do the rest.
 
 To find the first updated estimates for $\alpha$ and $\lambda$, we will use the equations $\alpha_{n+1} = \alpha_n - \frac{f(\alpha_n)}{f'(\alpha_n)}$ and $\lambda_{n+1} = \lambda_n - \frac{f(\lambda_n)}{f'(\lambda_n)}$.
 
-We will start with our Method of Moments estimates of $\hat{\alpha} = 3.59192$ and $\hat{\lambda} = 0.5305643$. For alpha, the first iteration would look like: $\alpha_{1} = 3.59192 - \frac{n ln(\lambda) - n \psi(\alpha) + \sum_{i=1}^{n}ln(x_i)}{-n \psi'(\alpha)}$. Plugging in the values, we get $\alpha_{1} = 3.59192 - \frac{10 * ln(0.5305643) - 10 * digamma(3.59192) + 17.79487}{-10 * trigamma(3.59192)}$ = 3.631203. 
+We will start with our Method of Moments estimates of $\hat{\alpha} = 3.59192$ and $\hat{\lambda} = 0.5305643$. For alpha, the first iteration would look like: $\alpha_{1} = 3.59192 - \frac{n ln(\lambda) - n \psi(\alpha) + \sum_{i=1}^{n}ln(x_i)}{-n \psi'(\alpha)}$. Plugging in the values, we get $\alpha_{1} = 3.59192 - \frac{10 * ln(0.5305643) - 10 * digamma(3.59192) + 17.79487}{-10 * trigamma(3.59192)}$ = 3.631203.
 
-For lambda, the first iteration would look like: $\lambda_{1} = 0.5305643 - \frac{\frac{n\alpha}{\lambda} - \sum_{i=1}^{n}x_i}{-\frac{n\alpha}{\lambda^2}}$. Plugging in the values, we get $\lambda_{1} = 0.5305643 - \frac{\frac{10 * 3.59192}{0.5305643} - 67.7}{-\frac{10 * 3.59192}{0.5305643^2}}$ = 0.5305643. 
+For lambda, the first iteration would look like: $\lambda_{1} = 0.5305643 - \frac{\frac{n\alpha}{\lambda} - \sum_{i=1}^{n}x_i}{-\frac{n\alpha}{\lambda^2}}$. Plugging in the values, we get $\lambda_{1} = 0.5305643 - \frac{\frac{10 * 3.59192}{0.5305643} - 67.7}{-\frac{10 * 3.59192}{0.5305643^2}}$ = 0.5305643.
 
 ```{r}
 # Calculate the first iteration for alpha
@@ -271,7 +271,7 @@ For lambda, the first iteration would look like: $\lambda_{1} = 0.5305643 - \fra
                (-10 * 3.59192 / 0.5305643^2))
 ```
 
-Now, we can continue this process using the new estimates of $\alpha$ and $\lambda$ until the difference between the current and previous estimates is less than a certain tolerance level. We will use a tolerance level of 0.005. Let's visualize this process in table @tbl-nr2. 
+Now, we can continue this process using the new estimates of $\alpha$ and $\lambda$ until the difference between the current and previous estimates is less than a certain tolerance level. We will use a tolerance level of 0.005. Let's visualize this process in table @tbl-nr2.
 
 ```{r}
 #| label: tbl-nr2
@@ -320,7 +320,7 @@ results %>%
   cols_label(iteration = "Iteration", a = "Alpha", L = "Lambda")
 ```
 
-As we can see, we didn't quite reach the original values of a = 3 and L = 0.5, but with a tolerance of 0.005, we stayed close to these values. Usually, a lower tolerance such at 0.0001 is used and many more iterations are used to get the estimates closer to the true values. 
+As we can see, we didn't quite reach the original values of a = 3 and L = 0.5, but with a tolerance of 0.005, we stayed close to these values. Usually, a lower tolerance such at 0.0001 is used and many more iterations are used to get the estimates closer to the true values.
 
 ## Hazard Analysis in R
 
