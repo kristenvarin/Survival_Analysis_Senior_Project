@@ -265,8 +265,6 @@ Now that we can interpret the results, let's take a look at some real data.
 
 Let's look at a new data set which contains information on patients with heart failure.
 
-https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0181001#sec005
-
 ```{r}
 heart <- read_csv("data/S1Data.csv")
 ```
