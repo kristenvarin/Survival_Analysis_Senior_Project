@@ -10,7 +10,7 @@ To demonstrate survival analysis, an example data set was created including ten 
 
 ```{r}
 # Load Packages
-library(tidyverse)
+library(tidyverse) |> suppressPackageStartupMessages()
 library(knitr)
 library(survival)
 library(ggsurvfit)

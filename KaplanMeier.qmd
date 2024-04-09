@@ -14,7 +14,7 @@ Luckily, modern software makes these calculations easy and fast, as well as plot
 
 ```{r}
 # Load Packages
-library(tidyverse) 
+library(tidyverse) |> suppressPackageStartupMessages()
 library(knitr)
 library(survival)
 library(ggsurvfit)
@@ -24,7 +24,6 @@ library(gt)
 ```{r}
 # Create data set
 id <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-#id <- c(5, 5, 7, 7, 8, 8, 9, 9, 1, 1)
 time <- c(1, 2, 10, 4, 5, 6, 10, 8, 9, 10)
 status <- c(1, 1, 0, 0, 1, 0, 0, 1, 1, 0)
 censor <- data.frame(id, time, status)
@@ -119,7 +118,7 @@ round(log_rank, 2) %>%
              O2t = "Observed Events in Group 2", 
              Ot = "Total Observed Events", 
              E1t = "Expected Events in Group 1", 
-             E2t = "Expected Events in Group 2")
+             E2t = "Expected Events in Group 2") 
 ```
 
 To test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time, a test statistics is needed. For the Log-Rank test, a Chi-Square test statistic is used because the data follows a Chi-Square curve rather than a normal distribution. The Chi-Square test statistic is calculated by the formula $X^2 = \sum_{i=1}^k \frac{(\sum{O_{it}} - \sum{E_{it}})^2}{\sum{Vi}}$, where $\sum_{0}^T{O_{it}}$ is the sum of the observed number of events in group i over the entire time interval and $\sum_{0}^T{E_{it}}$ is the sum of the expected number of events in group i over the entire time interval. The difference of the sums of these two values are divided by the sum of the variance. The variance for group 1 at time t is calculated by the formula $V_{1t} = \frac{N_{1t} \times N_{2t} \times O_{t} \times (N_{t} - O_{t})}{N_{t}^2 \times (N_{t} - 1)}$ (@collet). The variance for group 2 is calculated similarly, and the total variance is calculated by the formula $V_{t} = V_{1t} + V_{2t}$. @tbl-logrank2 shows the calculation of the Chi-Square test statistic for the data set. In the table, $V1t$ is the variance of the number of events at time t in group 1, $V2t$ is the variance of the number of events at time t in group 2, $Vt$ is the total variance of the number of events across both groups at time t, $sum_{Vt}$ is the cumulative sum of the total variance across all times, and $X2$ is the Chi-Square test statistic.

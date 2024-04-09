@@ -8,7 +8,7 @@ We will again create a simple data set to demonstrate the process. Let's recall 
 
 ```{r}
 # Load Packages
-library(tidyverse) 
+library(tidyverse) |> suppressPackageStartupMessages()
 library(knitr)
 library(survival)
 library(ggsurvfit)
@@ -342,7 +342,7 @@ Now that we can interpret the results, let's take a look at some real data.
 
 ## Case Study
 
-Let's look at a new data set which contains information on patients with heart failure.
+Let's look at a new data set which contains information on patients with heart failure. The data set contains data on heart failure patients over 40 years old who were admitted to the Institute of Cardiology at the Allied hospital Faisalabad-Pakistan between April and December of 2015. All of the patients in the data set had left ventricular systolic dysfunction and belonged to NYHA class III and IV stages of heart failure (@plosone). 
 
 ```{r}
 heart <- read_csv("data/S1Data.csv")
@@ -354,7 +354,7 @@ First, lets view the first 6 survival times.
 head(Surv(heart$TIME, heart$Event))
 ```
 
-Let's run a cox proportional hazards model to see if blood pressure is a significant predictor of the hazard of death for heart failure patients. In this data set, blood pressure is a binary variable where 0 indicates normal blood pressure and 1 indicates high blood pressure. It is called BP in the data set.
+Let's fit a cox proportional hazards model to see if blood pressure is a significant predictor of the hazard of death for heart failure patients. In this data set, blood pressure is a binary variable where 0 indicates normal blood pressure and 1 indicates high blood pressure. It is called BP in the data set.
 
 ```{r}
 h1 <- coxph(Surv(TIME, Event) ~ BP, data = heart, ties = "breslow")

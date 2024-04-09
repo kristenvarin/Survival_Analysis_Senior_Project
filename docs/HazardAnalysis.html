@@ -233,56 +233,44 @@ div.csl-indent {
 <p>We will again create a simple data set to demonstrate the process. Let’s recall the <code>surv2</code> data set we created earlier, now with an additional variable, age <a href="#tbl-surv3">Table&nbsp;<span>3.1</span></a>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Packages</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.3     ✔ readr     2.1.4
-✔ forcats   1.0.0     ✔ stringr   1.5.0
-✔ ggplot2   3.4.3     ✔ tibble    3.2.1
-✔ lubridate 1.9.2     ✔ tidyr     1.3.0
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggsurvfit)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="sc">|&gt;</span> <span class="fu">suppressPackageStartupMessages</span>()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival) <span class="sc">|&gt;</span> <span class="fu">suppressPackageStartupMessages</span>()</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggsurvfit)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Recreate surv2 and add age variable</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">10</span>, <span class="dv">6</span>, <span class="dv">1</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span> ,<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">62</span>, <span class="dv">37</span>, <span class="dv">67</span>, <span class="dv">44</span>, <span class="dv">70</span>, <span class="dv">50</span>, <span class="dv">45</span>, <span class="dv">61</span>, <span class="dv">62</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>surv3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(time, status, group, age) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Recreate surv2 and add age variable</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">10</span>, <span class="dv">6</span>, <span class="dv">1</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span> ,<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">62</span>, <span class="dv">37</span>, <span class="dv">67</span>, <span class="dv">44</span>, <span class="dv">70</span>, <span class="dv">50</span>, <span class="dv">45</span>, <span class="dv">61</span>, <span class="dv">62</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>surv3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(time, status, group, age) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>surv3 <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with Status, Time, Group, and Age"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>, <span class="at">group =</span> <span class="st">"Group"</span>, <span class="at">age =</span> <span class="st">"Age"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>surv3 <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with Status, Time, Group, and Age"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>, <span class="at">group =</span> <span class="st">"Group"</span>, <span class="at">age =</span> <span class="st">"Age"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="tbl-surv3" class="anchored">
 
-<div id="sifggcfnqc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#sifggcfnqc table {
+<div id="rmfzmhvvkx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rmfzmhvvkx table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#sifggcfnqc thead, #sifggcfnqc tbody, #sifggcfnqc tfoot, #sifggcfnqc tr, #sifggcfnqc td, #sifggcfnqc th {
+#rmfzmhvvkx thead, #rmfzmhvvkx tbody, #rmfzmhvvkx tfoot, #rmfzmhvvkx tr, #rmfzmhvvkx td, #rmfzmhvvkx th {
   border-style: none;
 }
 
-#sifggcfnqc p {
+#rmfzmhvvkx p {
   margin: 0;
   padding: 0;
 }
 
-#sifggcfnqc .gt_table {
+#rmfzmhvvkx .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -308,12 +296,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#sifggcfnqc .gt_caption {
+#rmfzmhvvkx .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#sifggcfnqc .gt_title {
+#rmfzmhvvkx .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -325,7 +313,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#sifggcfnqc .gt_subtitle {
+#rmfzmhvvkx .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -337,7 +325,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#sifggcfnqc .gt_heading {
+#rmfzmhvvkx .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -349,13 +337,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#sifggcfnqc .gt_bottom_border {
+#rmfzmhvvkx .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#sifggcfnqc .gt_col_headings {
+#rmfzmhvvkx .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -370,7 +358,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#sifggcfnqc .gt_col_heading {
+#rmfzmhvvkx .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -390,7 +378,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#sifggcfnqc .gt_column_spanner_outer {
+#rmfzmhvvkx .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -402,15 +390,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#sifggcfnqc .gt_column_spanner_outer:first-child {
+#rmfzmhvvkx .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#sifggcfnqc .gt_column_spanner_outer:last-child {
+#rmfzmhvvkx .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#sifggcfnqc .gt_column_spanner {
+#rmfzmhvvkx .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -422,11 +410,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#sifggcfnqc .gt_spanner_row {
+#rmfzmhvvkx .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#sifggcfnqc .gt_group_heading {
+#rmfzmhvvkx .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -452,7 +440,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#sifggcfnqc .gt_empty_group_heading {
+#rmfzmhvvkx .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -467,15 +455,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#sifggcfnqc .gt_from_md > :first-child {
+#rmfzmhvvkx .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#sifggcfnqc .gt_from_md > :last-child {
+#rmfzmhvvkx .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#sifggcfnqc .gt_row {
+#rmfzmhvvkx .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -494,7 +482,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#sifggcfnqc .gt_stub {
+#rmfzmhvvkx .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -507,7 +495,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#sifggcfnqc .gt_stub_row_group {
+#rmfzmhvvkx .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -521,15 +509,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#sifggcfnqc .gt_row_group_first td {
+#rmfzmhvvkx .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#sifggcfnqc .gt_row_group_first th {
+#rmfzmhvvkx .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#sifggcfnqc .gt_summary_row {
+#rmfzmhvvkx .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -539,16 +527,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#sifggcfnqc .gt_first_summary_row {
+#rmfzmhvvkx .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#sifggcfnqc .gt_first_summary_row.thick {
+#rmfzmhvvkx .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#sifggcfnqc .gt_last_summary_row {
+#rmfzmhvvkx .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -558,7 +546,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#sifggcfnqc .gt_grand_summary_row {
+#rmfzmhvvkx .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -568,7 +556,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#sifggcfnqc .gt_first_grand_summary_row {
+#rmfzmhvvkx .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -578,7 +566,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#sifggcfnqc .gt_last_grand_summary_row_top {
+#rmfzmhvvkx .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -588,11 +576,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#sifggcfnqc .gt_striped {
+#rmfzmhvvkx .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#sifggcfnqc .gt_table_body {
+#rmfzmhvvkx .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -601,7 +589,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#sifggcfnqc .gt_footnotes {
+#rmfzmhvvkx .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -615,7 +603,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#sifggcfnqc .gt_footnote {
+#rmfzmhvvkx .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -624,7 +612,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#sifggcfnqc .gt_sourcenotes {
+#rmfzmhvvkx .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -638,7 +626,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#sifggcfnqc .gt_sourcenote {
+#rmfzmhvvkx .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -646,63 +634,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#sifggcfnqc .gt_left {
+#rmfzmhvvkx .gt_left {
   text-align: left;
 }
 
-#sifggcfnqc .gt_center {
+#rmfzmhvvkx .gt_center {
   text-align: center;
 }
 
-#sifggcfnqc .gt_right {
+#rmfzmhvvkx .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#sifggcfnqc .gt_font_normal {
+#rmfzmhvvkx .gt_font_normal {
   font-weight: normal;
 }
 
-#sifggcfnqc .gt_font_bold {
+#rmfzmhvvkx .gt_font_bold {
   font-weight: bold;
 }
 
-#sifggcfnqc .gt_font_italic {
+#rmfzmhvvkx .gt_font_italic {
   font-style: italic;
 }
 
-#sifggcfnqc .gt_super {
+#rmfzmhvvkx .gt_super {
   font-size: 65%;
 }
 
-#sifggcfnqc .gt_footnote_marks {
+#rmfzmhvvkx .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#sifggcfnqc .gt_asterisk {
+#rmfzmhvvkx .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#sifggcfnqc .gt_indent_1 {
+#rmfzmhvvkx .gt_indent_1 {
   text-indent: 5px;
 }
 
-#sifggcfnqc .gt_indent_2 {
+#rmfzmhvvkx .gt_indent_2 {
   text-indent: 10px;
 }
 
-#sifggcfnqc .gt_indent_3 {
+#rmfzmhvvkx .gt_indent_3 {
   text-indent: 15px;
 }
 
-#sifggcfnqc .gt_indent_4 {
+#rmfzmhvvkx .gt_indent_4 {
   text-indent: 20px;
 }
 
-#sifggcfnqc .gt_indent_5 {
+#rmfzmhvvkx .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -800,34 +788,34 @@ div.csl-indent {
 <h2 data-number="3.8" class="anchored" data-anchor-id="example-data"><span class="header-section-number">3.8</span> Example Data</h2>
 <p>For the first example, lets only use one predictor variable, group. The data we will use is shown in <a href="#tbl-surv4">Table&nbsp;<span>3.2</span></a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>surv4 <span class="ot">&lt;-</span> surv3 <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, time, status, group) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(group, time)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>surv4 <span class="sc">%&gt;%</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with ID, Time, Status, and Group"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">id =</span> <span class="st">"ID"</span>, <span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>, <span class="at">group =</span> <span class="st">"Group"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>surv4 <span class="ot">&lt;-</span> surv3 <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, time, status, group) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(group, time)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>surv4 <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with ID, Time, Status, and Group"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">id =</span> <span class="st">"ID"</span>, <span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>, <span class="at">group =</span> <span class="st">"Group"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="tbl-surv4" class="anchored">
 
-<div id="byozqccchp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#byozqccchp table {
+<div id="suxjqrveac" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#suxjqrveac table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#byozqccchp thead, #byozqccchp tbody, #byozqccchp tfoot, #byozqccchp tr, #byozqccchp td, #byozqccchp th {
+#suxjqrveac thead, #suxjqrveac tbody, #suxjqrveac tfoot, #suxjqrveac tr, #suxjqrveac td, #suxjqrveac th {
   border-style: none;
 }
 
-#byozqccchp p {
+#suxjqrveac p {
   margin: 0;
   padding: 0;
 }
 
-#byozqccchp .gt_table {
+#suxjqrveac .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -853,12 +841,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#byozqccchp .gt_caption {
+#suxjqrveac .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#byozqccchp .gt_title {
+#suxjqrveac .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -870,7 +858,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#byozqccchp .gt_subtitle {
+#suxjqrveac .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -882,7 +870,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#byozqccchp .gt_heading {
+#suxjqrveac .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -894,13 +882,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#byozqccchp .gt_bottom_border {
+#suxjqrveac .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#byozqccchp .gt_col_headings {
+#suxjqrveac .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -915,7 +903,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#byozqccchp .gt_col_heading {
+#suxjqrveac .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -935,7 +923,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#byozqccchp .gt_column_spanner_outer {
+#suxjqrveac .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -947,15 +935,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#byozqccchp .gt_column_spanner_outer:first-child {
+#suxjqrveac .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#byozqccchp .gt_column_spanner_outer:last-child {
+#suxjqrveac .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#byozqccchp .gt_column_spanner {
+#suxjqrveac .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -967,11 +955,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#byozqccchp .gt_spanner_row {
+#suxjqrveac .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#byozqccchp .gt_group_heading {
+#suxjqrveac .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -997,7 +985,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#byozqccchp .gt_empty_group_heading {
+#suxjqrveac .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1012,15 +1000,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#byozqccchp .gt_from_md > :first-child {
+#suxjqrveac .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#byozqccchp .gt_from_md > :last-child {
+#suxjqrveac .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#byozqccchp .gt_row {
+#suxjqrveac .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1039,7 +1027,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#byozqccchp .gt_stub {
+#suxjqrveac .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1052,7 +1040,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#byozqccchp .gt_stub_row_group {
+#suxjqrveac .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1066,15 +1054,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#byozqccchp .gt_row_group_first td {
+#suxjqrveac .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#byozqccchp .gt_row_group_first th {
+#suxjqrveac .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#byozqccchp .gt_summary_row {
+#suxjqrveac .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1084,16 +1072,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#byozqccchp .gt_first_summary_row {
+#suxjqrveac .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#byozqccchp .gt_first_summary_row.thick {
+#suxjqrveac .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#byozqccchp .gt_last_summary_row {
+#suxjqrveac .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1103,7 +1091,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#byozqccchp .gt_grand_summary_row {
+#suxjqrveac .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1113,7 +1101,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#byozqccchp .gt_first_grand_summary_row {
+#suxjqrveac .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1123,7 +1111,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#byozqccchp .gt_last_grand_summary_row_top {
+#suxjqrveac .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1133,11 +1121,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#byozqccchp .gt_striped {
+#suxjqrveac .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#byozqccchp .gt_table_body {
+#suxjqrveac .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1146,7 +1134,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#byozqccchp .gt_footnotes {
+#suxjqrveac .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1160,7 +1148,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#byozqccchp .gt_footnote {
+#suxjqrveac .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1169,7 +1157,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#byozqccchp .gt_sourcenotes {
+#suxjqrveac .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1183,7 +1171,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#byozqccchp .gt_sourcenote {
+#suxjqrveac .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1191,63 +1179,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#byozqccchp .gt_left {
+#suxjqrveac .gt_left {
   text-align: left;
 }
 
-#byozqccchp .gt_center {
+#suxjqrveac .gt_center {
   text-align: center;
 }
 
-#byozqccchp .gt_right {
+#suxjqrveac .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#byozqccchp .gt_font_normal {
+#suxjqrveac .gt_font_normal {
   font-weight: normal;
 }
 
-#byozqccchp .gt_font_bold {
+#suxjqrveac .gt_font_bold {
   font-weight: bold;
 }
 
-#byozqccchp .gt_font_italic {
+#suxjqrveac .gt_font_italic {
   font-style: italic;
 }
 
-#byozqccchp .gt_super {
+#suxjqrveac .gt_super {
   font-size: 65%;
 }
 
-#byozqccchp .gt_footnote_marks {
+#suxjqrveac .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#byozqccchp .gt_asterisk {
+#suxjqrveac .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#byozqccchp .gt_indent_1 {
+#suxjqrveac .gt_indent_1 {
   text-indent: 5px;
 }
 
-#byozqccchp .gt_indent_2 {
+#suxjqrveac .gt_indent_2 {
   text-indent: 10px;
 }
 
-#byozqccchp .gt_indent_3 {
+#suxjqrveac .gt_indent_3 {
   text-indent: 15px;
 }
 
-#byozqccchp .gt_indent_4 {
+#suxjqrveac .gt_indent_4 {
   text-indent: 20px;
 }
 
-#byozqccchp .gt_indent_5 {
+#suxjqrveac .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1327,37 +1315,37 @@ div.csl-indent {
 <h2 data-number="3.11" class="anchored" data-anchor-id="fitting-the-partial-log-likelihood-equation"><span class="header-section-number">3.11</span> Fitting the Partial Log Likelihood Equation</h2>
 <p>To fit our likelihood function, we must order all of the event times. For group 1, there are only two times of event, time t = 7 for individual 2 and time t = 8 for individual 4. So, we will order the event times as <span class="math inline">\(t_{(1)} &lt; t_{(2)}\)</span>, where <span class="math inline">\(t_{(1)}\)</span> represents the event time for individual 2 and <span class="math inline">\(t_{(2)}\)</span> represents the event time for individual 4. Similarly for group 2, there are events at times 1, 3, and 6, so we will order the event times as <span class="math inline">\(t_{(1)} &lt; t_{(2)} &lt; t_{(3)}\)</span>, representing the event times for individuals 10, 6, and 9. We will also need to calculate the risk set at each time, which is shown below in <a href="#tbl-surv5">Table&nbsp;<span>3.3</span></a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>risk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">7</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>surv5 <span class="ot">&lt;-</span> surv4 <span class="sc">%&gt;%</span> </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(time) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">risk_set =</span> risk) <span class="sc">%&gt;%</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, group, time, status, risk_set) </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>surv5 <span class="sc">%&gt;%</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with Status, Group, Time, and Risk Set"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">id =</span> <span class="st">"ID"</span>, <span class="at">group =</span> <span class="st">"Group"</span>, <span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>, </span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">risk_set =</span> <span class="st">"Risk Set"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>risk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">7</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>surv5 <span class="ot">&lt;-</span> surv4 <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(time) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">risk_set =</span> risk) <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, group, time, status, risk_set) </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>surv5 <span class="sc">%&gt;%</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with Status, Group, Time, and Risk Set"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">id =</span> <span class="st">"ID"</span>, <span class="at">group =</span> <span class="st">"Group"</span>, <span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>, </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">risk_set =</span> <span class="st">"Risk Set"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="tbl-surv5" class="anchored">
 
-<div id="kbfaqldbcv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#kbfaqldbcv table {
+<div id="tlkyftxauy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#tlkyftxauy table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#kbfaqldbcv thead, #kbfaqldbcv tbody, #kbfaqldbcv tfoot, #kbfaqldbcv tr, #kbfaqldbcv td, #kbfaqldbcv th {
+#tlkyftxauy thead, #tlkyftxauy tbody, #tlkyftxauy tfoot, #tlkyftxauy tr, #tlkyftxauy td, #tlkyftxauy th {
   border-style: none;
 }
 
-#kbfaqldbcv p {
+#tlkyftxauy p {
   margin: 0;
   padding: 0;
 }
 
-#kbfaqldbcv .gt_table {
+#tlkyftxauy .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1383,12 +1371,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#kbfaqldbcv .gt_caption {
+#tlkyftxauy .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#kbfaqldbcv .gt_title {
+#tlkyftxauy .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1400,7 +1388,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#kbfaqldbcv .gt_subtitle {
+#tlkyftxauy .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1412,7 +1400,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#kbfaqldbcv .gt_heading {
+#tlkyftxauy .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1424,13 +1412,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#kbfaqldbcv .gt_bottom_border {
+#tlkyftxauy .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#kbfaqldbcv .gt_col_headings {
+#tlkyftxauy .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1445,7 +1433,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#kbfaqldbcv .gt_col_heading {
+#tlkyftxauy .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1465,7 +1453,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#kbfaqldbcv .gt_column_spanner_outer {
+#tlkyftxauy .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1477,15 +1465,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#kbfaqldbcv .gt_column_spanner_outer:first-child {
+#tlkyftxauy .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#kbfaqldbcv .gt_column_spanner_outer:last-child {
+#tlkyftxauy .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#kbfaqldbcv .gt_column_spanner {
+#tlkyftxauy .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1497,11 +1485,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#kbfaqldbcv .gt_spanner_row {
+#tlkyftxauy .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#kbfaqldbcv .gt_group_heading {
+#tlkyftxauy .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1527,7 +1515,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#kbfaqldbcv .gt_empty_group_heading {
+#tlkyftxauy .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1542,15 +1530,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#kbfaqldbcv .gt_from_md > :first-child {
+#tlkyftxauy .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#kbfaqldbcv .gt_from_md > :last-child {
+#tlkyftxauy .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#kbfaqldbcv .gt_row {
+#tlkyftxauy .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1569,7 +1557,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#kbfaqldbcv .gt_stub {
+#tlkyftxauy .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1582,7 +1570,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#kbfaqldbcv .gt_stub_row_group {
+#tlkyftxauy .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1596,15 +1584,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#kbfaqldbcv .gt_row_group_first td {
+#tlkyftxauy .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#kbfaqldbcv .gt_row_group_first th {
+#tlkyftxauy .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#kbfaqldbcv .gt_summary_row {
+#tlkyftxauy .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1614,16 +1602,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#kbfaqldbcv .gt_first_summary_row {
+#tlkyftxauy .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#kbfaqldbcv .gt_first_summary_row.thick {
+#tlkyftxauy .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#kbfaqldbcv .gt_last_summary_row {
+#tlkyftxauy .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1633,7 +1621,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#kbfaqldbcv .gt_grand_summary_row {
+#tlkyftxauy .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1643,7 +1631,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#kbfaqldbcv .gt_first_grand_summary_row {
+#tlkyftxauy .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1653,7 +1641,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#kbfaqldbcv .gt_last_grand_summary_row_top {
+#tlkyftxauy .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1663,11 +1651,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#kbfaqldbcv .gt_striped {
+#tlkyftxauy .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#kbfaqldbcv .gt_table_body {
+#tlkyftxauy .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1676,7 +1664,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#kbfaqldbcv .gt_footnotes {
+#tlkyftxauy .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1690,7 +1678,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#kbfaqldbcv .gt_footnote {
+#tlkyftxauy .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1699,7 +1687,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#kbfaqldbcv .gt_sourcenotes {
+#tlkyftxauy .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1713,7 +1701,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#kbfaqldbcv .gt_sourcenote {
+#tlkyftxauy .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1721,63 +1709,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#kbfaqldbcv .gt_left {
+#tlkyftxauy .gt_left {
   text-align: left;
 }
 
-#kbfaqldbcv .gt_center {
+#tlkyftxauy .gt_center {
   text-align: center;
 }
 
-#kbfaqldbcv .gt_right {
+#tlkyftxauy .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#kbfaqldbcv .gt_font_normal {
+#tlkyftxauy .gt_font_normal {
   font-weight: normal;
 }
 
-#kbfaqldbcv .gt_font_bold {
+#tlkyftxauy .gt_font_bold {
   font-weight: bold;
 }
 
-#kbfaqldbcv .gt_font_italic {
+#tlkyftxauy .gt_font_italic {
   font-style: italic;
 }
 
-#kbfaqldbcv .gt_super {
+#tlkyftxauy .gt_super {
   font-size: 65%;
 }
 
-#kbfaqldbcv .gt_footnote_marks {
+#tlkyftxauy .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#kbfaqldbcv .gt_asterisk {
+#tlkyftxauy .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#kbfaqldbcv .gt_indent_1 {
+#tlkyftxauy .gt_indent_1 {
   text-indent: 5px;
 }
 
-#kbfaqldbcv .gt_indent_2 {
+#tlkyftxauy .gt_indent_2 {
   text-indent: 10px;
 }
 
-#kbfaqldbcv .gt_indent_3 {
+#tlkyftxauy .gt_indent_3 {
   text-indent: 15px;
 }
 
-#kbfaqldbcv .gt_indent_4 {
+#tlkyftxauy .gt_indent_4 {
   text-indent: 20px;
 }
 
-#kbfaqldbcv .gt_indent_5 {
+#tlkyftxauy .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1873,52 +1861,52 @@ div.csl-indent {
 <h2 data-number="3.14" class="anchored" data-anchor-id="newton-raphson-example"><span class="header-section-number">3.14</span> Newton Raphson Example</h2>
 <p>Let’s consider a simple example of a Newton Raphson iteration. Suppose we want to find the root of the function, <span class="math inline">\(f(x) = x^3 +3x + 1\)</span>. First, we will take the derivative of the function, which will be <span class="math inline">\(f'(x) = 3x^2 + 3\)</span>. We can then use the Newton Raphson method to find the root of the function. We will start with an initial estimate, <span class="math inline">\(x_0 = 3\)</span>, and use the equation <span class="math inline">\(x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\)</span> to find our second estimate for the root. In this case, <span class="math inline">\(x_{n+1} = 3 - \frac{f(3)}{f'(3)} = 3 - \frac{3^3 + 3*3 + 1}{3*3^2 + 3}\ = 3 - \frac{37}{30} = 3 - 1.2333 = 1.7667\)</span>. We can then use this value as our new estimate and repeat the process until the difference between <span class="math inline">\({x_n+1}\)</span> and <span class="math inline">\({x_n}\)</span> is less than a certain tolerance level. Let’s visualize this process in table <a href="#tbl-nr1">Table&nbsp;<span>3.4</span></a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define function and its derivative</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">=</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> <span class="dv">3</span><span class="sc">*</span>x <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>fprime <span class="ot">=</span> <span class="cf">function</span>(x) <span class="dv">3</span><span class="sc">*</span>x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose initial estimate to be 3</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="dv">3</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Use tolerance level of 0.0001</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>tol <span class="ot">=</span> <span class="fl">0.0001</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize a vector to store the results</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(x)</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co"># While loop to repeat the process until the difference between </span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ${x_n+1}$ and ${x_n}$ is less than the tolerance level</span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="fu">abs</span>(<span class="fu">f</span>(x)) <span class="sc">&gt;</span> tol){</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> x <span class="sc">-</span> <span class="fu">f</span>(x)<span class="sc">/</span><span class="fu">fprime</span>(x)</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> <span class="fu">round</span>(x, <span class="dv">4</span>)</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(iterations, x)  <span class="co"># Store the current value of x</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a data frame with results</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">iteration =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(iterations), <span class="at">x =</span> iterations)</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Newton Raphson Iteration"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">iteration =</span> <span class="st">"Iteration"</span>, <span class="at">x =</span> <span class="st">"x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define function and its derivative</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">=</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> <span class="dv">3</span><span class="sc">*</span>x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fprime <span class="ot">=</span> <span class="cf">function</span>(x) <span class="dv">3</span><span class="sc">*</span>x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose initial estimate to be 3</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="dv">3</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Use tolerance level of 0.0001</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>tol <span class="ot">=</span> <span class="fl">0.0001</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize a vector to store the results</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(x)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># While loop to repeat the process until the difference between </span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ${x_n+1}$ and ${x_n}$ is less than the tolerance level</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="fu">abs</span>(<span class="fu">f</span>(x)) <span class="sc">&gt;</span> tol){</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> x <span class="sc">-</span> <span class="fu">f</span>(x)<span class="sc">/</span><span class="fu">fprime</span>(x)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> <span class="fu">round</span>(x, <span class="dv">4</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(iterations, x)  <span class="co"># Store the current value of x</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a data frame with results</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">iteration =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(iterations), <span class="at">x =</span> iterations)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Newton Raphson Iteration"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">iteration =</span> <span class="st">"Iteration"</span>, <span class="at">x =</span> <span class="st">"x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="tbl-nr1" class="anchored">
 
-<div id="omznckfqup" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#omznckfqup table {
+<div id="qptldqglap" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qptldqglap table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#omznckfqup thead, #omznckfqup tbody, #omznckfqup tfoot, #omznckfqup tr, #omznckfqup td, #omznckfqup th {
+#qptldqglap thead, #qptldqglap tbody, #qptldqglap tfoot, #qptldqglap tr, #qptldqglap td, #qptldqglap th {
   border-style: none;
 }
 
-#omznckfqup p {
+#qptldqglap p {
   margin: 0;
   padding: 0;
 }
 
-#omznckfqup .gt_table {
+#qptldqglap .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1944,12 +1932,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#omznckfqup .gt_caption {
+#qptldqglap .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#omznckfqup .gt_title {
+#qptldqglap .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1961,7 +1949,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#omznckfqup .gt_subtitle {
+#qptldqglap .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1973,7 +1961,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#omznckfqup .gt_heading {
+#qptldqglap .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1985,13 +1973,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#omznckfqup .gt_bottom_border {
+#qptldqglap .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#omznckfqup .gt_col_headings {
+#qptldqglap .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2006,7 +1994,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#omznckfqup .gt_col_heading {
+#qptldqglap .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2026,7 +2014,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#omznckfqup .gt_column_spanner_outer {
+#qptldqglap .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2038,15 +2026,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#omznckfqup .gt_column_spanner_outer:first-child {
+#qptldqglap .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#omznckfqup .gt_column_spanner_outer:last-child {
+#qptldqglap .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#omznckfqup .gt_column_spanner {
+#qptldqglap .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2058,11 +2046,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#omznckfqup .gt_spanner_row {
+#qptldqglap .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#omznckfqup .gt_group_heading {
+#qptldqglap .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2088,7 +2076,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#omznckfqup .gt_empty_group_heading {
+#qptldqglap .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2103,15 +2091,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#omznckfqup .gt_from_md > :first-child {
+#qptldqglap .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#omznckfqup .gt_from_md > :last-child {
+#qptldqglap .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#omznckfqup .gt_row {
+#qptldqglap .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2130,7 +2118,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#omznckfqup .gt_stub {
+#qptldqglap .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2143,7 +2131,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#omznckfqup .gt_stub_row_group {
+#qptldqglap .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2157,15 +2145,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#omznckfqup .gt_row_group_first td {
+#qptldqglap .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#omznckfqup .gt_row_group_first th {
+#qptldqglap .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#omznckfqup .gt_summary_row {
+#qptldqglap .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2175,16 +2163,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#omznckfqup .gt_first_summary_row {
+#qptldqglap .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#omznckfqup .gt_first_summary_row.thick {
+#qptldqglap .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#omznckfqup .gt_last_summary_row {
+#qptldqglap .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2194,7 +2182,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#omznckfqup .gt_grand_summary_row {
+#qptldqglap .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2204,7 +2192,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#omznckfqup .gt_first_grand_summary_row {
+#qptldqglap .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2214,7 +2202,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#omznckfqup .gt_last_grand_summary_row_top {
+#qptldqglap .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2224,11 +2212,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#omznckfqup .gt_striped {
+#qptldqglap .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#omznckfqup .gt_table_body {
+#qptldqglap .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2237,7 +2225,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#omznckfqup .gt_footnotes {
+#qptldqglap .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2251,7 +2239,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#omznckfqup .gt_footnote {
+#qptldqglap .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2260,7 +2248,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#omznckfqup .gt_sourcenotes {
+#qptldqglap .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2274,7 +2262,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#omznckfqup .gt_sourcenote {
+#qptldqglap .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2282,63 +2270,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#omznckfqup .gt_left {
+#qptldqglap .gt_left {
   text-align: left;
 }
 
-#omznckfqup .gt_center {
+#qptldqglap .gt_center {
   text-align: center;
 }
 
-#omznckfqup .gt_right {
+#qptldqglap .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#omznckfqup .gt_font_normal {
+#qptldqglap .gt_font_normal {
   font-weight: normal;
 }
 
-#omznckfqup .gt_font_bold {
+#qptldqglap .gt_font_bold {
   font-weight: bold;
 }
 
-#omznckfqup .gt_font_italic {
+#qptldqglap .gt_font_italic {
   font-style: italic;
 }
 
-#omznckfqup .gt_super {
+#qptldqglap .gt_super {
   font-size: 65%;
 }
 
-#omznckfqup .gt_footnote_marks {
+#qptldqglap .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#omznckfqup .gt_asterisk {
+#qptldqglap .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#omznckfqup .gt_indent_1 {
+#qptldqglap .gt_indent_1 {
   text-indent: 5px;
 }
 
-#omznckfqup .gt_indent_2 {
+#qptldqglap .gt_indent_2 {
   text-indent: 10px;
 }
 
-#omznckfqup .gt_indent_3 {
+#qptldqglap .gt_indent_3 {
   text-indent: 15px;
 }
 
-#omznckfqup .gt_indent_4 {
+#qptldqglap .gt_indent_4 {
   text-indent: 20px;
 }
 
-#omznckfqup .gt_indent_5 {
+#qptldqglap .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2385,26 +2373,26 @@ div.csl-indent {
 <p>The second partial derivative with respect to <span class="math inline">\(\lambda\)</span> is: <span class="math inline">\(\frac{\partial^2 ln(L(\alpha, \lambda))}{\partial \lambda^2} = -\frac{n\alpha}{\lambda^2}\)</span>.</p>
 <p>Now, we will use the Newton Raphson method to find the values of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span> that maximize the function. Recall that the Newton Raphson method used the equation <span class="math inline">\(x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\)</span>. In this case, we will have two equations, one for <span class="math inline">\(\alpha\)</span> and one for <span class="math inline">\(\lambda\)</span>. We will first need to choose initial estimates for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span>. These initial estimates can be chosen using other methods such as Method of Moments Estimation. The Method of Moments Estimator of the parameters of the Gamma Distribution are: <span class="math inline">\(\hat{\alpha} = \frac{\bar{x}^2}{s^2}\)</span> and <span class="math inline">\(\hat{\lambda} = \frac{\bar{x}}{s^2}\)</span>, where <span class="math inline">\(\bar{x}\)</span> is the sample mean and s is the sample standard deviation. We can then use these estimates as our initial estimates for the Newton Raphson method using the equation <span class="math inline">\(x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\)</span> to find our second estimate for the root and then repeating the process until our tolerance requirement is met. Let’s use R to generate a random sample from a gamma distribution and find the sample mean and sample standard deviation. These statistics are in <a href="#tbl-gamma">Table&nbsp;<span>3.5</span></a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate random gamma distribution and summary statistics</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">rgamma</span>(<span class="dv">10</span>, <span class="at">shape =</span> <span class="dv">3</span>, <span class="at">rate =</span> .<span class="dv">5</span>), <span class="dv">1</span>)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Put these values into a data frame</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>gamma_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"n"</span> <span class="ot">=</span> <span class="dv">10</span>, </span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"sum_x"</span> <span class="ot">=</span> <span class="fu">sum</span>(gamma), </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"sum_ln_x"</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">log</span>(gamma)), </span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"mean"</span> <span class="ot">=</span> <span class="fu">mean</span>(gamma), </span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"variance"</span> <span class="ot">=</span> <span class="fu">var</span>(gamma))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate random gamma distribution and summary statistics</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">rgamma</span>(<span class="dv">10</span>, <span class="at">shape =</span> <span class="dv">3</span>, <span class="at">rate =</span> .<span class="dv">5</span>), <span class="dv">1</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Put these values into a data frame</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>gamma_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"n"</span> <span class="ot">=</span> <span class="dv">10</span>, </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"sum_x"</span> <span class="ot">=</span> <span class="fu">sum</span>(gamma), </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"sum_ln_x"</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">log</span>(gamma)), </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"mean"</span> <span class="ot">=</span> <span class="fu">mean</span>(gamma), </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"variance"</span> <span class="ot">=</span> <span class="fu">var</span>(gamma))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View data in a table</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>gamma_data <span class="sc">%&gt;%</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Summary Statistics for Gamma Distribution"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">n =</span> <span class="st">"Number of Observations"</span>, </span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">sum_x =</span> <span class="st">"Sum of x"</span>, </span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">sum_ln_x =</span> <span class="st">"Sum of ln(x)"</span>, </span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">mean =</span> <span class="st">"Mean"</span>, </span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">variance =</span> <span class="st">"Variance"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View data in a table</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>gamma_data <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Summary Statistics for Gamma Distribution"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">n =</span> <span class="st">"Number of Observations"</span>, </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">sum_x =</span> <span class="st">"Sum of x"</span>, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">sum_ln_x =</span> <span class="st">"Sum of ln(x)"</span>, </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">mean =</span> <span class="st">"Mean"</span>, </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">variance =</span> <span class="st">"Variance"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="tbl-gamma" class="anchored">
 
@@ -2876,23 +2864,23 @@ div.csl-indent {
 </div>
 <p>We can now determine our initial estimates for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span> using the Method of Moments Estimation. The sample mean is 2.3 and the sample standard deviation is 1.1. We can use these values to find our initial estimates for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Method of Moments Estimation</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">=</span> <span class="fl">6.77</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>variance <span class="ot">=</span> <span class="fl">12.76</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial estimates for alpha and lambda</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> mean<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> variance</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>L <span class="ot">=</span> mean <span class="sc">/</span> variance</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Display initial estimates</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>alpha_lambda <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"alpha"</span> <span class="ot">=</span> a, <span class="st">"lambda"</span> <span class="ot">=</span> L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Method of Moments Estimation</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">=</span> <span class="fl">6.77</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>variance <span class="ot">=</span> <span class="fl">12.76</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial estimates for alpha and lambda</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> mean<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> variance</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>L <span class="ot">=</span> mean <span class="sc">/</span> variance</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Display initial estimates</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>alpha_lambda <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"alpha"</span> <span class="ot">=</span> a, <span class="st">"lambda"</span> <span class="ot">=</span> L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View data in a table</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>alpha_lambda <span class="sc">%&gt;%</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Initial Estimates for Gamma Distribution"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">alpha =</span> <span class="st">"Alpha"</span>, </span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">lambda =</span> <span class="st">"Lambda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View data in a table</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>alpha_lambda <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Initial Estimates for Gamma Distribution"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">alpha =</span> <span class="st">"Alpha"</span>, </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">lambda =</span> <span class="st">"Lambda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="tbl-gamma2" class="anchored">
 
@@ -3361,62 +3349,62 @@ div.csl-indent {
 <p>We will start with our Method of Moments estimates of <span class="math inline">\(\hat{\alpha} = 3.59192\)</span> and <span class="math inline">\(\hat{\lambda} = 0.5305643\)</span>. For alpha, the first iteration would look like: <span class="math inline">\(\alpha_{1} = 3.59192 - \frac{n ln(\lambda) - n \psi(\alpha) + \sum_{i=1}^{n}ln(x_i)}{-n \psi'(\alpha)}\)</span>. Plugging in the values, we get <span class="math inline">\(\alpha_{1} = 3.59192 - \frac{10 * ln(0.5305643) - 10 * digamma(3.59192) + 17.79487}{-10 * trigamma(3.59192)}\)</span> = 3.631203.</p>
 <p>For lambda, the first iteration would look like: <span class="math inline">\(\lambda_{1} = 0.5305643 - \frac{\frac{n\alpha}{\lambda} - \sum_{i=1}^{n}x_i}{-\frac{n\alpha}{\lambda^2}}\)</span>. Plugging in the values, we get <span class="math inline">\(\lambda_{1} = 0.5305643 - \frac{\frac{10 * 3.59192}{0.5305643} - 67.7}{-\frac{10 * 3.59192}{0.5305643^2}}\)</span> = 0.5305643.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the first iteration for alpha</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fl">3.59192</span> <span class="sc">-</span> ((<span class="dv">10</span> <span class="sc">*</span> <span class="fu">log</span>(<span class="fl">0.5305643</span>) <span class="sc">-</span> <span class="dv">10</span> <span class="sc">*</span> <span class="fu">digamma</span>(<span class="fl">3.59192</span>) <span class="sc">+</span> <span class="fl">17.79487</span>) <span class="sc">/</span> </span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>             (<span class="sc">-</span><span class="dv">10</span> <span class="sc">*</span> <span class="fu">trigamma</span>(<span class="fl">3.59192</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the first iteration for alpha</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fl">3.59192</span> <span class="sc">-</span> ((<span class="dv">10</span> <span class="sc">*</span> <span class="fu">log</span>(<span class="fl">0.5305643</span>) <span class="sc">-</span> <span class="dv">10</span> <span class="sc">*</span> <span class="fu">digamma</span>(<span class="fl">3.59192</span>) <span class="sc">+</span> <span class="fl">17.79487</span>) <span class="sc">/</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>             (<span class="sc">-</span><span class="dv">10</span> <span class="sc">*</span> <span class="fu">trigamma</span>(<span class="fl">3.59192</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3.631203</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the first iteration for lambda</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fl">0.5305643</span> <span class="sc">-</span> (((<span class="dv">10</span> <span class="sc">*</span> <span class="fl">3.59192</span> <span class="sc">/</span> <span class="fl">0.5305643</span>) <span class="sc">-</span> <span class="fl">67.7</span>) <span class="sc">/</span> </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>               (<span class="sc">-</span><span class="dv">10</span> <span class="sc">*</span> <span class="fl">3.59192</span> <span class="sc">/</span> <span class="fl">0.5305643</span><span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the first iteration for lambda</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fl">0.5305643</span> <span class="sc">-</span> (((<span class="dv">10</span> <span class="sc">*</span> <span class="fl">3.59192</span> <span class="sc">/</span> <span class="fl">0.5305643</span>) <span class="sc">-</span> <span class="fl">67.7</span>) <span class="sc">/</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>               (<span class="sc">-</span><span class="dv">10</span> <span class="sc">*</span> <span class="fl">3.59192</span> <span class="sc">/</span> <span class="fl">0.5305643</span><span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5305643</code></pre>
 </div>
 </div>
 <p>Now, we can continue this process using the new estimates of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span> until the difference between the current and previous estimates is less than a certain tolerance level. We will use a tolerance level of 0.005. Let’s visualize this process in table <a href="#tbl-nr2">Table&nbsp;<span>3.7</span></a>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define functions using a for alpha and L for lambda</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>afunc <span class="ot">=</span> <span class="cf">function</span>(a, L, n, sum_ln_x) a <span class="sc">-</span> </span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  ((n<span class="sc">*</span><span class="fu">log</span>(L) <span class="sc">-</span> n <span class="sc">*</span> <span class="fu">digamma</span>(a) <span class="sc">+</span> sum_ln_x) <span class="sc">/</span> (<span class="sc">-</span>n <span class="sc">*</span> <span class="fu">trigamma</span>(a)))</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>Lfunc <span class="ot">=</span> <span class="cf">function</span>(a, L, n, sum_x) L <span class="sc">-</span> (((n<span class="sc">*</span>a<span class="sc">/</span>L) <span class="sc">-</span> sum_x) <span class="sc">/</span> (<span class="sc">-</span>n <span class="sc">*</span> a <span class="sc">/</span> L<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose initial estimates</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> <span class="fl">3.59192</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>L <span class="ot">=</span> <span class="fl">0.5305643</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">10</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>sum_ln_x <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">log</span>(gamma))</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>sum_x <span class="ot">=</span> <span class="fu">sum</span>(gamma)</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Use tolerance level of 0.005</span></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>tol <span class="ot">=</span> <span class="fl">0.005</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize a vector to store the results</span></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(a, L)</span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="co"># While loop to repeat the process until the difference between a and a1 and </span></span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="co"># L and L1 is less than the tolerance level</span></span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="cn">TRUE</span>) {</span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  a1 <span class="ot">&lt;-</span> <span class="fu">afunc</span>(a, L, n, sum_ln_x)</span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>  L1 <span class="ot">&lt;-</span> <span class="fu">Lfunc</span>(a, L, n, sum_x)</span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">abs</span>(a <span class="sc">-</span> a1) <span class="sc">&lt;</span> tol <span class="sc">&amp;</span> <span class="fu">abs</span>(L <span class="sc">-</span> L1) <span class="sc">&lt;</span> tol) {</span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
-<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> a1</span>
-<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>  L <span class="ot">&lt;-</span> L1</span>
-<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>  iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(iterations, a, L)  <span class="co"># Store the current values of a and L</span></span>
-<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a><span class="co"># put the results into a table with every 10th value</span></span>
-<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">iteration =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(iterations), </span>
-<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>                      <span class="at">a =</span> iterations[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">length</span>(iterations), <span class="dv">2</span>)], </span>
-<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>                      <span class="at">L =</span> iterations[<span class="fu">seq</span>(<span class="dv">2</span>, <span class="fu">length</span>(iterations), <span class="dv">2</span>)])</span>
-<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a><span class="co"># print the table</span></span>
-<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span></span>
-<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Newton Raphson for Gamma Distribution"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">iteration =</span> <span class="st">"Iteration"</span>, <span class="at">a =</span> <span class="st">"Alpha"</span>, <span class="at">L =</span> <span class="st">"Lambda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define functions using a for alpha and L for lambda</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>afunc <span class="ot">=</span> <span class="cf">function</span>(a, L, n, sum_ln_x) a <span class="sc">-</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  ((n<span class="sc">*</span><span class="fu">log</span>(L) <span class="sc">-</span> n <span class="sc">*</span> <span class="fu">digamma</span>(a) <span class="sc">+</span> sum_ln_x) <span class="sc">/</span> (<span class="sc">-</span>n <span class="sc">*</span> <span class="fu">trigamma</span>(a)))</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>Lfunc <span class="ot">=</span> <span class="cf">function</span>(a, L, n, sum_x) L <span class="sc">-</span> (((n<span class="sc">*</span>a<span class="sc">/</span>L) <span class="sc">-</span> sum_x) <span class="sc">/</span> (<span class="sc">-</span>n <span class="sc">*</span> a <span class="sc">/</span> L<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose initial estimates</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> <span class="fl">3.59192</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>L <span class="ot">=</span> <span class="fl">0.5305643</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">10</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>sum_ln_x <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">log</span>(gamma))</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>sum_x <span class="ot">=</span> <span class="fu">sum</span>(gamma)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Use tolerance level of 0.005</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>tol <span class="ot">=</span> <span class="fl">0.005</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize a vector to store the results</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(a, L)</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co"># While loop to repeat the process until the difference between a and a1 and </span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co"># L and L1 is less than the tolerance level</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="cn">TRUE</span>) {</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>  a1 <span class="ot">&lt;-</span> <span class="fu">afunc</span>(a, L, n, sum_ln_x)</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>  L1 <span class="ot">&lt;-</span> <span class="fu">Lfunc</span>(a, L, n, sum_x)</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">abs</span>(a <span class="sc">-</span> a1) <span class="sc">&lt;</span> tol <span class="sc">&amp;</span> <span class="fu">abs</span>(L <span class="sc">-</span> L1) <span class="sc">&lt;</span> tol) {</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> a1</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>  L <span class="ot">&lt;-</span> L1</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>  iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(iterations, a, L)  <span class="co"># Store the current values of a and L</span></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="co"># put the results into a table with every 10th value</span></span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">iteration =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(iterations), </span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>                      <span class="at">a =</span> iterations[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">length</span>(iterations), <span class="dv">2</span>)], </span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>                      <span class="at">L =</span> iterations[<span class="fu">seq</span>(<span class="dv">2</span>, <span class="fu">length</span>(iterations), <span class="dv">2</span>)])</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a><span class="co"># print the table</span></span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span></span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Newton Raphson for Gamma Distribution"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">iteration =</span> <span class="st">"Iteration"</span>, <span class="at">a =</span> <span class="st">"Alpha"</span>, <span class="at">L =</span> <span class="st">"Lambda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="tbl-nr2" class="anchored">
 
@@ -3909,7 +3897,7 @@ div.csl-indent {
 <h2 data-number="3.16" class="anchored" data-anchor-id="hazard-analysis-in-r"><span class="header-section-number">3.16</span> Hazard Analysis in R</h2>
 <p>Similarly to before with the Kaplan Meier curve, we can use R to model the hazard function. The <code>coxph()</code> function in the <code>survival</code> package returns the coefficients of the cox proportional hazards model as well as the p value for the coefficients, allowing us to determine whether each coefficient is significant (<span class="citation" data-cites="sthda"><span>“Cox Proportional-Hazards Model”</span> (<a href="#ref-sthda" role="doc-biblioref">n.d.</a>)</span>).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> group, <span class="at">data =</span> surv3, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> group, <span class="at">data =</span> surv3, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 coxph(formula = Surv(time, status) ~ group, data = surv3, ties = "breslow")
@@ -3923,7 +3911,7 @@ n= 10, number of events= 5 </code></pre>
 </div>
 <p>As we can see, the coefficient for group is not significant, meaning that the hazard of the event occurring is not significantly different between the two groups. Let’s add another predictor and see what happens:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> group <span class="sc">+</span> age, <span class="at">data =</span> surv3, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> group <span class="sc">+</span> age, <span class="at">data =</span> surv3, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 coxph(formula = Surv(time, status) ~ group + age, data = surv3, 
@@ -3944,7 +3932,7 @@ n= 10, number of events= 5 </code></pre>
 <h2 data-number="3.17" class="anchored" data-anchor-id="case-study"><span class="header-section-number">3.17</span> Case Study</h2>
 <p>Let’s look at a new data set which contains information on patients with heart failure.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>heart <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/S1Data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>heart <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/S1Data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 299 Columns: 13
 ── Column specification ────────────────────────────────────────────────────────
@@ -3957,15 +3945,15 @@ dbl (13): TIME, Event, Gender, Smoking, Diabetes, BP, Anaemia, Age, Ejection...
 </div>
 <p>First, lets view the first 6 survival times.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">Surv</span>(heart<span class="sc">$</span>TIME, heart<span class="sc">$</span>Event))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">Surv</span>(heart<span class="sc">$</span>TIME, heart<span class="sc">$</span>Event))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  97+ 180+  31   87+ 113+  10 </code></pre>
 </div>
 </div>
 <p>Let’s run a cox proportional hazards model to see if blood pressure is a significant predictor of the hazard of death for heart failure patients. In this data set, blood pressure is a binary variable where 0 indicates normal blood pressure and 1 indicates high blood pressure. It is called BP in the data set.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>h1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(TIME, Event) <span class="sc">~</span> BP, <span class="at">data =</span> heart, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(h1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>h1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(TIME, Event) <span class="sc">~</span> BP, <span class="at">data =</span> heart, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(h1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Call:
 coxph(formula = Surv(TIME, Event) ~ BP, data = heart, ties = "breslow")
@@ -3989,8 +3977,8 @@ Score (logrank) test = 4.39  on 1 df,   p=0.04</code></pre>
 <p>As we can see, the p-value for this model is significant. Thus, we can conclude that high blood pressure is significantly associated with a higher hazard of death for heart failure patients. The coefficient of interest, exp(coef), on blood pressure in the model is 1.55, which means that the hazard of death for heart failure patients with high blood pressure is estimated to be 1.55 times higher than the hazard of death for heart failure patients with normal blood pressure.</p>
 <p>Let’s look at a confidence interval to get a better understand of the impact of high blood pressure on the hazard of death for heart failure patients. We can use the <code>confint()</code> function to get a 95% confidence interval for the coefficient on blood pressure. Recall that we are interested in the exponentiated coefficient, so we will exponentiate the confidence interval for the coefficient to get a confidence interval for exp(coef).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>conf_95 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">confint</span>(h1))</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>conf_95</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>conf_95 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">confint</span>(h1))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>conf_95</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      2.5 %   97.5 %
 BP 1.025291 2.329885</code></pre>

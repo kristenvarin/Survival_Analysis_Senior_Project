@@ -1,0 +1,13 @@
+# Discussion
+
+## Concluding Thoughts
+
+Survival analysis is a great tool for medical research, as it can show insights into which treatments are most effective or how long patients are likely to live. Survival analysis works by calculating survival probability for an individual at each time in the study. The Kaplan Meier survival curve is a great way to model survival probabilities while factoring in censored individuals who were lost-to-follow-up. The `survfit()` and `ggsurvfit()` functions in the `survival` package in R are tools we can use to create Kaplan Meier curves quickly given data. 
+
+The Log-Rank test is a statistical test we used to test whether there was a difference between two survival curves. The Log-Rank test is one of the most common ways to test for statistical significance between groups when analyzing medical data. It works by testing the null hypothesis that there is no difference between survival estimate between two groups at any given time. It compares expected to observed time estimates for each group at each time and then calculates a Chi-Square test statistic. These steps are very tedious, so the `survdiff()` R function can be used to make the process much quicker. This process was demonstrated using data from the cirrhosis data set, which predicted survival times patients with liver disease who were either taking a drug or a placebo. We found that the difference between the survival times in the two groups was not statistically significant, thus concluding that the drug was not effective at lengthening a patient with liver disease's life. 
+
+Hazard Analysis was the next type of modeling survival data that we looked at. Hazard Analysis is even more useful for analysis of medical data because it allows for the addition of more predictors other than a grouping variable. The Cox Proportional Hazards model uses hazard ratios, or ratio between the hazard of an event between two groups at a time. It calculates the hazard ratio for each individual at each time and uses the log of that ratio to model the hazard function. To use the Cox Proportional Hazards model, we first had to make adjustments to the hazard function to factor censored data and ties in the data. We then had to use the method of partial likelihood and the Newton Rapshon method to find the $\beta$ coefficients. This step was so complicated that it was computationally infeasible to demonstrate. Luckily, these complications can be managed by using the R funtion `coxph()` in the `survival` package. It fits a Cox proportional Hazard Analysis model in one simple step. We demonstrated this using data on patients who experienced heart failure. 
+
+## Further Applications
+
+
