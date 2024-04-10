@@ -230,12 +230,12 @@ cirrhosis <- read_csv("data/cirrhosis.csv", show_col_types = FALSE)
 cirrhosis <- cirrhosis %>% mutate(event = if_else(Status == 'D', 1, 0)) 
 ```
 
-The main interest of this data is to explore the difference in survival time between patients taking the drug of interest, D-penicillamine, and those given a placebo. The variable `Drug` indicates which group the patient was in and will be used as the grouping variable for a Log-Rank Test. Below, we calculate a survival object for this data and then use the `survdiff` function to run a Log-Rank Test.
+The main interest of this data is to explore the difference in survival time between patients taking the drug of interest, D-penicillamine, and those given a placebo. The variable `Drug` indicates which group the patient was in and will be used as the grouping variable for a Log-Rank Test. Below, we calculate an object with times of event for this data and then use the `survdiff` function to run a Log-Rank Test.
 
 ```{r}
-# Calculate times and survival object
+# Calculate times and store in an oobject
 times3 <- Surv(cirrhosis$N_Days, cirrhosis$event)
-s3 <- survfit(times3 ~ Drug, data = cirrhosis)
+
 # Run a log rank test based on drug group
 survdiff(times3 ~ Drug, data = cirrhosis)
 ```
@@ -248,6 +248,10 @@ We can again visualize the difference in survival curves in @fig-casestudy.
 #| label: fig-casestudy
 #| fig-cap: "Kaplan Meier Survival Curve Predicting Death from Cirrhosis"
 
+# Create Survival Object
+s3 <- survfit(times3 ~ Drug, data = cirrhosis)
+
+# Plot the Survival Curve
 s3 %>% 
   ggsurvfit() +
   labs(

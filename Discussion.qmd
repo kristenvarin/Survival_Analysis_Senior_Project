@@ -10,4 +10,10 @@ Hazard Analysis was the next type of modeling survival data that we looked at. H
 
 ## Further Applications
 
+While the Kaplan Meier curve and Cox Proportional hazard Analysis are both useful for medical research, there are even further applications of Survival Analysis that can allow for different types of analysis. Parametric models, for example, can be used when there are preconceptions about the survival probabilities. This type of analysis assumes a specific distribution and therefore allows interpretation of the analysis to be more precise (@collet). One example of a Parametric model is the Accelerated Failure Time model, which assumes that the probability of the event occurring gets increasingly large as time passes (@fedesoriano). This can be particularly useful in cases where the assumption of consistent hazards between groups is violated. 
 
+Other pieces of the survival analysis puzzle to take into account inclue: assessing fit of the model, modelling left-censored and interval-censored survival data sample size requirements for a survival study, and more (@collet). There are so many aspects to modelling survival data that need to be taken into account when building a model. This is why it is so helpful to have software like R that can do the analysis piece for us. 
+
+- not working on github link
+- still need to fix the tables when render to pdf
+- references if always blank on pdf

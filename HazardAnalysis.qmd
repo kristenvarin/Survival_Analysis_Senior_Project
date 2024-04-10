@@ -345,19 +345,31 @@ Now that we can interpret the results, let's take a look at some real data.
 Let's look at a new data set which contains information on patients with heart failure. The data set contains data on heart failure patients over 40 years old who were admitted to the Institute of Cardiology at the Allied hospital Faisalabad-Pakistan between April and December of 2015. All of the patients in the data set had left ventricular systolic dysfunction and belonged to NYHA class III and IV stages of heart failure (@plosone). 
 
 ```{r}
-heart <- read_csv("data/S1Data.csv")
+heart <- read_csv("data/S1Data.csv") 
 ```
-
-First, lets view the first 6 survival times.
+Let's first view the Kaplan Meier survival curves to see if there is a visual difference in survival probabilities for individuals with normal versus high blood pressure. In this data set, blood pressure is a binary variable where 0 indicates normal blood pressure and 1 indicates high blood pressure. It is called BP in the data set. We can view the curve in @fig-heartstudy. 
 
 ```{r}
-head(Surv(heart$TIME, heart$Event))
+#| label: fig-heartstudy
+#| fig-cap: "Kaplan Meier Survival Curve Predicting Death from Blood Pressure"
+
+# Create Survival Object
+times_heart <- Surv(heart$TIME, heart$Event)
+
+# Plot the curves
+survfit(times_heart ~ BP, data = heart) %>% ggsurvfit() +
+  labs(
+    x = "Time",
+    y = "Survival Probability",
+    title = "Kaplan Meier Survival Curve by Blood Pressure"
+  )
 ```
 
-Let's fit a cox proportional hazards model to see if blood pressure is a significant predictor of the hazard of death for heart failure patients. In this data set, blood pressure is a binary variable where 0 indicates normal blood pressure and 1 indicates high blood pressure. It is called BP in the data set.
+It seems like there will be a difference in survival probabilities between individuals with normal and high blood pressure based on the two curves. Let's test this theory by fitting a cox proportional hazards model to the data. This will tell us if blood pressure is a significant predictor of the hazard of death for heart failure patients.
 
 ```{r}
-h1 <- coxph(Surv(TIME, Event) ~ BP, data = heart, ties = "breslow")
+# Cox Proportional Hazards Model
+h1 <- coxph(times_heart ~ BP, data = heart, ties = "breslow")
 summary(h1)
 ```
 
@@ -371,5 +383,14 @@ conf_95
 ```
 
 This tells us that, with 95% confidence, the true value of the coefficient is between 1.03 and 2.33. That is, that the hazard of death for heart failure patients is between 1.03 and 2.33 times higher for patients with high blood pressure compared to patients with normal blood pressure.
+
+Although we found that the hazard of death for heart failure patients with high blood pressure is significantly higher than the hazard of death for heart failure patients with normal blood pressure, we should check the proportional hazards assumption to ensure that our model is valid. From the Kaplan Meier curve, we saw that the survival curves for normal and high blood pressure patients crossed and the gap between the curves grew as time increased. This indicates that the assumption might be violated. We can use the `cox.zph()` function to check it out. This function tests the null hypothesis that the coefficients are constant over time, which is the assumption of proportional hazards. If the p-value is less than 0.05, then the assumption is violated.
+
+```{r}
+# Check Proportional Hazards Assumption
+cox.zph(h1)
+```
+
+As we can see from the output, the p-value for the test of the proportional hazards assumption is not less than 0.05. This means that we do not have enough evidence to reject the null hypothesis, so our Cox Proportional Hazards model is valid. 
 
 ## References
