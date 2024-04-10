@@ -10,7 +10,6 @@ book:
     - index.qmd
     - KaplanMeier.qmd
     - HazardAnalysis.qmd
-    - Discussion.qmd
 
 bibliography: references.bib
 
