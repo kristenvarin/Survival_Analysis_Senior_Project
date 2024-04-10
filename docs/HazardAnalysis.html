@@ -1,0 +1,4409 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Survival Analysis Senior Project - 3&nbsp; Cox Proportional Hazards Regression</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./KaplanMeier.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./HazardAnalysis.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Cox Proportional Hazards Regression</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Survival Analysis Senior Project</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Survival Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./KaplanMeier.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Kaplan Meier</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./HazardAnalysis.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Cox Proportional Hazards Regression</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">3.1</span> Introduction</a></li>
+  <li><a href="#proportional-hazards" id="toc-proportional-hazards" class="nav-link" data-scroll-target="#proportional-hazards"><span class="header-section-number">3.2</span> Proportional Hazards</a></li>
+  <li><a href="#hazard-ratios" id="toc-hazard-ratios" class="nav-link" data-scroll-target="#hazard-ratios"><span class="header-section-number">3.3</span> Hazard Ratios</a></li>
+  <li><a href="#cox-proportional-hazards-model" id="toc-cox-proportional-hazards-model" class="nav-link" data-scroll-target="#cox-proportional-hazards-model"><span class="header-section-number">3.4</span> Cox Proportional Hazards Model</a></li>
+  <li><a href="#method-of-maximum-likelihood" id="toc-method-of-maximum-likelihood" class="nav-link" data-scroll-target="#method-of-maximum-likelihood"><span class="header-section-number">3.5</span> Method of Maximum Likelihood</a></li>
+  <li><a href="#method-of-partial-likelihood" id="toc-method-of-partial-likelihood" class="nav-link" data-scroll-target="#method-of-partial-likelihood"><span class="header-section-number">3.6</span> Method of Partial Likelihood</a></li>
+  <li><a href="#partial-likelihood-derivation" id="toc-partial-likelihood-derivation" class="nav-link" data-scroll-target="#partial-likelihood-derivation"><span class="header-section-number">3.7</span> Partial Likelihood Derivation</a></li>
+  <li><a href="#example-data" id="toc-example-data" class="nav-link" data-scroll-target="#example-data"><span class="header-section-number">3.8</span> Example Data</a></li>
+  <li><a href="#censoring" id="toc-censoring" class="nav-link" data-scroll-target="#censoring"><span class="header-section-number">3.9</span> Censoring</a></li>
+  <li><a href="#ties-in-the-data" id="toc-ties-in-the-data" class="nav-link" data-scroll-target="#ties-in-the-data"><span class="header-section-number">3.10</span> Ties in the Data</a></li>
+  <li><a href="#fitting-the-partial-log-likelihood-equation" id="toc-fitting-the-partial-log-likelihood-equation" class="nav-link" data-scroll-target="#fitting-the-partial-log-likelihood-equation"><span class="header-section-number">3.11</span> Fitting the Partial Log Likelihood Equation</a></li>
+  <li><a href="#estimating-b" id="toc-estimating-b" class="nav-link" data-scroll-target="#estimating-b"><span class="header-section-number">3.12</span> Estimating B’</a></li>
+  <li><a href="#newton-raphson-method" id="toc-newton-raphson-method" class="nav-link" data-scroll-target="#newton-raphson-method"><span class="header-section-number">3.13</span> Newton Raphson Method</a></li>
+  <li><a href="#newton-raphson-example" id="toc-newton-raphson-example" class="nav-link" data-scroll-target="#newton-raphson-example"><span class="header-section-number">3.14</span> Newton Raphson Example</a></li>
+  <li><a href="#newton-raphson-for-parametized-functions-gamma-distribution" id="toc-newton-raphson-for-parametized-functions-gamma-distribution" class="nav-link" data-scroll-target="#newton-raphson-for-parametized-functions-gamma-distribution"><span class="header-section-number">3.15</span> Newton Raphson for Parametized Functions: Gamma Distribution</a></li>
+  <li><a href="#hazard-analysis-in-r" id="toc-hazard-analysis-in-r" class="nav-link" data-scroll-target="#hazard-analysis-in-r"><span class="header-section-number">3.16</span> Hazard Analysis in R</a></li>
+  <li><a href="#case-study" id="toc-case-study" class="nav-link" data-scroll-target="#case-study"><span class="header-section-number">3.17</span> Case Study</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">3.18</span> References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Cox Proportional Hazards Regression</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">3.1</span> Introduction</h2>
+<p>So far, we have dealt with calculating survival probability using a Kaplan Meier curve. While a Kaplan Meier curve is useful for predicting survival probability for simple data, it can not always be used since its a nonparametric method, meaning it follows no prior assumptions about the data. When data becomes more complex and variables about individuals need to be considered, other methods need to be used. One of these methods, proportional hazard analysis, similarly focuses on time-to-event data, but can be used for more realistic scenarios that deal with additional explanatory variables for the event of interest (<span class="citation" data-cites="clark03">Clark (<a href="#ref-clark03" role="doc-biblioref">2003</a>)</span>). For example, we can use hazard analysis to calculate the probability of a person recovering from a disease based on type of treatment, while also including variables that could affect the outcome such as age, sex or history of drugs. A hazard function can be more useful during real-world analysis than the Kaplan Meier curve previously discussed.</p>
+<p>We will again create a simple data set to demonstrate the process. Let’s recall the <code>surv2</code> data set we created earlier, now with an additional variable, age <a href="#tbl-surv3">Table&nbsp;<span>3.1</span></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="sc">|&gt;</span> <span class="fu">suppressPackageStartupMessages</span>()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggsurvfit)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Recreate surv2 and add age variable</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">10</span>, <span class="dv">6</span>, <span class="dv">1</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>status <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span> ,<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">40</span>, <span class="dv">62</span>, <span class="dv">37</span>, <span class="dv">67</span>, <span class="dv">44</span>, <span class="dv">70</span>, <span class="dv">50</span>, <span class="dv">45</span>, <span class="dv">61</span>, <span class="dv">62</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>surv3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(time, status, group, age) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>surv3 <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with Status, Time, Group, and Age"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>, <span class="at">group =</span> <span class="st">"Group"</span>, <span class="at">age =</span> <span class="st">"Age"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="tbl-surv3" class="anchored">
+
+<div id="byqdaftnuf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#byqdaftnuf table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#byqdaftnuf thead, #byqdaftnuf tbody, #byqdaftnuf tfoot, #byqdaftnuf tr, #byqdaftnuf td, #byqdaftnuf th {
+  border-style: none;
+}
+
+#byqdaftnuf p {
+  margin: 0;
+  padding: 0;
+}
+
+#byqdaftnuf .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#byqdaftnuf .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#byqdaftnuf .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#byqdaftnuf .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#byqdaftnuf .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#byqdaftnuf .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#byqdaftnuf .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#byqdaftnuf .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#byqdaftnuf .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#byqdaftnuf .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#byqdaftnuf .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#byqdaftnuf .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#byqdaftnuf .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#byqdaftnuf .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#byqdaftnuf .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#byqdaftnuf .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#byqdaftnuf .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#byqdaftnuf .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#byqdaftnuf .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#byqdaftnuf .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#byqdaftnuf .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#byqdaftnuf .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#byqdaftnuf .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#byqdaftnuf .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#byqdaftnuf .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#byqdaftnuf .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#byqdaftnuf .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#byqdaftnuf .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#byqdaftnuf .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#byqdaftnuf .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#byqdaftnuf .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#byqdaftnuf .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#byqdaftnuf .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#byqdaftnuf .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#byqdaftnuf .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#byqdaftnuf .gt_left {
+  text-align: left;
+}
+
+#byqdaftnuf .gt_center {
+  text-align: center;
+}
+
+#byqdaftnuf .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#byqdaftnuf .gt_font_normal {
+  font-weight: normal;
+}
+
+#byqdaftnuf .gt_font_bold {
+  font-weight: bold;
+}
+
+#byqdaftnuf .gt_font_italic {
+  font-style: italic;
+}
+
+#byqdaftnuf .gt_super {
+  font-size: 65%;
+}
+
+#byqdaftnuf .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#byqdaftnuf .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#byqdaftnuf .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#byqdaftnuf .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#byqdaftnuf .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#byqdaftnuf .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#byqdaftnuf .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <caption>Table&nbsp;3.1:  <p>Example Data Set with Status, Time, Group, and Age</p> </caption>
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Time">Time</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Status">Status</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Group">Group</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Age">Age</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="time" class="gt_row gt_right">2</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="group" class="gt_row gt_right">1</td>
+<td headers="age" class="gt_row gt_right">40</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">7</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">1</td>
+<td headers="age" class="gt_row gt_right">62</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">9</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="group" class="gt_row gt_right">1</td>
+<td headers="age" class="gt_row gt_right">37</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">8</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">1</td>
+<td headers="age" class="gt_row gt_right">67</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">5</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="group" class="gt_row gt_right">1</td>
+<td headers="age" class="gt_row gt_right">44</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">3</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">2</td>
+<td headers="age" class="gt_row gt_right">70</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">4</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="group" class="gt_row gt_right">2</td>
+<td headers="age" class="gt_row gt_right">50</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">10</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="group" class="gt_row gt_right">2</td>
+<td headers="age" class="gt_row gt_right">45</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">6</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">2</td>
+<td headers="age" class="gt_row gt_right">61</td></tr>
+    <tr><td headers="time" class="gt_row gt_right">1</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">2</td>
+<td headers="age" class="gt_row gt_right">62</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="proportional-hazards" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="proportional-hazards"><span class="header-section-number">3.2</span> Proportional Hazards</h2>
+<p>The proportional hazards model, also known as the Cox regression model, is a semi-parametric model. This is because it assumes proportional hazards, or that the hazard of an event occurring is the same for all individuals, yet does not assume a specific distribution (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). The proportional hazard model also assumes that the hazard ratio between two groups is constant over time. This means that the hazard ratio between two groups is the same at any time <span class="math inline">\(t\)</span>, thus making the model proportional. In other words, the instantaneous hazard of an event occurring between two individuals of different groups will remain constant at all times, or the effect of the predictors is the same at all times (<span class="citation" data-cites="sthda"><span>“Cox Proportional-Hazards Model”</span> (<a href="#ref-sthda" role="doc-biblioref">n.d.</a>)</span>).</p>
+</section>
+<section id="hazard-ratios" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="hazard-ratios"><span class="header-section-number">3.3</span> Hazard Ratios</h2>
+<p>The goal of hazard analysis is to create a hazard function for modelling time to event data, where the outcome <span class="math inline">\(h(t)\)</span> or <span class="math inline">\(λ(t)\)</span> is the probability of the event occurring for a subject who has lasted until time <span class="math inline">\(t\)</span> (<span class="citation" data-cites="clark03">Clark (<a href="#ref-clark03" role="doc-biblioref">2003</a>)</span>). The hazard function is modeled using hazard ratios, which express the ratio between the hazard of an event between two groups at a time. The hazard ratio between two groups can be expressed as <span class="math inline">\(v = \frac{h_1(t)}{h_2(t)}\)</span> (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>).</p>
+</section>
+<section id="cox-proportional-hazards-model" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="cox-proportional-hazards-model"><span class="header-section-number">3.4</span> Cox Proportional Hazards Model</h2>
+<p>The Cox proportional hazards model is expressed in terms of the hazard function on an individual <span class="math inline">\(i\)</span> at time <span class="math inline">\(t\)</span>. This function is expressed as <span class="math inline">\(h_i(t) = vh_0(t)\)</span>, where <span class="math inline">\(h_0(t)\)</span> is the baseline hazard function and <span class="math inline">\(v\)</span> is the hazard ratio (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). The baseline hazard function is the hazard function for a subject with all explanatory variables equal to zero. For the models we will discuss, the hazard ratio <span class="math inline">\(v\)</span> is set to equal <span class="math inline">\(exp(\beta)\)</span> since the hazard ratio cannot be a negative value. The parameter <span class="math inline">\(beta\)</span> is thus the log of the hazard ratio, expressed <span class="math inline">\(\beta = log(v)\)</span>. Any value of <span class="math inline">\(\beta\)</span> will output a positive value <span class="math inline">\(v\)</span>. We can include many explanatory variables in the hazard function such as factors, which can take on different levels, or variates, which can be any value on a continuous scale. With many predictors, the Cox proportional hazards model can be expressed as <span class="math inline">\(h_i(t) = h_0(t)exp(\beta_1x_{1i} + \beta_2x_{2i} + ... + \beta_px_{pi})\)</span>, where <span class="math inline">\(h_0(t)\)</span> is the baseline hazard function, <span class="math inline">\(x_1\)</span> to <span class="math inline">\(x_p\)</span> are the values of the explanatory variables for individual <span class="math inline">\(i\)</span>, and <span class="math inline">\(\beta_1\)</span> to <span class="math inline">\(\beta_p\)</span> are the regression coefficients. The model can also be expressed as a linear model in terms of the log of the ratios between the two hazard functions, looking like <span class="math inline">\(log(\frac{h_i(t)}{h_0(t)}) = \beta_1x_{1i} + \beta_2x_{2i} + ... + \beta_px_{pi}\)</span> (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>).</p>
+</section>
+<section id="method-of-maximum-likelihood" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="method-of-maximum-likelihood"><span class="header-section-number">3.5</span> Method of Maximum Likelihood</h2>
+<p>In the Cox proportional hazards model, there are two unknowns: the baseline hazard function, <span class="math inline">\(h_0(t)\)</span>, and the regression coefficients, <span class="math inline">\(\beta_1\)</span> to <span class="math inline">\(\beta_p\)</span>. The method of maximum likelihood is a statistical method used to estimate values for unknown parameters by fitting a model that maximizes the likelihood of outputting the data we have (<span class="citation" data-cites="allison84">Allison (<a href="#ref-allison84" role="doc-biblioref">1984</a>)</span>). In general, the maximum likelihood estimate for an unknown value, <span class="math inline">\(\theta\)</span>, is the value that maximizes the likelihood function, <span class="math inline">\(L(\theta) = \prod_{i=1}^n f(x_i|\theta)\)</span>, where <span class="math inline">\(f(x_i|\theta)\)</span> is the probability density function, or pdf, of the data (<span class="citation" data-cites="pennstate"><span>“Maximum Likelihood Estimation”</span> (<a href="#ref-pennstate" role="doc-biblioref">n.d.</a>)</span>). The pdf and CDF, or the Cumulative Distribution Function, of the data are functions that express probability of certain values based on the distribution of the data. The baseline hazard function, <span class="math inline">\(h_0(t)\)</span>, can be expressed as a function of the pdf and CDF of the data, looking like <span class="math inline">\(h_0(t) = \frac{f(t)}{1-F(t)}\)</span>, where <span class="math inline">\(f(t)\)</span> is the pdf and <span class="math inline">\(F(t)\)</span> is the CDF (<span class="citation" data-cites="allison84">Allison (<a href="#ref-allison84" role="doc-biblioref">1984</a>)</span>). However, as mentioned before, a specific distribution of the data is not assumed in Hazard Analysis. This means that the pdf, CDF, and therefore the baseline hazard function, can not be calculated using the method of maximum likelihood. Instead, the method of partial likelihood can be used to estimate the regression coefficients (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>).</p>
+</section>
+<section id="method-of-partial-likelihood" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="method-of-partial-likelihood"><span class="header-section-number">3.6</span> Method of Partial Likelihood</h2>
+<p>The method of partial likelihood, first discovered by Cox himself, allows us to estimate the regression coefficients without knowing the baseline hazard function (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). As a reminder, the baseline hazard function describes the distribution of the data when no events have happened, but we only have data points at times when either an event occurs or an individual is censored. Thus, we need a way to fit a function that maximizes the likelihood of getting these data points without knowing what happens at every time. The method of partial likelihood does this by ranking the times of events in the data, and then using these ordered event times to predict the hazard ratio. It is called a partial likelihood method because it does not actually use the exact times of events but instead just their rankings (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). One key assumption of this method is that there are no ties in the data, or events at the same time. Additionally, it is important to note that this method assumes that the time intervals between each event are independent of the model parameters, or that the time intervals give no information about the model parameters (<span class="citation" data-cites="waagepetersen22">Waagepetersen (<a href="#ref-waagepetersen22" role="doc-biblioref">2022</a>)</span>).</p>
+</section>
+<section id="partial-likelihood-derivation" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="partial-likelihood-derivation"><span class="header-section-number">3.7</span> Partial Likelihood Derivation</h2>
+<p>The method of partial likelihood is based on the assumption that the time intervals between events gives no information about the model parameters. Instead, the method uses the order of the events to estimate the hazard ratio. The method uses the idea of conditional probability that a certain individual has an event at time <span class="math inline">\(t_j\)</span> given that they have survived until time <span class="math inline">\(t_i\)</span> and that an event has occurred at time <span class="math inline">\(t_j\)</span>.</p>
+<p>The definition of conditional probability is given by: <span class="math inline">\(P(A|B) = \frac{P(A ∩ B)}{P(B)}\)</span>. This is saying that the probability of some event A given that an event B has occurred is equal to the probability that both events A and B occur divided by the probability that event B occurs. In the context of the Cox proportional hazards model, the conditional probability would look like: <span class="math inline">\(P(\text{individual with variables } x_i \text{ experiences event at time } t_j | \text{one event at time } t_j )\)</span> = <span class="math inline">\(\frac{P(\text{individual with variables } x_i \text{ experiences event at time } t_j)}{P(\text{an event happens at time } t_j)}\)</span>.</p>
+<p>The probability of an event happening at <span class="math inline">\(t_j\)</span> can be represented numerically as the sum of the probabilities of event for all of the individuals at risk at time <span class="math inline">\(t_j\)</span>, or <span class="math inline">\({\sum_{l \in R(t_j)} P(\text{individual l dies at time j}})\)</span>. Now, we can replace these terms with the hazard functions, <span class="math inline">\(h_i(t_j)\)</span> and <span class="math inline">\(h_lt_j)\)</span>, for the numerator and denominator, making the new probability <span class="math inline">\(\frac{h_i(t_j)}{\sum_{l \in R(t_j)} h_l(t_j)}\)</span> (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>).</p>
+<p>Recall that the hazard ratio, <span class="math inline">\(h_i(t)\)</span>, is defined as the hazard function of individual i at time t, or <span class="math inline">\(h_i(t) = h_0(t)exp(\beta_1x_{1i} + \beta_2x_{2i} + ... + \beta_px_{pi})\)</span>. The baseline hazard function, <span class="math inline">\(h_0(t)\)</span>, will thus cancel out in the conditional probability equation, simplifying it to <span class="math inline">\(\frac{exp(\beta' x_j)}{\sum_{l \in R(t_j)} exp(\beta' x_l)}\)</span>, where <span class="math inline">\(\beta'\)</span> is the vector of regression coefficients and <span class="math inline">\(x_j\)</span> is the vector of predictor variables for individual j (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>).</p>
+<p>The partial likelihood method states that the likelihood of the data is the product of the conditional probabilities of the events happening at the ordered event times, or <span class="math inline">\(L(\beta) = \prod_{j=1}^r \frac{exp(\beta' x_j)}{\sum_{l \in R(t_j)} exp(\beta' x_l)}\)</span>, where there are a total of r ordered event times and j is the index of the ordered event times. <span class="math inline">\(R(t_j)\)</span> is the set of individuals at risk at time <span class="math inline">\(t_j\)</span>, and <span class="math inline">\(l\)</span> is the index of the individual within the risk set at time j. This is the likelihood of the data given the regression coefficients, <span class="math inline">\(\beta'\)</span>.</p>
+<p>The partial likelihood function can then be written as the natural logarithm of the likelihood function, or <span class="math inline">\(log(L(\beta)) = log(\prod_{j=1}^r \frac{exp(\beta' x_j)}{\sum_{l \in R(t_j)} exp(\beta' x_l)})\)</span>. The goal of the method of partial likelihood is to find the values of <span class="math inline">\(\beta'\)</span> that maximize the partial likelihood function (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). Once we fit this equation, we can estimate these parameters by taking the derivative with respect to <span class="math inline">\(\beta'\)</span> and setting it the equation equal to zero, or <span class="math inline">\(\frac{\partial l(\beta)}{\partial \beta} = 0\)</span>. This will give us the partial likelihood estimate for the regression coefficients.</p>
+</section>
+<section id="example-data" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="example-data"><span class="header-section-number">3.8</span> Example Data</h2>
+<p>For the first example, lets only use one predictor variable, group. The data we will use is shown in <a href="#tbl-surv4">Table&nbsp;<span>3.2</span></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>surv4 <span class="ot">&lt;-</span> surv3 <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, time, status, group) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(group, time)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>surv4 <span class="sc">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with ID, Time, Status, and Group"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">id =</span> <span class="st">"ID"</span>, <span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>, <span class="at">group =</span> <span class="st">"Group"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="tbl-surv4" class="anchored">
+
+<div id="qjnarjhhhr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qjnarjhhhr table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#qjnarjhhhr thead, #qjnarjhhhr tbody, #qjnarjhhhr tfoot, #qjnarjhhhr tr, #qjnarjhhhr td, #qjnarjhhhr th {
+  border-style: none;
+}
+
+#qjnarjhhhr p {
+  margin: 0;
+  padding: 0;
+}
+
+#qjnarjhhhr .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#qjnarjhhhr .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#qjnarjhhhr .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#qjnarjhhhr .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#qjnarjhhhr .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qjnarjhhhr .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qjnarjhhhr .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qjnarjhhhr .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#qjnarjhhhr .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#qjnarjhhhr .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#qjnarjhhhr .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#qjnarjhhhr .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#qjnarjhhhr .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#qjnarjhhhr .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#qjnarjhhhr .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#qjnarjhhhr .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#qjnarjhhhr .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#qjnarjhhhr .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#qjnarjhhhr .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qjnarjhhhr .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#qjnarjhhhr .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#qjnarjhhhr .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#qjnarjhhhr .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qjnarjhhhr .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#qjnarjhhhr .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#qjnarjhhhr .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qjnarjhhhr .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qjnarjhhhr .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#qjnarjhhhr .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qjnarjhhhr .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#qjnarjhhhr .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qjnarjhhhr .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qjnarjhhhr .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qjnarjhhhr .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qjnarjhhhr .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qjnarjhhhr .gt_left {
+  text-align: left;
+}
+
+#qjnarjhhhr .gt_center {
+  text-align: center;
+}
+
+#qjnarjhhhr .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#qjnarjhhhr .gt_font_normal {
+  font-weight: normal;
+}
+
+#qjnarjhhhr .gt_font_bold {
+  font-weight: bold;
+}
+
+#qjnarjhhhr .gt_font_italic {
+  font-style: italic;
+}
+
+#qjnarjhhhr .gt_super {
+  font-size: 65%;
+}
+
+#qjnarjhhhr .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#qjnarjhhhr .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#qjnarjhhhr .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#qjnarjhhhr .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#qjnarjhhhr .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#qjnarjhhhr .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#qjnarjhhhr .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <caption>Table&nbsp;3.2:  <p>Example Data Set with ID, Time, Status, and Group</p> </caption>
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="ID">ID</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Time">Time</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Status">Status</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Group">Group</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="id" class="gt_row gt_right">1</td>
+<td headers="time" class="gt_row gt_right">2</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="group" class="gt_row gt_right">1</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">5</td>
+<td headers="time" class="gt_row gt_right">5</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="group" class="gt_row gt_right">1</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">2</td>
+<td headers="time" class="gt_row gt_right">7</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">1</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">4</td>
+<td headers="time" class="gt_row gt_right">8</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">1</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">3</td>
+<td headers="time" class="gt_row gt_right">9</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="group" class="gt_row gt_right">1</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">10</td>
+<td headers="time" class="gt_row gt_right">1</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">2</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">6</td>
+<td headers="time" class="gt_row gt_right">3</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">2</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">7</td>
+<td headers="time" class="gt_row gt_right">4</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="group" class="gt_row gt_right">2</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">9</td>
+<td headers="time" class="gt_row gt_right">6</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">2</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">8</td>
+<td headers="time" class="gt_row gt_right">10</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="group" class="gt_row gt_right">2</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</div>
+<p>Let’s start by calculating a hazard function between groups 1 and 2. To do this, we will assume that the baseline hazard function is constant, or <span class="math inline">\(h_0(t) = h_0\)</span>.</p>
+<p>Recall that the Cox proportional hazard analysis equation is <span class="math inline">\(h_i(t) = h_0(t)exp(\beta_1x_{1i} + \beta_2x_{2i} + ... + \beta_px_{pi})\)</span>, or <span class="math inline">\(h_i(t) = h_0(t)exp(\beta' x_{i})\)</span>, where <span class="math inline">\(x_i\)</span> is a binary variable representing what group individual i is in. For group 1 in our example, <span class="math inline">\(h_1(t) = h_0(t)exp(\beta'x_{1})\)</span>, and for group 2, <span class="math inline">\(h_2(t) = h_0(t)exp(\beta'x_{2})\)</span>.</p>
+<p>We can then calculate the hazard ratio between the two groups as <span class="math inline">\(v = \frac{h_1(t)}{h_2(t)} = \frac{h_0(t)exp(\beta' x_{1})}{h_0(t)exp(\beta' x_{2})} = \frac{exp(\beta' x_{1})}{exp(\beta' x_{2})}\)</span> (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>).</p>
+</section>
+<section id="censoring" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="censoring"><span class="header-section-number">3.9</span> Censoring</h2>
+<p>Since censoring is still a concern for our data, an additional term needs to be added to the partial likelihood function, making it now: <span class="math inline">\(L(\beta) = \prod_{i=1}^r [\frac{exp(\beta' x_i)}{\sum_{l \in R(t_i)} exp(\beta' x_l)}]^{δ_i}\)</span>, where {δ_i} is an indicator variable that is 0 if the <span class="math inline">\(rth\)</span> event time is right-censored and 1 otherwise. This term is added to the likelihood function to account for the fact that the event time is not observed for right-censored individuals (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). When taking the log, the function becomes <span class="math inline">\(log(L(\beta)) = \sum_{i=1}^r δ_i [\beta' x_i - log \sum_{l \in R(t_i)} exp(\beta' x_l)]\)</span> (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>).</p>
+</section>
+<section id="ties-in-the-data" class="level2" data-number="3.10">
+<h2 data-number="3.10" class="anchored" data-anchor-id="ties-in-the-data"><span class="header-section-number">3.10</span> Ties in the Data</h2>
+<p>One of the key assumptions we are making is that there are no ties in event or censor times. However, this is not always the case. There are additional models proposed to account for ties in the data, such as the Efron method and the Breslow method, which add weights to the likelihood function to account for ties in the data. Later, we will use the Breslow method in analysis because it is the simplest. Breslow suggested the equation: <span class="math inline">\(L(B) = \prod_{i=1}^{r} \frac{exp(\beta' s_i)}{(\sum_{l \in R(t_i)} exp(\beta' x_l))^{d_i}}\)</span>, where <span class="math inline">\(d_i\)</span> is the number of individuals at risk at time <span class="math inline">\(t_i\)</span> (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). For now, we will assume there are no ties in the data and use the partial likelihood function without weights.</p>
+</section>
+<section id="fitting-the-partial-log-likelihood-equation" class="level2" data-number="3.11">
+<h2 data-number="3.11" class="anchored" data-anchor-id="fitting-the-partial-log-likelihood-equation"><span class="header-section-number">3.11</span> Fitting the Partial Log Likelihood Equation</h2>
+<p>To fit our likelihood function, we must order all of the event times. For group 1, there are only two times of event, time t = 7 for individual 2 and time t = 8 for individual 4. So, we will order the event times as <span class="math inline">\(t_{(1)} &lt; t_{(2)}\)</span>, where <span class="math inline">\(t_{(1)}\)</span> represents the event time for individual 2 and <span class="math inline">\(t_{(2)}\)</span> represents the event time for individual 4. Similarly for group 2, there are events at times 1, 3, and 6, so we will order the event times as <span class="math inline">\(t_{(1)} &lt; t_{(2)} &lt; t_{(3)}\)</span>, representing the event times for individuals 10, 6, and 9. We will also need to calculate the risk set at each time, which is shown below in <a href="#tbl-surv5">Table&nbsp;<span>3.3</span></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>risk <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">9</span>, <span class="dv">8</span>, <span class="dv">7</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>surv5 <span class="ot">&lt;-</span> surv4 <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(time) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">risk_set =</span> risk) <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, group, time, status, risk_set) </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>surv5 <span class="sc">%&gt;%</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Example Data Set with Status, Group, Time, and Risk Set"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">id =</span> <span class="st">"ID"</span>, <span class="at">group =</span> <span class="st">"Group"</span>, <span class="at">time =</span> <span class="st">"Time"</span>, <span class="at">status =</span> <span class="st">"Status"</span>, </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">risk_set =</span> <span class="st">"Risk Set"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="tbl-surv5" class="anchored">
+
+<div id="tvivassbqf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#tvivassbqf table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#tvivassbqf thead, #tvivassbqf tbody, #tvivassbqf tfoot, #tvivassbqf tr, #tvivassbqf td, #tvivassbqf th {
+  border-style: none;
+}
+
+#tvivassbqf p {
+  margin: 0;
+  padding: 0;
+}
+
+#tvivassbqf .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#tvivassbqf .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#tvivassbqf .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#tvivassbqf .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#tvivassbqf .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tvivassbqf .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tvivassbqf .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tvivassbqf .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#tvivassbqf .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#tvivassbqf .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#tvivassbqf .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#tvivassbqf .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#tvivassbqf .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#tvivassbqf .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#tvivassbqf .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#tvivassbqf .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#tvivassbqf .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#tvivassbqf .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#tvivassbqf .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tvivassbqf .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#tvivassbqf .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#tvivassbqf .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#tvivassbqf .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tvivassbqf .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#tvivassbqf .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#tvivassbqf .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tvivassbqf .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tvivassbqf .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#tvivassbqf .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tvivassbqf .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#tvivassbqf .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tvivassbqf .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tvivassbqf .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tvivassbqf .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tvivassbqf .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tvivassbqf .gt_left {
+  text-align: left;
+}
+
+#tvivassbqf .gt_center {
+  text-align: center;
+}
+
+#tvivassbqf .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#tvivassbqf .gt_font_normal {
+  font-weight: normal;
+}
+
+#tvivassbqf .gt_font_bold {
+  font-weight: bold;
+}
+
+#tvivassbqf .gt_font_italic {
+  font-style: italic;
+}
+
+#tvivassbqf .gt_super {
+  font-size: 65%;
+}
+
+#tvivassbqf .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#tvivassbqf .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#tvivassbqf .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#tvivassbqf .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#tvivassbqf .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#tvivassbqf .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#tvivassbqf .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <caption>Table&nbsp;3.3:  <p>Example Data Set with Status, Group, Time, and Risk Set</p> </caption>
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="ID">ID</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Group">Group</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Time">Time</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Status">Status</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Risk Set">Risk Set</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="id" class="gt_row gt_right">10</td>
+<td headers="group" class="gt_row gt_right">2</td>
+<td headers="time" class="gt_row gt_right">1</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="risk_set" class="gt_row gt_right">10</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">1</td>
+<td headers="group" class="gt_row gt_right">1</td>
+<td headers="time" class="gt_row gt_right">2</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="risk_set" class="gt_row gt_right">9</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">6</td>
+<td headers="group" class="gt_row gt_right">2</td>
+<td headers="time" class="gt_row gt_right">3</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="risk_set" class="gt_row gt_right">8</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">7</td>
+<td headers="group" class="gt_row gt_right">2</td>
+<td headers="time" class="gt_row gt_right">4</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="risk_set" class="gt_row gt_right">7</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">5</td>
+<td headers="group" class="gt_row gt_right">1</td>
+<td headers="time" class="gt_row gt_right">5</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="risk_set" class="gt_row gt_right">6</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">9</td>
+<td headers="group" class="gt_row gt_right">2</td>
+<td headers="time" class="gt_row gt_right">6</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="risk_set" class="gt_row gt_right">5</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">2</td>
+<td headers="group" class="gt_row gt_right">1</td>
+<td headers="time" class="gt_row gt_right">7</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="risk_set" class="gt_row gt_right">4</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">4</td>
+<td headers="group" class="gt_row gt_right">1</td>
+<td headers="time" class="gt_row gt_right">8</td>
+<td headers="status" class="gt_row gt_right">1</td>
+<td headers="risk_set" class="gt_row gt_right">3</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">3</td>
+<td headers="group" class="gt_row gt_right">1</td>
+<td headers="time" class="gt_row gt_right">9</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="risk_set" class="gt_row gt_right">2</td></tr>
+    <tr><td headers="id" class="gt_row gt_right">8</td>
+<td headers="group" class="gt_row gt_right">2</td>
+<td headers="time" class="gt_row gt_right">10</td>
+<td headers="status" class="gt_row gt_right">0</td>
+<td headers="risk_set" class="gt_row gt_right">1</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</div>
+<p>To estimate the parameters, we will need to use the natural log of our partial likelihood function, which we derived as: <span class="math inline">\(log(L(\beta)) = \sum_{i=1}^r δ_i [\beta' x_i - log \sum_{l \in R(t_i)} exp(\beta' x_l)]\)</span>.</p>
+<p>At time <span class="math inline">\(t=1\)</span>, the risk set will include all 10 individuals because at the tie just before t=1, there are no individuals who have experienced the event or been censored. At time <span class="math inline">\(t=2\)</span>, the risk set will include all individuals except for individuals with ID 10 because they experienced the event at time 1. We can continue this process for each time, and the risk set will be the same for both groups.</p>
+<p>Now that we know the risk sets and the event times, we can calculate the partial likelihood function. Recall that the partial likelihood function is <span class="math inline">\(L(\beta) = \prod_{i=1}^{n} \frac{exp(\beta x_i)}{\sum_{j \in R(t_i)} exp(\beta x_j)}\)</span>. So, for our data set, we will need to calculate the partial likelihood function for each event time. For each relevant time, we can calculate the risk score for individual i, <span class="math inline">\(v(i) = B'{x_i}\)</span> (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). This risk score represents the numerator of the partial likelihood equation. For time <span class="math inline">\(t = 1\)</span>, in which individual 10 experiences the event of interest, the risk score is denoted <span class="math inline">\(v(10)\)</span>. The denominator of the partial likelihood equation is the sum of the risk scores for all individuals in the risk set at time <span class="math inline">\(t_i\)</span>, so all individuals 1 through 10. The denominator is then <span class="math inline">\(v(1) + v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9) + v(10)\)</span>. The partial likelihood function for time <span class="math inline">\(t = 1\)</span> is then <span class="math inline">\(\frac{v(10)}{v(1) + v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9) + v(10)}\)</span>.</p>
+<p>After doing this for each event time, we get the partial likelihood equation to be <span class="math inline">\(\frac{v(10)}{v(1) + v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9) + v(10)}\)</span> * <span class="math inline">\(\frac{v(6)}{v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9)}\)</span> * <span class="math inline">\(\frac{v(9)}{v(2) + v(3) + v(4) + v(8) + v(9)}\)</span> * <span class="math inline">\(\frac{v(2)}{v(2) + v(3) + v(4) + v(8)}\)</span> * <span class="math inline">\(\frac{v(4)}{v(3) + v(4) + v(8)}\)</span>.</p>
+<p>We can then take the log of the partial likelihood function to get the log partial likelihood function: <span class="math inline">\(log(L(B)) = 3\beta x_2 + 2\beta x_1 - log(5exp(\beta x_1) + 5exp(\beta x_2))\)</span> - <span class="math inline">\(log(4exp(\beta x_1) + 4exp(\beta x_2)) - log(3exp(\beta x_1) + 2exp(\beta x_2)) - log(3exp(\beta x_1)\)</span> + <span class="math inline">\(exp(\beta x_2)) - log(2exp(\beta x_1) + exp(\beta x_2))\)</span>.</p>
+</section>
+<section id="estimating-b" class="level2" data-number="3.12">
+<h2 data-number="3.12" class="anchored" data-anchor-id="estimating-b"><span class="header-section-number">3.12</span> Estimating B’</h2>
+<p>We can then take the derivative of the log partial likelihood function with respect to <span class="math inline">\(\beta\)</span> and set it equal to 0 to find the value of <span class="math inline">\(\beta\)</span> that maximizes the partial likelihood function. The derivative will be: <span class="math inline">\(\frac{\partial log(L(\beta))}{\partial \beta}\)</span> = <span class="math inline">\(3x_2 + 2x_1 - \frac{5x_1exp(\beta x_1)}{5exp(\beta x_1) + 5exp(\beta x_2)} - \frac{5x_2exp(\beta x_2)}{5exp(\beta x_1) + 5exp(\beta x_2)} - \frac{4x_1exp(\beta x_1)}{4exp(\beta x_1) + 4exp(\beta x_2)} - \frac{4x_2exp(\beta x_2)}{4exp(\beta x_1) + 4exp(\beta x_2)}\)</span> - <span class="math inline">\(\frac{3x_1exp(\beta x_1)}{3exp(\beta x_1) + 2exp(\beta x_2)} - \frac{2x_2exp(\beta x_2)}{3exp(\beta x_1) + 2exp(\beta x_2)} - \frac{3x_1exp(\beta x_1)}{3exp(\beta x_1) + exp(\beta x_2)} - \frac{x_2exp(\beta x_2)}{3exp(\beta x_1) + exp(\beta x_2)} - \frac{2x_1exp(\beta x_1)}{2exp(\beta x_1) + exp(\beta x_2)}\)</span> - <span class="math inline">\(\frac{x_2exp(\beta x_2)}{2exp(\beta x_1) + exp(\beta x_2)}\)</span>.</p>
+<p>Setting this equation equal to zero and solving for <span class="math inline">\(\beta\)</span> would theoretically give us the value of <span class="math inline">\(\beta\)</span> that maximizes the partial likelihood function. However, because this equation is not solvable, we can use numerical methods to approximate the value of <span class="math inline">\(\beta\)</span>. One of the most common methods is called the Newton Raphson method.</p>
+</section>
+<section id="newton-raphson-method" class="level2" data-number="3.13">
+<h2 data-number="3.13" class="anchored" data-anchor-id="newton-raphson-method"><span class="header-section-number">3.13</span> Newton Raphson Method</h2>
+<p>The Newton Raphson method is an iterative method that is used to find the root of a function, f(x). In our case, we case use this method to find the value of <span class="math inline">\(\beta\)</span> that maximizes the partial likelihood function. We do this by starting with an initial estimate, <span class="math inline">\({x_0}\)</span>, for the root, and repeating a series of steps to improve this estimation. We will first chose a value for x, <span class="math inline">\(x_0\)</span>, and then find the equation of the tangent line to the function at the point <span class="math inline">\((x_0, f(x_0))\)</span>. We can then find the x-intercept of the tangent line at <span class="math inline">\(x_0\)</span> by setting our function equal to 0. This x-intercept is our next estimate, <span class="math inline">\(x_1\)</span>, for the root (<span class="citation" data-cites="anstee">Anstee (<a href="#ref-anstee" role="doc-biblioref">n.d.</a>)</span>).</p>
+<p>Let f(x) be the function we want to find the root of and r be the root of the equation when f(x) = 0. Suppose <span class="math inline">\(r = {x_0} + h\)</span>. The value of h is the distance from the true root, r, and our initial estimate, <span class="math inline">\(x_0\)</span>. A key assumption of this method is that <span class="math inline">\({x_0}\)</span> is a good estimate and therefore h is close to the true value. Because h is small, we can use the linear approximation of the tangent line. To do this, we know that the slope of the tangent line is the derivative of the function at the point <span class="math inline">\((x_0, f(x_0))\)</span>. Thus we can estimate <span class="math inline">\(0 = f(r) = f({x_0} + h) = f({x_0}) + f'({x_0})h\)</span>. Solving for h we get <span class="math inline">\(h = -\frac{f({x_0})}{f'({x_0})}\)</span>. Thus, <span class="math inline">\(r = {x_0} + h = {x_0} - \frac{f({x_0})}{f'({x_0})}\)</span>. The new value of r will be a better estimate for the root, <span class="math inline">\(x_1\)</span> (<span class="citation" data-cites="anstee">Anstee (<a href="#ref-anstee" role="doc-biblioref">n.d.</a>)</span>).</p>
+<p>The equation used for this iteration looks like: <span class="math inline">\(x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\)</span>. We can repeat this step until the difference between <span class="math inline">\({x_n+1}\)</span> and <span class="math inline">\({x_n}\)</span> is less than a certain tolerance level, meaning that our estimate is not changing much with new iterations (<span class="citation" data-cites="anstee">Anstee (<a href="#ref-anstee" role="doc-biblioref">n.d.</a>)</span>).</p>
+</section>
+<section id="newton-raphson-example" class="level2" data-number="3.14">
+<h2 data-number="3.14" class="anchored" data-anchor-id="newton-raphson-example"><span class="header-section-number">3.14</span> Newton Raphson Example</h2>
+<p>Let’s consider a simple example of a Newton Raphson iteration. Suppose we want to find the root of the function, <span class="math inline">\(f(x) = x^3 +3x + 1\)</span>. First, we will take the derivative of the function, which will be <span class="math inline">\(f'(x) = 3x^2 + 3\)</span>. We can then use the Newton Raphson method to find the root of the function. We will start with an initial estimate, <span class="math inline">\(x_0 = 3\)</span>, and use the equation <span class="math inline">\(x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\)</span> to find our second estimate for the root. In this case, <span class="math inline">\(x_{n+1} = 3 - \frac{f(3)}{f'(3)} = 3 - \frac{3^3 + 3*3 + 1}{3*3^2 + 3}\ = 3 - \frac{37}{30} = 3 - 1.2333 = 1.7667\)</span>. We can then use this value as our new estimate and repeat the process until the difference between <span class="math inline">\({x_n+1}\)</span> and <span class="math inline">\({x_n}\)</span> is less than a certain tolerance level. Let’s visualize this process in table <a href="#tbl-nr1">Table&nbsp;<span>3.4</span></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define function and its derivative</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">=</span> <span class="cf">function</span>(x) x<span class="sc">^</span><span class="dv">3</span> <span class="sc">+</span> <span class="dv">3</span><span class="sc">*</span>x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fprime <span class="ot">=</span> <span class="cf">function</span>(x) <span class="dv">3</span><span class="sc">*</span>x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">3</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose initial estimate to be 3</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">=</span> <span class="dv">3</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Use tolerance level of 0.0001</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>tol <span class="ot">=</span> <span class="fl">0.0001</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize a vector to store the results</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(x)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># While loop to repeat the process until the difference between </span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ${x_n+1}$ and ${x_n}$ is less than the tolerance level</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="fu">abs</span>(<span class="fu">f</span>(x)) <span class="sc">&gt;</span> tol){</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> x <span class="sc">-</span> <span class="fu">f</span>(x)<span class="sc">/</span><span class="fu">fprime</span>(x)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> <span class="fu">round</span>(x, <span class="dv">4</span>)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(iterations, x)  <span class="co"># Store the current value of x</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a data frame with results</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">iteration =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(iterations), <span class="at">x =</span> iterations)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Newton Raphson Iteration"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">iteration =</span> <span class="st">"Iteration"</span>, <span class="at">x =</span> <span class="st">"x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="tbl-nr1" class="anchored">
+
+<div id="riuumfgipt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#riuumfgipt table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#riuumfgipt thead, #riuumfgipt tbody, #riuumfgipt tfoot, #riuumfgipt tr, #riuumfgipt td, #riuumfgipt th {
+  border-style: none;
+}
+
+#riuumfgipt p {
+  margin: 0;
+  padding: 0;
+}
+
+#riuumfgipt .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#riuumfgipt .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#riuumfgipt .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#riuumfgipt .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#riuumfgipt .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#riuumfgipt .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#riuumfgipt .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#riuumfgipt .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#riuumfgipt .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#riuumfgipt .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#riuumfgipt .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#riuumfgipt .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#riuumfgipt .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#riuumfgipt .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#riuumfgipt .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#riuumfgipt .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#riuumfgipt .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#riuumfgipt .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#riuumfgipt .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#riuumfgipt .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#riuumfgipt .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#riuumfgipt .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#riuumfgipt .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#riuumfgipt .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#riuumfgipt .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#riuumfgipt .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#riuumfgipt .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#riuumfgipt .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#riuumfgipt .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#riuumfgipt .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#riuumfgipt .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#riuumfgipt .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#riuumfgipt .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#riuumfgipt .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#riuumfgipt .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#riuumfgipt .gt_left {
+  text-align: left;
+}
+
+#riuumfgipt .gt_center {
+  text-align: center;
+}
+
+#riuumfgipt .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#riuumfgipt .gt_font_normal {
+  font-weight: normal;
+}
+
+#riuumfgipt .gt_font_bold {
+  font-weight: bold;
+}
+
+#riuumfgipt .gt_font_italic {
+  font-style: italic;
+}
+
+#riuumfgipt .gt_super {
+  font-size: 65%;
+}
+
+#riuumfgipt .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#riuumfgipt .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#riuumfgipt .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#riuumfgipt .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#riuumfgipt .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#riuumfgipt .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#riuumfgipt .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <caption>Table&nbsp;3.4:  <p>Newton Raphson Iteration</p> </caption>
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Iteration">Iteration</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="x">x</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="iteration" class="gt_row gt_right">1</td>
+<td headers="x" class="gt_row gt_right">3.0000</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">2</td>
+<td headers="x" class="gt_row gt_right">1.7667</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">3</td>
+<td headers="x" class="gt_row gt_right">0.8111</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">4</td>
+<td headers="x" class="gt_row gt_right">0.0135</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">5</td>
+<td headers="x" class="gt_row gt_right">-0.3333</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">6</td>
+<td headers="x" class="gt_row gt_right">-0.3222</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</div>
+<p>The table shows the results of the Newton Raphson method. We can see that the value of x is converging to the root of the function, which is approximately -0.32.</p>
+</section>
+<section id="newton-raphson-for-parametized-functions-gamma-distribution" class="level2" data-number="3.15">
+<h2 data-number="3.15" class="anchored" data-anchor-id="newton-raphson-for-parametized-functions-gamma-distribution"><span class="header-section-number">3.15</span> Newton Raphson for Parametized Functions: Gamma Distribution</h2>
+<p>The above example shows the general process for the Newton Raphson iteration, but what about when we have a function with multiple parameters? Suppose we want to find the root of the gamma distribution, <span class="math inline">\(f(x) = \frac{\lambda ^\alpha }{\Gamma(\alpha )}x^{\alpha -1}e^{-\lambda x}\)</span>. First, we will need to define a likelihood function for the gamma distribution. This function takes the product of the probability density function of the gamma distribution for each observation. The likelihood function for the gamma distribution is: <span class="math inline">\(L(\alpha, \lambda) = \prod_{i=1}^{n} \frac{\lambda ^\alpha}{\Gamma(\alpha)}x_i^{\alpha-1}e^{-\lambda x_i}\)</span>.</p>
+<p>We will take the natural log of the likelihood function which comes to be <span class="math inline">\(ln(L(\alpha, \lambda)) = n\alpha ln(\lambda) - n ln(\Gamma(\alpha)) + (\alpha - 1)\sum_{i=1}^{n}ln(x_i) - \lambda \sum_{i=1}^{n}x_i\)</span>.</p>
+<p>We will then need the partial derivatives and the second partial derivatives of the natural log of the likelihood function with respect to <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span>.</p>
+<p>The first partial derivative with respect to <span class="math inline">\(\alpha\)</span> is: <span class="math inline">\(\frac{\partial ln(L(\alpha, \lambda))}{\partial \alpha} = n ln(\lambda) - n \psi(\alpha) + \sum_{i=1}^{n}ln(x_i)\)</span>, where <span class="math inline">\(\psi\)</span> is the digamma function, or the derivative of the natural log of the gamma function.</p>
+<p>The first partial derivative with respect to <span class="math inline">\(\lambda\)</span> is: <span class="math inline">\(\frac{\partial ln(L(\alpha, \lambda))}{\partial \lambda} = \frac{n\alpha}{\lambda} - \sum_{i=1}^{n}x_i\)</span>.</p>
+<p>The second partial derivative with respect to <span class="math inline">\(\alpha\)</span> is: <span class="math inline">\(\frac{\partial^2 ln(L(\alpha, \lambda))}{\partial \alpha^2} = -n \psi'(\alpha)\)</span>, where <span class="math inline">\(\psi'\)</span> is the trigamma function, or the second derivative of the natural log of the gamma function.</p>
+<p>The second partial derivative with respect to <span class="math inline">\(\lambda\)</span> is: <span class="math inline">\(\frac{\partial^2 ln(L(\alpha, \lambda))}{\partial \lambda^2} = -\frac{n\alpha}{\lambda^2}\)</span>.</p>
+<p>Now, we will use the Newton Raphson method to find the values of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span> that maximize the function. Recall that the Newton Raphson method used the equation <span class="math inline">\(x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\)</span>. In this case, we will have two equations, one for <span class="math inline">\(\alpha\)</span> and one for <span class="math inline">\(\lambda\)</span>. We will first need to choose initial estimates for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span>. These initial estimates can be chosen using other methods such as Method of Moments Estimation. The Method of Moments Estimator of the parameters of the Gamma Distribution are: <span class="math inline">\(\hat{\alpha} = \frac{\bar{x}^2}{s^2}\)</span> and <span class="math inline">\(\hat{\lambda} = \frac{\bar{x}}{s^2}\)</span>, where <span class="math inline">\(\bar{x}\)</span> is the sample mean and s is the sample standard deviation. We can then use these estimates as our initial estimates for the Newton Raphson method using the equation <span class="math inline">\(x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}\)</span> to find our second estimate for the root and then repeating the process until our tolerance requirement is met. Let’s use R to generate a random sample from a gamma distribution and find the sample mean and sample standard deviation. These statistics are in <a href="#tbl-gamma">Table&nbsp;<span>3.5</span></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate random gamma distribution and summary statistics</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">rgamma</span>(<span class="dv">10</span>, <span class="at">shape =</span> <span class="dv">3</span>, <span class="at">rate =</span> .<span class="dv">5</span>), <span class="dv">1</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Put these values into a data frame</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>gamma_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"n"</span> <span class="ot">=</span> <span class="dv">10</span>, </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"sum_x"</span> <span class="ot">=</span> <span class="fu">sum</span>(gamma), </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"sum_ln_x"</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">log</span>(gamma)), </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"mean"</span> <span class="ot">=</span> <span class="fu">mean</span>(gamma), </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                         <span class="st">"variance"</span> <span class="ot">=</span> <span class="fu">var</span>(gamma))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View data in a table</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>gamma_data <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Summary Statistics for Gamma Distribution"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">n =</span> <span class="st">"Number of Observations"</span>, </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">sum_x =</span> <span class="st">"Sum of x"</span>, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">sum_ln_x =</span> <span class="st">"Sum of ln(x)"</span>, </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">mean =</span> <span class="st">"Mean"</span>, </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">variance =</span> <span class="st">"Variance"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="tbl-gamma" class="anchored">
+
+<div id="eebjyloatc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#eebjyloatc table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#eebjyloatc thead, #eebjyloatc tbody, #eebjyloatc tfoot, #eebjyloatc tr, #eebjyloatc td, #eebjyloatc th {
+  border-style: none;
+}
+
+#eebjyloatc p {
+  margin: 0;
+  padding: 0;
+}
+
+#eebjyloatc .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#eebjyloatc .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#eebjyloatc .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#eebjyloatc .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#eebjyloatc .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#eebjyloatc .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eebjyloatc .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#eebjyloatc .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#eebjyloatc .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#eebjyloatc .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#eebjyloatc .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#eebjyloatc .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#eebjyloatc .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#eebjyloatc .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#eebjyloatc .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#eebjyloatc .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#eebjyloatc .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#eebjyloatc .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#eebjyloatc .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eebjyloatc .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#eebjyloatc .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#eebjyloatc .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#eebjyloatc .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eebjyloatc .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#eebjyloatc .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#eebjyloatc .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eebjyloatc .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eebjyloatc .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#eebjyloatc .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eebjyloatc .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#eebjyloatc .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eebjyloatc .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#eebjyloatc .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eebjyloatc .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#eebjyloatc .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eebjyloatc .gt_left {
+  text-align: left;
+}
+
+#eebjyloatc .gt_center {
+  text-align: center;
+}
+
+#eebjyloatc .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#eebjyloatc .gt_font_normal {
+  font-weight: normal;
+}
+
+#eebjyloatc .gt_font_bold {
+  font-weight: bold;
+}
+
+#eebjyloatc .gt_font_italic {
+  font-style: italic;
+}
+
+#eebjyloatc .gt_super {
+  font-size: 65%;
+}
+
+#eebjyloatc .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#eebjyloatc .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#eebjyloatc .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#eebjyloatc .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#eebjyloatc .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#eebjyloatc .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#eebjyloatc .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <caption>Table&nbsp;3.5:  <p>Summary Statistics for Gamma Distribution</p> </caption>
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Number of Observations">Number of Observations</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Sum of x">Sum of x</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Sum of ln(x)">Sum of ln(x)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Mean">Mean</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Variance">Variance</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="n" class="gt_row gt_right">10</td>
+<td headers="sum_x" class="gt_row gt_right">67.7</td>
+<td headers="sum_ln_x" class="gt_row gt_right">17.79487</td>
+<td headers="mean" class="gt_row gt_right">6.77</td>
+<td headers="variance" class="gt_row gt_right">12.75789</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</div>
+<p>We can now determine our initial estimates for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span> using the Method of Moments Estimation. The sample mean is 2.3 and the sample standard deviation is 1.1. We can use these values to find our initial estimates for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Method of Moments Estimation</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">=</span> <span class="fl">6.77</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>variance <span class="ot">=</span> <span class="fl">12.76</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial estimates for alpha and lambda</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> mean<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> variance</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>L <span class="ot">=</span> mean <span class="sc">/</span> variance</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Display initial estimates</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>alpha_lambda <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">"alpha"</span> <span class="ot">=</span> a, <span class="st">"lambda"</span> <span class="ot">=</span> L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># View data in a table</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>alpha_lambda <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Initial Estimates for Gamma Distribution"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">alpha =</span> <span class="st">"Alpha"</span>, </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">lambda =</span> <span class="st">"Lambda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="tbl-gamma2" class="anchored">
+
+<div id="fjjfottzly" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fjjfottzly table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#fjjfottzly thead, #fjjfottzly tbody, #fjjfottzly tfoot, #fjjfottzly tr, #fjjfottzly td, #fjjfottzly th {
+  border-style: none;
+}
+
+#fjjfottzly p {
+  margin: 0;
+  padding: 0;
+}
+
+#fjjfottzly .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#fjjfottzly .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#fjjfottzly .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#fjjfottzly .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#fjjfottzly .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#fjjfottzly .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#fjjfottzly .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#fjjfottzly .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#fjjfottzly .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#fjjfottzly .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#fjjfottzly .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#fjjfottzly .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#fjjfottzly .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#fjjfottzly .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#fjjfottzly .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fjjfottzly .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#fjjfottzly .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#fjjfottzly .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#fjjfottzly .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fjjfottzly .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#fjjfottzly .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fjjfottzly .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#fjjfottzly .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fjjfottzly .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fjjfottzly .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fjjfottzly .gt_left {
+  text-align: left;
+}
+
+#fjjfottzly .gt_center {
+  text-align: center;
+}
+
+#fjjfottzly .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#fjjfottzly .gt_font_normal {
+  font-weight: normal;
+}
+
+#fjjfottzly .gt_font_bold {
+  font-weight: bold;
+}
+
+#fjjfottzly .gt_font_italic {
+  font-style: italic;
+}
+
+#fjjfottzly .gt_super {
+  font-size: 65%;
+}
+
+#fjjfottzly .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#fjjfottzly .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#fjjfottzly .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#fjjfottzly .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#fjjfottzly .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#fjjfottzly .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#fjjfottzly .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <caption>Table&nbsp;3.6:  <p>Initial Estimates for Gamma Distribution</p> </caption>
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Alpha">Alpha</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Lambda">Lambda</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="alpha" class="gt_row gt_right">3.59192</td>
+<td headers="lambda" class="gt_row gt_right">0.5305643</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</div>
+<p>Now that we have all the information needed, we can start the Newton Raphson method. We will walk through the first iteration and then use R to do the rest.</p>
+<p>To find the first updated estimates for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span>, we will use the equations <span class="math inline">\(\alpha_{n+1} = \alpha_n - \frac{f(\alpha_n)}{f'(\alpha_n)}\)</span> and <span class="math inline">\(\lambda_{n+1} = \lambda_n - \frac{f(\lambda_n)}{f'(\lambda_n)}\)</span>.</p>
+<p>We will start with our Method of Moments estimates of <span class="math inline">\(\hat{\alpha} = 3.59192\)</span> and <span class="math inline">\(\hat{\lambda} = 0.5305643\)</span>. For alpha, the first iteration would look like: <span class="math inline">\(\alpha_{1} = 3.59192 - \frac{n ln(\lambda) - n \psi(\alpha) + \sum_{i=1}^{n}ln(x_i)}{-n \psi'(\alpha)}\)</span>. Plugging in the values, we get <span class="math inline">\(\alpha_{1} = 3.59192 - \frac{10 * ln(0.5305643) - 10 * digamma(3.59192) + 17.79487}{-10 * trigamma(3.59192)}\)</span> = 3.631203.</p>
+<p>For lambda, the first iteration would look like: <span class="math inline">\(\lambda_{1} = 0.5305643 - \frac{\frac{n\alpha}{\lambda} - \sum_{i=1}^{n}x_i}{-\frac{n\alpha}{\lambda^2}}\)</span>. Plugging in the values, we get <span class="math inline">\(\lambda_{1} = 0.5305643 - \frac{\frac{10 * 3.59192}{0.5305643} - 67.7}{-\frac{10 * 3.59192}{0.5305643^2}}\)</span> = 0.5305643.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the first iteration for alpha</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fl">3.59192</span> <span class="sc">-</span> ((<span class="dv">10</span> <span class="sc">*</span> <span class="fu">log</span>(<span class="fl">0.5305643</span>) <span class="sc">-</span> <span class="dv">10</span> <span class="sc">*</span> <span class="fu">digamma</span>(<span class="fl">3.59192</span>) <span class="sc">+</span> <span class="fl">17.79487</span>) <span class="sc">/</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>             (<span class="sc">-</span><span class="dv">10</span> <span class="sc">*</span> <span class="fu">trigamma</span>(<span class="fl">3.59192</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.631203</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the first iteration for lambda</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fl">0.5305643</span> <span class="sc">-</span> (((<span class="dv">10</span> <span class="sc">*</span> <span class="fl">3.59192</span> <span class="sc">/</span> <span class="fl">0.5305643</span>) <span class="sc">-</span> <span class="fl">67.7</span>) <span class="sc">/</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>               (<span class="sc">-</span><span class="dv">10</span> <span class="sc">*</span> <span class="fl">3.59192</span> <span class="sc">/</span> <span class="fl">0.5305643</span><span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5305643</code></pre>
+</div>
+</div>
+<p>Now, we can continue this process using the new estimates of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\lambda\)</span> until the difference between the current and previous estimates is less than a certain tolerance level. We will use a tolerance level of 0.005. Let’s visualize this process in table <a href="#tbl-nr2">Table&nbsp;<span>3.7</span></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define functions using a for alpha and L for lambda</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>afunc <span class="ot">=</span> <span class="cf">function</span>(a, L, n, sum_ln_x) a <span class="sc">-</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  ((n<span class="sc">*</span><span class="fu">log</span>(L) <span class="sc">-</span> n <span class="sc">*</span> <span class="fu">digamma</span>(a) <span class="sc">+</span> sum_ln_x) <span class="sc">/</span> (<span class="sc">-</span>n <span class="sc">*</span> <span class="fu">trigamma</span>(a)))</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>Lfunc <span class="ot">=</span> <span class="cf">function</span>(a, L, n, sum_x) L <span class="sc">-</span> (((n<span class="sc">*</span>a<span class="sc">/</span>L) <span class="sc">-</span> sum_x) <span class="sc">/</span> (<span class="sc">-</span>n <span class="sc">*</span> a <span class="sc">/</span> L<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose initial estimates</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> <span class="fl">3.59192</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>L <span class="ot">=</span> <span class="fl">0.5305643</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">10</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>sum_ln_x <span class="ot">=</span> <span class="fu">sum</span>(<span class="fu">log</span>(gamma))</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>sum_x <span class="ot">=</span> <span class="fu">sum</span>(gamma)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Use tolerance level of 0.005</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>tol <span class="ot">=</span> <span class="fl">0.005</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize a vector to store the results</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(a, L)</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co"># While loop to repeat the process until the difference between a and a1 and </span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co"># L and L1 is less than the tolerance level</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> (<span class="cn">TRUE</span>) {</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>  a1 <span class="ot">&lt;-</span> <span class="fu">afunc</span>(a, L, n, sum_ln_x)</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>  L1 <span class="ot">&lt;-</span> <span class="fu">Lfunc</span>(a, L, n, sum_x)</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">abs</span>(a <span class="sc">-</span> a1) <span class="sc">&lt;</span> tol <span class="sc">&amp;</span> <span class="fu">abs</span>(L <span class="sc">-</span> L1) <span class="sc">&lt;</span> tol) {</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>  a <span class="ot">&lt;-</span> a1</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>  L <span class="ot">&lt;-</span> L1</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>  iterations <span class="ot">&lt;-</span> <span class="fu">c</span>(iterations, a, L)  <span class="co"># Store the current values of a and L</span></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a><span class="co"># put the results into a table with every 10th value</span></span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">iteration =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(iterations), </span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>                      <span class="at">a =</span> iterations[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">length</span>(iterations), <span class="dv">2</span>)], </span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>                      <span class="at">L =</span> iterations[<span class="fu">seq</span>(<span class="dv">2</span>, <span class="fu">length</span>(iterations), <span class="dv">2</span>)])</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a><span class="co"># print the table</span></span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span></span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(<span class="at">caption =</span> <span class="st">"Newton Raphson for Gamma Distribution"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">iteration =</span> <span class="st">"Iteration"</span>, <span class="at">a =</span> <span class="st">"Alpha"</span>, <span class="at">L =</span> <span class="st">"Lambda"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="tbl-nr2" class="anchored">
+
+<div id="wfyhlywxfz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#wfyhlywxfz table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#wfyhlywxfz thead, #wfyhlywxfz tbody, #wfyhlywxfz tfoot, #wfyhlywxfz tr, #wfyhlywxfz td, #wfyhlywxfz th {
+  border-style: none;
+}
+
+#wfyhlywxfz p {
+  margin: 0;
+  padding: 0;
+}
+
+#wfyhlywxfz .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#wfyhlywxfz .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#wfyhlywxfz .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#wfyhlywxfz .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#wfyhlywxfz .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#wfyhlywxfz .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#wfyhlywxfz .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#wfyhlywxfz .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#wfyhlywxfz .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#wfyhlywxfz .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#wfyhlywxfz .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#wfyhlywxfz .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#wfyhlywxfz .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#wfyhlywxfz .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#wfyhlywxfz .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wfyhlywxfz .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#wfyhlywxfz .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#wfyhlywxfz .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#wfyhlywxfz .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wfyhlywxfz .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#wfyhlywxfz .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wfyhlywxfz .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#wfyhlywxfz .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wfyhlywxfz .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#wfyhlywxfz .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wfyhlywxfz .gt_left {
+  text-align: left;
+}
+
+#wfyhlywxfz .gt_center {
+  text-align: center;
+}
+
+#wfyhlywxfz .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#wfyhlywxfz .gt_font_normal {
+  font-weight: normal;
+}
+
+#wfyhlywxfz .gt_font_bold {
+  font-weight: bold;
+}
+
+#wfyhlywxfz .gt_font_italic {
+  font-style: italic;
+}
+
+#wfyhlywxfz .gt_super {
+  font-size: 65%;
+}
+
+#wfyhlywxfz .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#wfyhlywxfz .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#wfyhlywxfz .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#wfyhlywxfz .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#wfyhlywxfz .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#wfyhlywxfz .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#wfyhlywxfz .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <caption>Table&nbsp;3.7:  <p>Newton Raphson for Gamma Distribution</p> </caption>
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Iteration">Iteration</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Alpha">Alpha</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Lambda">Lambda</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="iteration" class="gt_row gt_right">1</td>
+<td headers="a" class="gt_row gt_right">3.591920</td>
+<td headers="L" class="gt_row gt_right">0.5305643</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">2</td>
+<td headers="a" class="gt_row gt_right">3.631203</td>
+<td headers="L" class="gt_row gt_right">0.5305643</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">3</td>
+<td headers="a" class="gt_row gt_right">3.631450</td>
+<td headers="L" class="gt_row gt_right">0.5363040</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">4</td>
+<td headers="a" class="gt_row gt_right">3.665424</td>
+<td headers="L" class="gt_row gt_right">0.5364032</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">5</td>
+<td headers="a" class="gt_row gt_right">3.591920</td>
+<td headers="L" class="gt_row gt_right">0.5305643</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">6</td>
+<td headers="a" class="gt_row gt_right">3.631203</td>
+<td headers="L" class="gt_row gt_right">0.5305643</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">7</td>
+<td headers="a" class="gt_row gt_right">3.631450</td>
+<td headers="L" class="gt_row gt_right">0.5363040</td></tr>
+    <tr><td headers="iteration" class="gt_row gt_right">8</td>
+<td headers="a" class="gt_row gt_right">3.665424</td>
+<td headers="L" class="gt_row gt_right">0.5364032</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</div>
+<p>As we can see, we didn’t quite reach the original values of a = 3 and L = 0.5, but with a tolerance of 0.005, we stayed close to these values. Usually, a lower tolerance such at 0.0001 is used and many more iterations are used to get the estimates closer to the true values.</p>
+</section>
+<section id="hazard-analysis-in-r" class="level2" data-number="3.16">
+<h2 data-number="3.16" class="anchored" data-anchor-id="hazard-analysis-in-r"><span class="header-section-number">3.16</span> Hazard Analysis in R</h2>
+<p>Similarly to before with the Kaplan Meier curve, we can use R to model the hazard function. The <code>coxph()</code> function in the <code>survival</code> package returns the coefficients of the cox proportional hazards model as well as the p value for the coefficients, allowing us to determine whether each coefficient is significant (<span class="citation" data-cites="sthda"><span>“Cox Proportional-Hazards Model”</span> (<a href="#ref-sthda" role="doc-biblioref">n.d.</a>)</span>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> group, <span class="at">data =</span> surv3, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, status) ~ group, data = surv3, ties = "breslow")
+
+        coef exp(coef) se(coef)     z     p
+group 0.8606    2.3646   0.9325 0.923 0.356
+
+Likelihood ratio test=0.87  on 1 df, p=0.3496
+n= 10, number of events= 5 </code></pre>
+</div>
+</div>
+<p>As we can see, the coefficient for group is not significant, meaning that the hazard of the event occurring is not significantly different between the two groups. Let’s add another predictor and see what happens:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coxph</span>(<span class="fu">Surv</span>(time, status) <span class="sc">~</span> group <span class="sc">+</span> age, <span class="at">data =</span> surv3, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, status) ~ group + age, data = surv3, 
+    ties = "breslow")
+
+          coef exp(coef) se(coef)     z      p
+group  2.60097  13.47683  1.79663 1.448 0.1477
+age    0.18655   1.20508  0.09491 1.965 0.0494
+
+Likelihood ratio test=8.79  on 2 df, p=0.01232
+n= 10, number of events= 5 </code></pre>
+</div>
+</div>
+<p>After adding age as a predictor, we see that our model is significant, meaning that the hazard of the event occurring is significantly different for individuals of different groups and ages. We can further interpret the results by looking at the hazard ratios for each predictor. The ‘coef’ column tells us the natural log of the haard ratio on the predictor, so we are interested in the ‘exp(coef)’ column, which exponentiates the log hazard ratio to give us the hazard ratio. For group, the hazard ratio is 13.48, meaning that the hazard of the event occurring is 13.48 times higher for the second group compared to the first group. For age, the hazard ratio is 1.21, meaning that the hazard of the event occurring is 1.21 times higher for each additional year of age. The coefficient on the age predictor is significant, but the coefficient for group is not. This means that, when controlling for the other variables, the hazard of the event occurring is not significantly different between the two groups, but the hazard of the event occurring is significantly different for individuals of different ages.</p>
+<p>Now that we can interpret the results, let’s take a look at some real data.</p>
+</section>
+<section id="case-study" class="level2" data-number="3.17">
+<h2 data-number="3.17" class="anchored" data-anchor-id="case-study"><span class="header-section-number">3.17</span> Case Study</h2>
+<p>Let’s look at a new data set which contains information on patients with heart failure. The data set contains data on heart failure patients over 40 years old who were admitted to the Institute of Cardiology at the Allied hospital Faisalabad-Pakistan between April and December of 2015. All of the patients in the data set had left ventricular systolic dysfunction and belonged to NYHA class III and IV stages of heart failure (<span class="citation" data-cites="plosone">Ahmad (<a href="#ref-plosone" role="doc-biblioref">2017</a>)</span>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>heart <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/S1Data.csv"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 299 Columns: 13
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (13): TIME, Event, Gender, Smoking, Diabetes, BP, Anaemia, Age, Ejection...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<p>Let’s first view the Kaplan Meier survival curves to see if there is a visual difference in survival probabilities for individuals with normal versus high blood pressure. In this data set, blood pressure is a binary variable where 0 indicates normal blood pressure and 1 indicates high blood pressure. It is called BP in the data set. We can view the curve in <a href="#fig-heartstudy">Figure&nbsp;<span>3.1</span></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Survival Object</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>times_heart <span class="ot">&lt;-</span> <span class="fu">Surv</span>(heart<span class="sc">$</span>TIME, heart<span class="sc">$</span>Event)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the curves</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">survfit</span>(times_heart <span class="sc">~</span> BP, <span class="at">data =</span> heart) <span class="sc">%&gt;%</span> <span class="fu">ggsurvfit</span>() <span class="sc">+</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Time"</span>,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Survival Probability"</span>,</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Kaplan Meier Survival Curve by Blood Pressure"</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-heartstudy" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="HazardAnalysis_files/figure-html/fig-heartstudy-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;3.1: Kaplan Meier Survival Curve Predicting Death from Blood Pressure</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>It seems like there will be a difference in survival probabilities between individuals with normal and high blood pressure based on the two curves. Let’s test this theory by fitting a cox proportional hazards model to the data. This will tell us if blood pressure is a significant predictor of the hazard of death for heart failure patients.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cox Proportional Hazards Model</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>h1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(times_heart <span class="sc">~</span> BP, <span class="at">data =</span> heart, <span class="at">ties =</span> <span class="st">"breslow"</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(h1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = times_heart ~ BP, data = heart, ties = "breslow")
+
+  n= 299, number of events= 96 
+
+     coef exp(coef) se(coef)     z Pr(&gt;|z|)  
+BP 0.4354    1.5456   0.2094 2.079   0.0376 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+   exp(coef) exp(-coef) lower .95 upper .95
+BP     1.546      0.647     1.025      2.33
+
+Concordance= 0.556  (se = 0.026 )
+Likelihood ratio test= 4.18  on 1 df,   p=0.04
+Wald test            = 4.32  on 1 df,   p=0.04
+Score (logrank) test = 4.39  on 1 df,   p=0.04</code></pre>
+</div>
+</div>
+<p>As we can see, the p-value for this model is significant. Thus, we can conclude that high blood pressure is significantly associated with a higher hazard of death for heart failure patients. The coefficient of interest, exp(coef), on blood pressure in the model is 1.55, which means that the hazard of death for heart failure patients with high blood pressure is estimated to be 1.55 times higher than the hazard of death for heart failure patients with normal blood pressure.</p>
+<p>Let’s look at a confidence interval to get a better understand of the impact of high blood pressure on the hazard of death for heart failure patients. We can use the <code>confint()</code> function to get a 95% confidence interval for the coefficient on blood pressure. Recall that we are interested in the exponentiated coefficient, so we will exponentiate the confidence interval for the coefficient to get a confidence interval for exp(coef).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>conf_95 <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">confint</span>(h1))</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>conf_95</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      2.5 %   97.5 %
+BP 1.025291 2.329885</code></pre>
+</div>
+</div>
+<p>This tells us that, with 95% confidence, the true value of the coefficient is between 1.03 and 2.33. That is, that the hazard of death for heart failure patients is between 1.03 and 2.33 times higher for patients with high blood pressure compared to patients with normal blood pressure.</p>
+<p>Although we found that the hazard of death for heart failure patients with high blood pressure is significantly higher than the hazard of death for heart failure patients with normal blood pressure, we should check the proportional hazards assumption to ensure that our model is valid. From the Kaplan Meier curve, we saw that the survival curves for normal and high blood pressure patients crossed and the gap between the curves grew as time increased. This indicates that the assumption might be violated. We can use the <code>cox.zph()</code> function to check it out. This function tests the null hypothesis that the coefficients are constant over time, which is the assumption of proportional hazards. If the p-value is less than 0.05, then the assumption is violated.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check Proportional Hazards Assumption</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cox.zph</span>(h1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       chisq df    p
+BP     0.473  1 0.49
+GLOBAL 0.473  1 0.49</code></pre>
+</div>
+</div>
+<p>As we can see from the output, the p-value for the test of the proportional hazards assumption is not less than 0.05. This means that we do not have enough evidence to reject the null hypothesis, so our Cox Proportional Hazards model is valid.</p>
+</section>
+<section id="references" class="level2" data-number="3.18">
+<h2 data-number="3.18" class="anchored" data-anchor-id="references"><span class="header-section-number">3.18</span> References</h2>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-plosone" class="csl-entry" role="listitem">
+Ahmad, Munir, T. 2017. <span>“Survival Analysis of Heart Failure Patients: A Case Study.”</span> <em>PLOS ONE</em> 12 (7). <a href="https://doi.org/10.1371/journal.pone.0181001">https://doi.org/10.1371/journal.pone.0181001</a>.
+</div>
+<div id="ref-allison84" class="csl-entry" role="listitem">
+Allison, P. 1984. <em>Event History Analysis</em>. SAGE Publications, Inc. <a href="https://methods.sagepub.com/book/event-history-analysis/">https://methods.sagepub.com/book/event-history-analysis/</a>.
+</div>
+<div id="ref-anstee" class="csl-entry" role="listitem">
+Anstee, R. n.d. <em>The Newton-Raphson Method</em>. <a href="https://personal.math.ubc.ca/~anstee/math104/newtonmethod.pdf">https://personal.math.ubc.ca/~anstee/math104/newtonmethod.pdf</a>.
+</div>
+<div id="ref-clark03" class="csl-entry" role="listitem">
+Clark, Bradburn, T. G. 2003. <span>“Survival Analysis Part i: Basic Concepts and First Analyses.”</span> <em>British Journal of Cancer</em>, May. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2394262/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2394262/</a>.
+</div>
+<div id="ref-collet" class="csl-entry" role="listitem">
+Collet, David. 2003. <em>Modelling Survival Data in Medical Research</em>. Chapman &amp; Hall/CRC.
+</div>
+<div id="ref-sthda" class="csl-entry" role="listitem">
+<span>“Cox Proportional-Hazards Model.”</span> n.d. <a href="https://www.sthda.com/english/wiki/cox-proportional-hazards-model">www.sthda.com/english/wiki/cox-proportional-hazards-model</a>.
+</div>
+<div id="ref-pennstate" class="csl-entry" role="listitem">
+<span>“Maximum Likelihood Estimation.”</span> n.d. <a href="https://online.stat.psu.edu/stat415/lesson/1/1.2">https://online.stat.psu.edu/stat415/lesson/1/1.2</a>.
+</div>
+<div id="ref-waagepetersen22" class="csl-entry" role="listitem">
+Waagepetersen, Rasmus. 2022. <span>“Cox’s Proportional Hazards Model and Cox’s Partial Likelihood.”</span> <a href="https://people.math.aau.dk/~rw/Undervisning/DurationAnalysis/Slides/lektion3.pdf">https://people.math.aau.dk/~rw/Undervisning/DurationAnalysis/Slides/lektion3.pdf</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./KaplanMeier.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Kaplan Meier</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
