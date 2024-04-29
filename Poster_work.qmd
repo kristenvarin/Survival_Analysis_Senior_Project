@@ -1,0 +1,83 @@
+# Rough Work for SYE Poster
+
+
+```{r}
+ID <- c("ID", "Time", "Status")
+one <- c(1, 1, 1)
+two <- c(2, 2, 1)
+three <- c(3, 4, 1)
+four <- c(4, 5, 1)
+five <- c(5, 6, 1)
+six <- c(6, 8, 1)
+seven <- c(7, 9, 1)
+eight <- c(8, 10, 0)
+nine <- c(9, 10, 0)
+ten <- c(10, 10, 0)
+
+data <- data.frame(ID, one, two, three, four, five, six, seven, eight, nine, ten)
+data <- data[-1,]
+data %>% gt(caption = "Calculating Survival Probailities") %>%
+  cols_label(ID = "ID", one = "1", two = "2", three = "3", four = "4", five = "5", six = "6", seven = "7", eight = "8", nine = "9", ten = "10")
+```
+
+```{r}
+# Create example data table for calculating survival probability
+probabilities <- data.frame(
+  Time = c(0, 1, 2, 3, 4, 5),
+  Number_alive = c(10, 9, 8, 6, 4, 1),
+  Number_dead = c(0, 1, 0, 2, 1, 1),
+  Number_censored = c(0, 0, 1, 0, 1, 2), 
+  Risk_set = c(10, 10, 9, 9, 8, 6), 
+  Probability =  c(1, 0.9, 0.89, 0.67, 0.50, 0.17))
+```
+
+
+```{r}
+probabilities <- probabilities %>% 
+  gt(caption = "Calculating Survival Probabilities") %>% 
+  cols_label(Time = "Time", Number_alive = "Number Alive", Number_dead = "Number Dead", Number_censored = "Number Censored", Risk_set = "Risk Set", Probability = "Probability") %>% 
+  opt_stylize(style = 6, color = "pink")
+```
+
+```{r}
+install.packages("webshot2")
+```
+
+
+```{r}
+gtsave(probabilities, "probabilities.png")
+```
+
+```{r}
+library(broom)
+tidy <- tidy(h1)
+tidy$estimate <- round(tidy$estimate, 4)
+tidy$std.error <- round(tidy$std.error, 4)
+tidy$statistic <- round(tidy$statistic, 4)
+tidy$p.value <- round(tidy$p.value, 4)
+
+# add the exponentiated value of estimate to the data frame
+tidy$exp_est <- exp(tidy$estimate)
+
+# move the exponentiated value of estimate to the third column
+tidy <- tidy %>% select(term, estimate, exp_est, std.error, statistic, p.value)
+
+tidy$exp_est <- round(tidy$exp_est, 4)
+```
+
+```{r}
+tidy <- tidy %>% 
+  gt(caption = "Cox PH Output Predicting Coefficient on Blood Pressure") %>% 
+  cols_label(term = "Variable", estimate = "Coeff", exp_est = "Exp(Coeff)", std.error = "Standard Error", statistic = "Z-Value", p.value = "P-Value") %>% 
+  opt_stylize(style = 6, color = "pink")
+tidy
+```
+
+
+```{r}
+gtsave(tidy, "tidy.png")
+```
+
+
+
+

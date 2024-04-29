@@ -1,6 +1,6 @@
 # Discussion
 
-## Concluding Thoughts
+## Conclusion
 
 Survival analysis is a great tool for medical research, as it can show insights into which treatments are most effective or how long patients are likely to live. Survival analysis works by calculating survival probability for an individual at each time in the study. The Kaplan Meier survival curve is a great way to model survival probabilities while factoring in censored individuals who were lost-to-follow-up. The `survfit()` and `ggsurvfit()` functions in the `survival` package in R are tools we can use to create Kaplan Meier curves quickly given data. 
 
@@ -8,12 +8,13 @@ The Log-Rank test is a statistical test we used to test whether there was a diff
 
 Hazard Analysis was the next type of modeling survival data that we looked at. Hazard Analysis is even more useful for analysis of medical data because it allows for the addition of more predictors other than a grouping variable. The Cox Proportional Hazards model uses hazard ratios, or ratio between the hazard of an event between two groups at a time. It calculates the hazard ratio for each individual at each time and uses the log of that ratio to model the hazard function. To use the Cox Proportional Hazards model, we first had to make adjustments to the hazard function to factor censored data and ties in the data. We then had to use the method of partial likelihood and the Newton Rapshon method to find the $\beta$ coefficients. This step was so complicated that it was computationally infeasible to demonstrate. Luckily, these complications can be managed by using the R funtion `coxph()` in the `survival` package. It fits a Cox proportional Hazard Analysis model in one simple step. We demonstrated this using data on patients who experienced heart failure. 
 
-## Further Applications
+## Additional Methods
 
-While the Kaplan Meier curve and Cox Proportional hazard Analysis are both useful for medical research, there are even further applications of Survival Analysis that can allow for different types of analysis. Parametric models, for example, can be used when there are preconceptions about the survival probabilities. This type of analysis assumes a specific distribution and therefore allows interpretation of the analysis to be more precise (@collet). One example of a Parametric model is the Accelerated Failure Time model, which assumes that the probability of the event occurring gets increasingly large as time passes (@fedesoriano). This can be particularly useful in cases where the assumption of consistent hazards between groups is violated. 
+While the Kaplan Meier curve and Cox Proportional hazard Analysis are both useful for medical research, there are even further methods within Survival Analysis that can allow for different types of analysis. Parametric models, for example, can be used when there are preconceptions about the survival probabilities. This type of analysis assumes a specific distribution and therefore allows interpretation of the analysis to be more precise (@collet). One example of a Parametric model is the Accelerated Failure Time model, which assumes that the probability of the event occurring gets increasingly large as time passes (@fedesoriano). This can be particularly useful in cases where the assumption of consistent hazards between groups is violated. 
 
-Other pieces of the survival analysis puzzle to take into account inclue: assessing fit of the model, modelling left-censored and interval-censored survival data sample size requirements for a survival study, and more (@collet). There are so many aspects to modelling survival data that need to be taken into account when building a model. This is why it is so helpful to have software like R that can do the analysis piece for us. 
+Other pieces of the survival analysis puzzle to take into account include: assessing fit of the model, modelling left-censored and interval-censored survival data sample size requirements for a survival study, and more (@collet). There are so many aspects to modelling survival data that need to be taken into account when building a model. This is why it is so helpful to have software like R that can do the analysis piece for us. 
 
-- not working on github link
-- still need to fix the tables when render to pdf
-- references if always blank on pdf
+## Other Applications
+
+Survival Analysis can be used for any time-to-event data, not just medical data. Some of these disciplines include: Epidemiology, Finance, Engineering, Marketing, Insurance, and more. For example, in marketing, survival analysis can be used to predict how long a customer will remain a customer. In epidemiology, it can be used for predicting time until disease reoccurrence. In engineering, survival analysis can be used to predict how long a machine will last. Survival analysis can be very useful in many disciplines other than medical data and future work can use it for these disciplines. 
+

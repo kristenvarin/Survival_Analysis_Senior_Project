@@ -12,6 +12,7 @@ library(tidyverse) |> suppressPackageStartupMessages()
 library(knitr)
 library(survival)
 library(ggsurvfit)
+library(survminer) |> suppressPackageStartupMessages()
 library(gt)
 ```
 
@@ -35,7 +36,7 @@ surv3 %>%
 
 ## Proportional Hazards
 
-The proportional hazards model, also known as the Cox regression model, is a semi-parametric model. This is because it assumes proportional hazards, or that the hazard of an event occurring is the same for all individuals, yet does not assume a specific distribution (@collet). The proportional hazard model also assumes that the hazard ratio between two groups is constant over time. This means that the hazard ratio between two groups is the same at any time $t$, thus making the model proportional. In other words, the instantaneous hazard of an event occurring between two individuals of different groups will remain constant at all times, or the effect of the predictors is the same at all times (@sthda).
+The proportional hazards model, also known as the Cox regression model, is a semi-parametric model. This is because it assumes proportional hazards, or that the hazard of an event occurring is constant over time, yet does not assume a specific distribution (@collet). The proportional hazard model also assumes that the hazard ratio between two groups is constant over time. This means that the hazard ratio between two groups is the same at any time $t$, thus making the model proportional. In other words, the instantaneous hazard of an event occurring between two individuals of different groups will remain constant at all times, or the effect of the predictors is the same at all times (@sthda).
 
 ## Hazard Ratios
 
@@ -338,59 +339,59 @@ coxph(Surv(time, status) ~ group + age, data = surv3, ties = "breslow")
 
 After adding age as a predictor, we see that our model is significant, meaning that the hazard of the event occurring is significantly different for individuals of different groups and ages. We can further interpret the results by looking at the hazard ratios for each predictor. The 'coef' column tells us the natural log of the haard ratio on the predictor, so we are interested in the 'exp(coef)' column, which exponentiates the log hazard ratio to give us the hazard ratio. For group, the hazard ratio is 13.48, meaning that the hazard of the event occurring is 13.48 times higher for the second group compared to the first group. For age, the hazard ratio is 1.21, meaning that the hazard of the event occurring is 1.21 times higher for each additional year of age. The coefficient on the age predictor is significant, but the coefficient for group is not. This means that, when controlling for the other variables, the hazard of the event occurring is not significantly different between the two groups, but the hazard of the event occurring is significantly different for individuals of different ages.
 
-Now that we can interpret the results, let's take a look at some real data.
+## Case Study: Heart Failure Data
 
-## Case Study
-
-Let's look at a new data set which contains information on patients with heart failure. The data set contains data on heart failure patients over 40 years old who were admitted to the Institute of Cardiology at the Allied hospital Faisalabad-Pakistan between April and December of 2015. All of the patients in the data set had left ventricular systolic dysfunction and belonged to NYHA class III and IV stages of heart failure (@plosone). 
+Now that we can interpret the results, let's take a look at some real data. Recall our heart failure data from before in which we found a significant difference in survival curves between patients with normal and high blood pressure. Although the cox proportional hazards model tests the difference in hazard of death rather than survival curves, we would expect to again get a significant difference between the two groups. 
 
 ```{r}
+# Reload the data
 heart <- read_csv("data/S1Data.csv") 
-```
-Let's first view the Kaplan Meier survival curves to see if there is a visual difference in survival probabilities for individuals with normal versus high blood pressure. In this data set, blood pressure is a binary variable where 0 indicates normal blood pressure and 1 indicates high blood pressure. It is called BP in the data set. We can view the curve in @fig-heartstudy. 
-
-```{r}
-#| label: fig-heartstudy
-#| fig-cap: "Kaplan Meier Survival Curve Predicting Death from Blood Pressure"
 
 # Create Survival Object
 times_heart <- Surv(heart$TIME, heart$Event)
-
-# Plot the curves
-survfit(times_heart ~ BP, data = heart) %>% ggsurvfit() +
-  labs(
-    x = "Time",
-    y = "Survival Probability",
-    title = "Kaplan Meier Survival Curve by Blood Pressure"
-  )
 ```
 
-It seems like there will be a difference in survival probabilities between individuals with normal and high blood pressure based on the two curves. Let's test this theory by fitting a cox proportional hazards model to the data. This will tell us if blood pressure is a significant predictor of the hazard of death for heart failure patients.
+Let's first test our theory by fitting a cox proportional hazards model to the data. This will tell us if blood pressure is a significant predictor of the hazard of death for heart failure patients.
 
 ```{r}
 # Cox Proportional Hazards Model
 h1 <- coxph(times_heart ~ BP, data = heart, ties = "breslow")
-summary(h1)
+h1
 ```
+As we can see, the p-value for this model is significant. Thus, we can conclude that high blood pressure is significantly associated with a higher hazard of death for heart failure patients. The coefficient of interest, exp(coef), on blood pressure in the model is 1.55, which means that the hazard of death for heart failure patients with high blood pressure is estimated to be 1.55 times higher than the hazard of death for heart failure patients with normal blood pressure. In other words, at any given time, an individual with high blood pressure is 55% more likely to die than an individual with normal blood pressure, given they are a heart failure patient over 40 and all other variables are fixed. 
 
-As we can see, the p-value for this model is significant. Thus, we can conclude that high blood pressure is significantly associated with a higher hazard of death for heart failure patients. The coefficient of interest, exp(coef), on blood pressure in the model is 1.55, which means that the hazard of death for heart failure patients with high blood pressure is estimated to be 1.55 times higher than the hazard of death for heart failure patients with normal blood pressure.
-
-Let's look at a confidence interval to get a better understand of the impact of high blood pressure on the hazard of death for heart failure patients. We can use the `confint()` function to get a 95% confidence interval for the coefficient on blood pressure. Recall that we are interested in the exponentiated coefficient, so we will exponentiate the confidence interval for the coefficient to get a confidence interval for exp(coef).
+We can also get a better understand of the impact of high blood pressure on the hazard of death for heart failure patients by looking at a confidence interval for the exponentiated coefficient on blood pressure. We can use the confint() function to do this. 
 
 ```{r}
 conf_95 <- exp(confint(h1))
 conf_95
 ```
 
-This tells us that, with 95% confidence, the true value of the coefficient is between 1.03 and 2.33. That is, that the hazard of death for heart failure patients is between 1.03 and 2.33 times higher for patients with high blood pressure compared to patients with normal blood pressure.
+These values tell us that, with 95% confidence, the true value of the coefficient is between 1.03 and 2.33. That is, that the hazard of death for heart failure patients is between 1.03 and 2.33 times higher for patients with high blood pressure compared to patients with normal blood pressure.
 
-Although we found that the hazard of death for heart failure patients with high blood pressure is significantly higher than the hazard of death for heart failure patients with normal blood pressure, we should check the proportional hazards assumption to ensure that our model is valid. From the Kaplan Meier curve, we saw that the survival curves for normal and high blood pressure patients crossed and the gap between the curves grew as time increased. This indicates that the assumption might be violated. We can use the `cox.zph()` function to check it out. This function tests the null hypothesis that the coefficients are constant over time, which is the assumption of proportional hazards. If the p-value is less than 0.05, then the assumption is violated.
+Although we found that the hazard of death for heart failure patients with high blood pressure is significantly higher than the hazard of death for heart failure patients with normal blood pressure, we should check the proportional hazards assumption to ensure that our model is valid. From the Kaplan Meier curve, we saw that the gap between the two survival probability curves seemed to be consistent over time, which indicates that the assumption is likely met. We can use the `cox.zph()` function to check it out. This function tests the null hypothesis that the coefficients are constant over time, which is the assumption of proportional hazards. If the p-value is less than 0.05, then the assumption is violated.
 
 ```{r}
 # Check Proportional Hazards Assumption
 cox.zph(h1)
 ```
 
-As we can see from the output, the p-value for the test of the proportional hazards assumption is not less than 0.05. This means that we do not have enough evidence to reject the null hypothesis, so our Cox Proportional Hazards model is valid. 
+As we can see from the output, the p-value for the test of the proportional hazards assumption is not less than 0.05. This means that we do not have enough evidence to reject the null hypothesis, so our Cox Proportional Hazards model is valid. We can also look at a plot of the cumulative hazard over time for each of the groups for another visual representation of this. The cumulative hazard plot is found by integrating The cumulative hazard plots are shown in @fig-cumhazard below. 
+
+```{r}
+#| label: fig-cumhazard
+#| fig-cap: "Cummulative Hazard of Death by Blood Pressure"
+
+# Fit the Model
+heart_fit = survfit(times_heart ~ BP, data = heart)
+
+# Plot Cumulative Hazard Function
+ggsurvplot(heart_fit, data = heart, fun = "cumhaz", palette = c("darkgreen", "maroon"), 
+    legend.labs = c("Normal BP", "High BP"),
+    xlab = "Time (Days)",
+    ylab = "Cummulative Hazard",
+    title = "Cummulative Hazard of Death by Blood Pressure")
+```
+As we can see from the cumulative hazard plot, the hazard ratio does seem to be consistent over time. In other words, the gap between the two curves stays fairly consistent. This is consistent with the proportional hazards assumption, which states that the hazard ratio between the two groups is constant over time. Since the assumptions of the Cox Model are met, we can be confident in our results that Blood Pressure is a significant predictor of the hazard of death for heart failure patients. 
 
 ## References

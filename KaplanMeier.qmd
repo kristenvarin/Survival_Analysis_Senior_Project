@@ -18,6 +18,7 @@ library(tidyverse) |> suppressPackageStartupMessages()
 library(knitr)
 library(survival)
 library(ggsurvfit)
+library(survminer) |> suppressPackageStartupMessages()
 library(gt)
 ```
 
@@ -34,8 +35,7 @@ censor <- data.frame(id, time, status)
 #| tbl-cap: "Example Data Set with Censored Times"
 
 censor %>% gt(caption = "Example Data Set with Censored Times") %>%
-  cols_label(id = "ID", time = "Time", status = "Status") %>%
-  tab_source_note(source_note = "Table 3") 
+  cols_label(id = "ID", time = "Time", status = "Status") 
 ```
 
 The `survival` package in `R` has a function called `Surv()` that takes input data and creates a response object recording survival time for each observation. The function takes in the time variable and the status variable. The function takes into account right censoring as well, marking censored times with a $+$ symbol in the object created (@zabor23).
@@ -87,7 +87,7 @@ group <- c(1, 1, 1, 1, 1, 2, 2 ,2, 2, 2)
 surv2 <- data.frame(time, status, group)
 ```
 
-To run analysis, the statistical test called the Log-Rank Test can be used to test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time (@rich10). The test is conducted by comparing the observed number of event with an estimated number of events for each group at each time. To model this, we need to record some values of interest from our existing data. The first, $n1t$, represents the number of people alive and still in the study, or at risk, at time t in group 1. Similarly, $n2t$ is the number at risk in group 2 at time t. $nt$ is the sum of these two values at time t, representing the total number of people at risk in the study at time t. $o1t$ is the number of observed events occurring at time t in group 1, $o2t$ is observed events occurring at time t in group 2, and $ot$ is the total observed events across both groups at time t. To calculate expected number of events, the assumption that the two curves are identical is used. The expected number of events at a time t is for group i calculated by the formula $E_{it} = \frac{N_{it} \times O_{t}}{N_{t}}$, where $N_{it}$ is the observed number of events in group i at time t, $O_{t}$ is the total number of events in all groups at time t, and $N_{t}$ is the total number observations at risk in all groups at time t (@sullivan16). @tbl-logrank shows the creation of all of these values, where $e1t$ is the expected number of events at time t in group 1, $e2t$ is the expected number of events at time t in group 2, and $et$ is the total expected number of events across both groups at time t. Cumulative sums are also calculated for each of these values.
+To run analysis, the statistical test called the Log-Rank Test can be used to test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time (@rich10). The test is conducted by comparing the observed number of events with an estimated number of events for each group at each time. To model this, we need to record some values of interest from our existing data. The first, $n1t$, represents the number of people alive and still in the study, or at risk, at time t in group 1. Similarly, $n2t$ is the number at risk in group 2 at time t. $nt$ is the sum of these two values at time t, representing the total number of people at risk in the study at time t. $o1t$ is the number of observed events occurring at time t in group 1, $o2t$ is observed events occurring at time t in group 2, and $ot$ is the total observed events across both groups at time t. To calculate expected number of events, the assumption that the two curves are identical is used. The expected number of events at a time t is for group i calculated by the formula $E_{it} = \frac{N_{it} \times O_{t}}{N_{t}}$, where $N_{it}$ is the observed number of events in group i at time t, $O_{t}$ is the total number of events in all groups at time t, and $N_{t}$ is the total number observations at risk in all groups at time t (@sullivan16). @tbl-logrank shows the creation of all of these values, where $e1t$ is the expected number of events at time t in group 1, $e2t$ is the expected number of events at time t in group 2, and $et$ is the total expected number of events across both groups at time t. Cumulative sums are also calculated for each of these values.
 
 ```{r}
 #| label: tbl-logrank
@@ -221,7 +221,7 @@ s2 %>%
   add_risktable()
 ```
 
-## Case Study
+## Case Study: Cirrhosis Data
 
 The next example uses a data set with variables for predicting death in patients with cirrhosis, which is permanent scarring of the liver. The data set is from a clinical trial conducted by the Mayo Clinic from 1974 to 1984. The data set contains 424 primary biliary cirrhosis patients with 20 variables (@fedesoriano). To conduct survival analysis, the `Status` variable needs to be transformed into an indicator variable, labelled `event`, coded as a 1 representing death and 0 representing censored. The `N_Days` variable will be used for the time variable, indicating number of days since the beginning of the trial.
 
@@ -233,7 +233,7 @@ cirrhosis <- cirrhosis %>% mutate(event = if_else(Status == 'D', 1, 0))
 The main interest of this data is to explore the difference in survival time between patients taking the drug of interest, D-penicillamine, and those given a placebo. The variable `Drug` indicates which group the patient was in and will be used as the grouping variable for a Log-Rank Test. Below, we calculate an object with times of event for this data and then use the `survdiff` function to run a Log-Rank Test.
 
 ```{r}
-# Calculate times and store in an oobject
+# Calculate times and store in an object
 times3 <- Surv(cirrhosis$N_Days, cirrhosis$event)
 
 # Run a log rank test based on drug group
@@ -242,25 +242,64 @@ survdiff(times3 ~ Drug, data = cirrhosis)
 
 From the Log-Rank test, we see that the p-value is 0.7, which is mush larger than 0.05. This indicates that the test was not statistically significant at the five percent level. Thus, there was no significant difference between patient outcome between the two treatment groups. For patients with biliary cirrhosis, D-penicillamine is not an effective drug for preventing death.
 
-We can again visualize the difference in survival curves in @fig-casestudy.
+We can visualize this in @fig-lungstudy, which shows the survival curves for both groups of patients. We can also use the `ggsurvplot` function from the `survminer()` package to plot the survival curves. The curves are very similar and cross multiple times, which makes sense since we know the drug of interest did not have a significant effect on patient survival.
 
 ```{r}
-#| label: fig-casestudy
+#| label: fig-lungstudy
 #| fig-cap: "Kaplan Meier Survival Curve Predicting Death from Cirrhosis"
 
 # Create Survival Object
 s3 <- survfit(times3 ~ Drug, data = cirrhosis)
 
-# Plot the Survival Curve
-s3 %>% 
-  ggsurvfit() +
-  labs(
-    x = "Time",
-    y = "Overall survival probability",
-    title = "Kaplan Meier Survival Curve"
-  ) + 
-  add_risktable()
+# Plot the survival curves
+s3 %>% ggsurvplot(
+    palette = c("darkgreen", "maroon"), 
+    legend.labs = c("D-penicillamine", "Placebo"),
+    xlab = "Time",
+    ylab = "Survival Probability",
+    title = "Kaplan Meier Survival Curve by Drug Group"
+  )
 ```
+
+As we can see, the two survival curves are very similar and cross multiple times, which makes sense since we know the drug of interest did not have a significant effect on patient survival. 
+
+## Case Study: Heart Failure Data
+
+Let's look at another data set which contains information on patients with heart failure. The data set contains data on heart failure patients over 40 years old who were admitted to the Institute of Cardiology at the Allied hospital Faisalabad-Pakistan between April and December of 2015. All of the patients in the data set had left ventricular systolic dysfunction and belonged to NYHA class III and IV stages of heart failure (@plosone). 
+
+```{r}
+heart <- read_csv("data/S1Data.csv") 
+```
+
+Let's view the Kaplan Meier survival curves to see if there is a visual difference in survival probabilities for individuals with normal versus high blood pressure. In this data set, blood pressure is a binary variable where 0 indicates normal blood pressure and 1 indicates high blood pressure. It is called BP in the data set. We can view the curve in @fig-heartstudy. 
+
+```{r}
+#| label: fig-heartstudy
+#| fig-cap: "Kaplan Meier Survival Curve Predicting Death from Blood Pressure"
+
+# Create Survival Object
+times_heart <- Surv(heart$TIME, heart$Event)
+
+# Plot the curves
+survfit(times_heart ~ BP, data = heart) %>% 
+  ggsurvplot(
+    palette = c("darkgreen", "maroon"), 
+    legend.labs = c("Normal BP", "High BP"),
+    xlab = "Time (Days)",
+    ylab = "Survival Probability",
+    title = "Kaplan Meier Survival Curve by Blood Pressure"
+  )
+```
+
+From the curves, it seems like there will be a difference in survival probabilities between individuals with normal and high blood pressure based on the two curves. Let's run a Log-Rank test to see if the difference is statistically significant.
+
+```{r}
+# Run a log rank test based on blood pressure group
+survdiff(times_heart ~ BP, data = heart)
+```
+The p-value from the Log-Rank test is 0.04, so we can conclude that blood pressure is a significant predictor of survival probability in heart failure patients. 
+
+## Limitations
 
 It is important to note the limitations of this analysis. The Kaplan Meier Curve is not a suitable fit for a complex, real-world data set such as the `cirrhosis` data. It is a nonparametric method of analysis, which means that it assumes no form of distribution and no additional factors influencing the outcome of interest. To create a Kaplan Meier curve and run the Log-Rank test, we ignored all other factors included int the data. In the next section, we will discuss other methods that can be used for survival analysis that can account for other factors.
 

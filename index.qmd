@@ -27,11 +27,10 @@ surv <- data.frame(id, time, status)
 
 ```{r}
 #| label: tbl-surv
-#| tbl-cap: surv table 1
+#| tbl-cap: Example Data Set with ID, Status, and Time
 
 surv %>% gt(caption = "Example Data Set with ID, Status, and Time") %>%
-  cols_label(id = "ID", time = "Time", status = "Status") %>%
-  tab_source_note(source_note = "Table 1") 
+  cols_label(id = "ID", time = "Time", status = "Status") 
 ```
 
 To perform survival analysis on these data, the probability of survival at each time from t = 0 to t = 10 can be calculated by dividing the amount of people surviving until that time by the total amount of people in the study. For the first observation in the example data, probability of survival is equal to 1, or 100%, because every participant would presumably begin the study alive. To calculate the probability of survival for time t = 1, the number of participants that did not experience the outcome of interest by t = 1 would be divided by 10, the total number of observations in the study. In this case, 9 participants survived until time t = 1, because only one observation was assigned a 1 between times t = 0 and t = 1. Dividing this total by the 10 total observations in the study shows that the probability of surviving to time 1 is 0.9, or 90%. As time increases, the total probability of survival for the group will decrease in the range of 1 to 0 because more people will be experiencing the outcome. This is why survival curves have a rightly skewed distribution. @tbl-probabilities shows the survival probabilities for each observation.
@@ -41,21 +40,20 @@ To perform survival analysis on these data, the probability of survival at each 
 probabilities <- data.frame(
   Number_alive = c(10, 9, 8, 8, 7, 6, 5, 4, 3, 3, 3),
   Time = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
-  Probability = c(1, 0.9, 0.8, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.3, 0.3))
+  Probability =  c(1, 0.9, 0.8, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.3, 0.3))
 ```
 
 ```{r}
 #| label: tbl-probabilities
-#| tbl-cap: probabilities
+#| tbl-cap: Probability of Survival Based on Time
 
 probabilities %>% gt(caption = "Probability of Survival Based on Time") %>%
   cols_label(Number_alive = "Number alive", 
-             Time = "Time", Probability = "Probability") %>%
-  tab_source_note(source_note = "Table 2") 
+             Time = "Time", Probability = "Probability") 
 ```
 
 ## Censoring Background
 
-One issue with survival analysis data is the problem of an individual being lost-to-follow-up, meaning data could not be collected for them at some point during the study. This causes the outcome of interest to not be recorded for that individual, so the survival time for that individual can not be analyzed as it would not be accurate. When this happens, the survival times for those individuals are recorded as censored, causing standard analysis techniques to be inappropriate for these data. There are three types of censoring that can occur. The first type of censoring is called right censoring, which happens if an individual begins the study but then is lost-to-follow-up at some point during the study before it ends. The censored survival time for these individuals is thus equal to the total time they were known to be alive in the study's observation period before they were lost-to-follow-up. Some common examples of when right censoring is needed include: an individual moving away from the study and not being able to participate or when an individual dies due to a non-related event after the study begins. Another type of censoring is called left censoring. In this type, the individual experiences lost-to-follow-up before the observation period begins. This would happen, for example, in a study that tracks patient recovery from a surgery, but with an observation period beginning one a month after the surgery took place. If a patient died less than a month after surgery, their survival time would need to be left censored. The final type of censoring is called interval censoring, which happens when a patient comes in and out of the study, making it possible for them to experience the outcome of interest during a period of time when they aren't being observed. This often happens when recurrence is being tracked in a study. One example could be if recurrence of cancer is being tracked and the study checks in with patients every month. If an individual does not have cancer after the first month but then does after the second month, the recurrence time is somewhere between one and two months, and it therefore needs to be interval censored (@collet). Out of the three types, right censoring is the most common and will be demonstrated in the example data-set.
+One issue with survival analysis data is the problem of an individual being lost to follow-up, meaning data could not be collected for them at some point during the study. This causes the outcome of interest to not be recorded for that individual, so the survival time for that individual can not be analyzed as it would not be accurate. When this happens, the survival times for those individuals are recorded as censored, causing standard analysis techniques to be inappropriate for these data. There are three types of censoring that can occur. The first type of censoring is called right censoring, which happens if an individual begins the study but then is lost to follow-up at some point during the study before it ends. The censored survival time for these individuals is thus equal to the total time they were known to be alive in the study's observation period before they were lost to follow-up. Some common examples of when right censoring is needed include: an individual moving away from the study and not being able to participate or when an individual dies due to a non-related event after the study begins. Another type of censoring is called left censoring. In this type, the individual experiences lost to follow-up before the observation period begins. This would happen, for example, in a study that tracks patient recovery from a surgery, but with an observation period beginning one a month after the surgery took place. If a patient died less than a month after surgery, their survival time would need to be left censored. The final type of censoring is called interval censoring, which happens when a patient comes in and out of the study, making it possible for them to experience the outcome of interest during a period of time when they aren't being observed. This often happens when recurrence is being tracked in a study. One example could be if recurrence of cancer is being tracked and the study checks in with patients every month. If an individual does not have cancer after the first month but then does after the second month, the recurrence time is somewhere between one and two months, and it therefore needs to be interval censored (@collet). Out of the three types, right censoring is the most common and will be demonstrated in the example data-set.
 
 ## References
