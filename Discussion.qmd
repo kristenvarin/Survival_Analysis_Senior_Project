@@ -18,3 +18,5 @@ Other pieces of the survival analysis puzzle to take into account include: asses
 
 Survival Analysis can be used for any time-to-event data, not just medical data. Some of these disciplines include: Epidemiology, Finance, Engineering, Marketing, Insurance, and more. For example, in marketing, survival analysis can be used to predict how long a customer will remain a customer. In epidemiology, it can be used for predicting time until disease reoccurrence. In engineering, survival analysis can be used to predict how long a machine will last. Survival analysis can be very useful in many disciplines other than medical data and future work can use it for these disciplines. 
 
+## References
+
