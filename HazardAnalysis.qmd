@@ -341,7 +341,7 @@ After adding age as a predictor, we see that our model is significant, meaning t
 
 ## Case Study: Heart Failure Data
 
-Now that we can interpret the results, let's take a look at some real data. Recall our heart failure data from before in which we found a significant difference in survival curves between patients with normal and high blood pressure. Although the cox proportional hazards model tests the difference in hazard of death rather than survival curves, we would expect to again get a significant difference between the two groups. 
+Now that we can interpret the results, let's take a look at some real data. Recall our heart failure data from before in which we found a significant difference in survival curves between patients with normal and high blood pressure. Although the cox proportional hazards model tests the difference in hazard of death rather than survival curves, we would expect to again get a significant difference between the two groups.
 
 ```{r}
 # Reload the data
@@ -358,9 +358,10 @@ Let's first test our theory by fitting a cox proportional hazards model to the d
 h1 <- coxph(times_heart ~ BP, data = heart, ties = "breslow")
 h1
 ```
-As we can see, the p-value for this model is significant. Thus, we can conclude that high blood pressure is significantly associated with a higher hazard of death for heart failure patients. The coefficient of interest, exp(coef), on blood pressure in the model is 1.55, which means that the hazard of death for heart failure patients with high blood pressure is estimated to be 1.55 times higher than the hazard of death for heart failure patients with normal blood pressure. In other words, at any given time, an individual with high blood pressure is 55% more likely to die than an individual with normal blood pressure, given they are a heart failure patient over 40 and all other variables are fixed. 
 
-We can also get a better understand of the impact of high blood pressure on the hazard of death for heart failure patients by looking at a confidence interval for the exponentiated coefficient on blood pressure. We can use the confint() function to do this. 
+As we can see, the p-value for this model is significant. Thus, we can conclude that high blood pressure is significantly associated with a higher hazard of death for heart failure patients. The coefficient of interest, exp(coef), on blood pressure in the model is 1.55, which means that the hazard of death for heart failure patients with high blood pressure is estimated to be 1.55 times higher than the hazard of death for heart failure patients with normal blood pressure. In other words, at any given time, an individual with high blood pressure is 55% more likely to die than an individual with normal blood pressure, given they are a heart failure patient over 40 and all other variables are fixed.
+
+We can also get a better understand of the impact of high blood pressure on the hazard of death for heart failure patients by looking at a confidence interval for the exponentiated coefficient on blood pressure. We can use the confint() function to do this.
 
 ```{r}
 conf_95 <- exp(confint(h1))
@@ -376,7 +377,7 @@ Although we found that the hazard of death for heart failure patients with high 
 cox.zph(h1)
 ```
 
-As we can see from the output, the p-value for the test of the proportional hazards assumption is not less than 0.05. This means that we do not have enough evidence to reject the null hypothesis, so our Cox Proportional Hazards model is valid. We can also look at a plot of the cumulative hazard over time for each of the groups for another visual representation of this. The cumulative hazard plot is found by integrating The cumulative hazard plots are shown in @fig-cumhazard below. 
+As we can see from the output, the p-value for the test of the proportional hazards assumption is not less than 0.05. This means that we do not have enough evidence to reject the null hypothesis, so our Cox Proportional Hazards model is valid. We can also look at a plot of the cumulative hazard over time for each of the groups for another visual representation of this. The cumulative hazard plot is found by integrating The cumulative hazard plots are shown in @fig-cumhazard below.
 
 ```{r}
 #| label: fig-cumhazard
@@ -392,6 +393,7 @@ ggsurvplot(heart_fit, data = heart, fun = "cumhaz", palette = c("darkgreen", "ma
     ylab = "Cummulative Hazard",
     title = "Cummulative Hazard of Death by Blood Pressure")
 ```
-As we can see from the cumulative hazard plot, the hazard ratio does seem to be consistent over time. In other words, the gap between the two curves stays fairly consistent. This is consistent with the proportional hazards assumption, which states that the hazard ratio between the two groups is constant over time. Since the assumptions of the Cox Model are met, we can be confident in our results that Blood Pressure is a significant predictor of the hazard of death for heart failure patients. 
+
+As we can see from the cumulative hazard plot, the hazard ratio does seem to be consistent over time. In other words, the gap between the two curves stays fairly consistent. This is consistent with the proportional hazards assumption, which states that the hazard ratio between the two groups is constant over time. Since the assumptions of the Cox Model are met, we can be confident in our results that Blood Pressure is a significant predictor of the hazard of death for heart failure patients.
 
 ## References

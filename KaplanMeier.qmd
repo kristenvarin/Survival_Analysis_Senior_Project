@@ -4,9 +4,11 @@
 
 The Kaplan Meier survival estimate is how survival probabilities can be calculated while factoring in censored times. The Kaplan Meier survival estimate is used to calculate probability of survival at a given time where $S(t_j)$ is the probability of being alive at time $t_j$, $S(t_{j-1})$ is the probability of being alive at $t_{j-1}$, $n_j$ is the number of patients alive just before $t_j$, $d_j$ is the number of events at $t_j$, and $j$ is the time interval of interest. The equation is $S(t_j)=S(t_{j-1})(1-\frac{d_j}{n_j})$ (@clark03). The equation essentially divides the surviving individuals by the individuals at risk, similar to the previous calculations shown. However, Kaplan Meier curves adjust for right-censored times by dropping observations from the total number of individuals at risk, $n_j$, after their censored time has been reached. This adjustment prevents overestimating the survival probability because it no longer assumes censored individuals are still alive or and at risk (@goel10).
 
-## Kaplan Meier Curve and Descriptive Statistics
+## Descriptive Statistics and the Kaplan Meier Curve
 
-The Kaplan Meier curve is a graphical representation of survival analysis. Similar to the survival probabilities discussed previously, the Kaplan Meier curve shows the relationships between time, which is typically plotted on the x-axis, and probability of survival, which is typically on the y-axis. The curve always ranges from 0 to 1 and is right skewed. Useful summary statistics for a Kaplan Meier Survival curve include confidence intervals and the median. A 95% confidence interval for each point can be found by using the formula $S_t ± 1.96 * SE(S_t)$. The median value is typically reported rather than the mean because mean survival time cannot be reported reliably for those who have not experienced the outcome of interest yet. The median can be found by finding the time when probability of survival is equal to 0.5. Thus, the median can only be reported when at least half of the participants experienced the outcome of interest during the study (@rao23).
+Summary statistics can be used to understand Kaplan Meier survival estimates. For example, a 95% confidence interval for the survival probability can be found for each time in the data set using the formula $S(t_j) ± 1.96 * SE(S(t_j))$ @lamorte16. This interval will output a range that, with 95% confidence, contains the true survival probability for an individual in the data set at that time. Another commonly reported descriptive statistic is the median of the survival function, $S(t_j)$. The median value is the time $t$ at which $S(t_j) = 0.5$, or when half of the individuals have not yet experienced the outcome (@rao23).
+
+The Kaplan Meier curve is a graphical representation of the survival function. Similar to the survival probabilities discussed in Section 1.2, the Kaplan Meier curve shows the relationships between time, which is typically plotted on the x-axis, and probability of survival, which is typically on the y-axis. The curve always ranges from 0 to 1 and is typically right skewed.
 
 ## Kaplan Meier in R
 
@@ -46,7 +48,7 @@ times <- Surv(censor$time, censor$status)
 times
 ```
 
-The `survfit()` function can be used to calculate the Kaplan Meier survival estimate for each time that a new event occurs. The function takes in the response object created by the `Surv()` function in order to drop censored observations from the regression. We use \~ 1 because we are not including predictor variables in the model. The function returns a survival object that can be used to plot the Kaplan Meier curve and calculate summary statistics. The `time` variable in the object created by the `survfit()` function shows the time of each event, and the `surv` variable shows the survival probability for the remaining individuals after each event occurs.
+The `survfit()` function can be used to calculate the Kaplan Meier survival estimate for each time that a new event occurs. The function takes in the response object created by the `Surv()` function in order to drop censored observations from the regression. We use 'times \~ 1' because we are not including predictor variables in the model. The function returns a survival object that can be used to plot the Kaplan Meier curve and calculate summary statistics. The `time` variable in the object created by the `survfit()` function shows the time of each event, and the `surv` variable shows the survival probability for the remaining individuals after each event occurs.
 
 ```{r}
 # Calculate survival object
@@ -87,7 +89,18 @@ group <- c(1, 1, 1, 1, 1, 2, 2 ,2, 2, 2)
 surv2 <- data.frame(time, status, group)
 ```
 
-To run analysis, the statistical test called the Log-Rank Test can be used to test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time (@rich10). The test is conducted by comparing the observed number of events with an estimated number of events for each group at each time. To model this, we need to record some values of interest from our existing data. The first, $n1t$, represents the number of people alive and still in the study, or at risk, at time t in group 1. Similarly, $n2t$ is the number at risk in group 2 at time t. $nt$ is the sum of these two values at time t, representing the total number of people at risk in the study at time t. $o1t$ is the number of observed events occurring at time t in group 1, $o2t$ is observed events occurring at time t in group 2, and $ot$ is the total observed events across both groups at time t. To calculate expected number of events, the assumption that the two curves are identical is used. The expected number of events at a time t is for group i calculated by the formula $E_{it} = \frac{N_{it} \times O_{t}}{N_{t}}$, where $N_{it}$ is the observed number of events in group i at time t, $O_{t}$ is the total number of events in all groups at time t, and $N_{t}$ is the total number observations at risk in all groups at time t (@sullivan16). @tbl-logrank shows the creation of all of these values, where $e1t$ is the expected number of events at time t in group 1, $e2t$ is the expected number of events at time t in group 2, and $et$ is the total expected number of events across both groups at time t. Cumulative sums are also calculated for each of these values.
+To run an analysis, the statistical test called the Log-Rank Test can be used to test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time (@rich10). The test is conducted by comparing the observed number of events with an estimated number of events for each group at each time. To calculate expected number of events, the assumption that the two curves are identical is used. The expected number of events at a time t is for group i calculated by the formula $E_{it} = \frac{N_{it} \times O_{t}}{N_{t}}$, where $N_{it}$ is the observed number of events in group i at time t, $O_{t}$ is the total number of events in all groups at time t, and $N_{t}$ is the total number observations at risk in all groups at time t (@sullivan16). @tbl-logrank shows the creation of all of these values. The following variables are in the table:
+
+-   Time: time when the event occurs
+-   $N_{1t}$: the number of people alive and still in the study (at risk), at time t in group 1
+-   $N_{2t}$: the number at risk at time t in group 2
+-   $N_t$: the total number of people at risk in the study at time t
+-   $O_{1t}$: the number of observed events occurring at time t in group 1
+-   $O_{2t}$: the number of observed events occurring at time t in group 2
+-   $O_t$: the total observed events across both groups at time t
+-   $E_{1t}$: the expected number of events at time t in group 1
+-   $E_{2t}$: the expected number of events at time t in group 2
+-   $Et$: the total expected number of events across both groups at time t
 
 ```{r}
 #| label: tbl-logrank
@@ -109,19 +122,13 @@ log_rank$E2t <- (log_rank$N2t * log_rank$Ot) / log_rank$Nt
 
 round(log_rank, 2) %>% 
   gt() %>% 
-  tab_header("Values Needed to Calculate Chi-Square Statistic") %>% 
-  cols_label(Time = "Time", 
-             N1t = "Number at Risk in Group 1", 
-             N2t = "Number at Risk in Group 2", 
-             Nt = "Total Number at Risk", 
-             O1t = "Observed Events in Group 1", 
-             O2t = "Observed Events in Group 2", 
-             Ot = "Total Observed Events", 
-             E1t = "Expected Events in Group 1", 
-             E2t = "Expected Events in Group 2") 
+  tab_header("Values Needed to Calculate Chi-Square Statistic")
 ```
 
-To test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time, a test statistics is needed. For the Log-Rank test, a Chi-Square test statistic is used because the data follows a Chi-Square curve rather than a normal distribution. The Chi-Square test statistic is calculated by the formula $X^2 = \sum_{i=1}^k \frac{(\sum{O_{it}} - \sum{E_{it}})^2}{\sum{Vi}}$, where $\sum_{0}^T{O_{it}}$ is the sum of the observed number of events in group i over the entire time interval and $\sum_{0}^T{E_{it}}$ is the sum of the expected number of events in group i over the entire time interval. The difference of the sums of these two values are divided by the sum of the variance. The variance for group 1 at time t is calculated by the formula $V_{1t} = \frac{N_{1t} \times N_{2t} \times O_{t} \times (N_{t} - O_{t})}{N_{t}^2 \times (N_{t} - 1)}$ (@collet). The variance for group 2 is calculated similarly, and the total variance is calculated by the formula $V_{t} = V_{1t} + V_{2t}$. @tbl-logrank2 shows the calculation of the Chi-Square test statistic for the data set. In the table, $V1t$ is the variance of the number of events at time t in group 1, $V2t$ is the variance of the number of events at time t in group 2, $Vt$ is the total variance of the number of events across both groups at time t, $sum_{Vt}$ is the cumulative sum of the total variance across all times, and $X2$ is the Chi-Square test statistic.
+To test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time, a test statistics is needed. For the Log-Rank test, a Chi-Square test statistic is used because the data follows a Chi-Square curve rather than a normal distribution. The Chi-Square test statistic is calculated by the formula $X^2 = \sum_{i=1}^k \frac{(\sum{O_{it}} - \sum{E_{it}})^2}{\sum{Vi}}$, where $\sum_{0}^T{O_{it}}$ is the sum of the observed number of events in group i over the entire time interval and $\sum_{0}^T{E_{it}}$ is the sum of the expected number of events in group i over the entire time interval. The difference of the sums of these two values are divided by the sum of the variance. The variance for group 1 at time t is calculated by the formula $V_{1t} = \frac{N_{1t} \times N_{2t} \times O_{t} \times (N_{t} - O_{t})}{N_{t}^2 \times (N_{t} - 1)}$ (@collet). The variance for group 2 is calculated similarly, and the total variance is calculated by the formula $V_{t} = V_{1t} + V_{2t}$. @tbl-logrank2 shows the calculation of the Chi-Square test statistic for the data set. Two new variables are calculated from the previous table: 
+
+* $V_{1t}$: the variance of the number of events at time t in group 1
+* $V_{2t}$: the variance of the number of events at time t in group 2
 
 ```{r}
 #| label: tbl-logrank2
@@ -137,57 +144,47 @@ log_rank$V2t <- (log_rank$N1t * log_rank$N2t * log_rank$Ot *
 
 round(log_rank, 2) %>% 
   gt() %>% 
-  tab_header("Calculation of Variance") %>% 
-  cols_label(Time = "Time", 
-             N1t = "Number at Risk in Group 1", 
-             N2t = "Number at Risk in Group 2", 
-             Nt = "Total Number at Risk", 
-             O1t = "Observed Events in Group 1", 
-             O2t = "Observed Events in Group 2", 
-             Ot = "Total Observed Events", 
-             E1t = "Expected Events in Group 1", 
-             E2t = "Expected Events in Group 2", 
-             V1t = "Variance of Number of Events in Group 1", 
-             V2t = "Variance of Number of Events in Group 2")
+  tab_header("Calculation of Variance")
 ```
 
-For group 1 at time 1, we would calculate $E_{1t} = \frac{5 \times 1}{10} = 0.50$ and for group 2 at time 1, $E_{2t} = \frac{5 \times 1}{10} = 0.50$. We would repeat for each group at each time and then sum the values to get $\sum_{t=1}^t{E_{i}}$ for each group. For group 1, $\sum_{t=1}^t{E_{1}} = 0.50 + 0.56 + 0 + 0 + 0.67 + 0.80 + 0.75 + 0 = 3.27$ and for group 2, $\sum_{t=0}^t{E_{2}} = 0.50 + 0.44 + 0 + 0 + 0.33 + 0.20 + 0.25 + 0 = 1.73$. The sum of the observed events for group 1 is 2 and for group 2 is 3. For group 1 at time 1, we would calculate $V_1t = \frac{5 \times 5 \times 1 \times (10-1)}{10^2 \times (10-1)} = 0.25$ @tbl-chi-square shows the rest of the variances calculated for both groups for the `surv2` data set.
+For group 1 at time 1, we would calculate $E_{1t} = \frac{5 \times 1}{10} = 0.50$ and for group 2 at time 1, $E_{2t} = \frac{5 \times 1}{10} = 0.50$. We would repeat for each group at each time and then sum the values to get $\sum_{t=1}^t{E_{i}}$ for each group. For group 1, $\sum_{t=1}^t{E_{1}} = 0.50 + 0.56 + 0 + 0 + 0.67 + 0.80 + 0.75 + 0 = 3.27$ and for group 2, $\sum_{t=0}^t{E_{2}} = 0.50 + 0.44 + 0 + 0 + 0.33 + 0.20 + 0.25 + 0 = 1.73$. The sum of the observed events for group 1 is 2 and for group 2 is 3. For group 1 at time 1, we would calculate $V_1t = \frac{5 \times 5 \times 1 \times (10-1)}{10^2 \times (10-1)} = 0.25$ @tbl-chi-square shows the rest of the variances calculated for both groups for the `surv2` data set. The table includes the following new variables: 
+
+* $SumO_{1t}$: the sum of the observed number of events in group 1 over the entire time interval
+* $SumO_{2t}$: the sum of the observed number of events in group 2 over the entire time interval
+* $SumE_{1t}$: the sum of the expected number of events in group 1 over the entire time interval
+* $SumE_{2t}$: the sum of the expected number of events in group 2 over the entire time interval
+* $SumV_{1t}$: the sum of the variance of the number of events at time t in group 1
+* $SumV_{2t}$: the sum of the variance of the number of events at time t in group 2
+* $X_1$: the Chi-Square test statistic for group 1
+* $X_2$: the Chi-Square test statistic for group 2
 
 ```{r}
 #| label: tbl-chi-square
 #| tbl-cap: "Calculation of Chi Square Statistic"
 
-sum_O1t <- cumsum(log_rank$O1t)
-sum_O2t <- cumsum(log_rank$O2t)
-sum_E1t <- cumsum(log_rank$E1t)
-sum_E2t <- cumsum(log_rank$E2t)
-sum_V1t <- cumsum(log_rank$V1t)
-sum_V2t <- cumsum(log_rank$V2t)
+SumO1t <- cumsum(log_rank$O1t)
+SumO2t <- cumsum(log_rank$O2t)
+SumE1t <- cumsum(log_rank$E1t)
+SumE2t <- cumsum(log_rank$E2t)
+SumV1t <- cumsum(log_rank$V1t)
+SumV2t <- cumsum(log_rank$V2t)
 
 # Create table with each of the last values 
-sum_stats <- data.frame(sum_O1t, sum_O2t, 
-                        sum_E1t, sum_E2t, sum_V1t, sum_V2t)
+sum_stats <- data.frame(SumO1t, SumO2t, 
+                        SumE1t, SumE2t, SumV1t, SumV2t)
 # Get the last row of summary statistics
 sum_stats <- sum_stats[nrow(sum_stats), ]
-sum_stats$X2_group1 <- ((sum_stats$sum_O1t - sum_stats$sum_E1t)^2 / 
-                          sum_stats$sum_V1t)
-sum_stats$X2_group2 <- ((sum_stats$sum_O2t - sum_stats$sum_E2t)^2 / 
-                          sum_stats$sum_V2t)
+sum_stats$X1 <- ((sum_stats$SumO1t - sum_stats$SumE1t)^2 / 
+                          sum_stats$SumV1t)
+sum_stats$X2 <- ((sum_stats$SumO2t - sum_stats$SumE2t)^2 / 
+                          sum_stats$SumV2t)
 
 round(sum_stats, 2) %>% 
   gt() %>% 
-  tab_header("Calculation of Chi Square Statistic") %>% 
-  cols_label(sum_O1t = "Sum of Observed Events in Group 1", 
-             sum_O2t = "Sum of Observed Events in Group 2", 
-             sum_E1t = "Sum of Expected Events in Group 1", 
-             sum_E2t = "Sum of Expected Events in Group 2", 
-             sum_V1t = "Sum of Variance of Number of Events in Group 1", 
-             sum_V2t = "Sum of Variance of Number of Events in Group 2", 
-             X2_group1 = "Chi Square Statistic for Group 1", 
-             X2_group2 = "Chi Square Statistic for Group 2")
+  tab_header("Calculation of Chi Square Statistic")
 ```
 
-With all of these values, we can calculate the Chi Square test statistic, $X^2i = \frac{(\sum{O_{it}} - \sum{E_{it}})^2}{V_{it}}$. We get $X^2group1 = \frac{(2 - 3.27)^2}{1.07} = 1.51$ and $X^2group1 = \frac{(3 - 1.73)^2}{1.07} = 1.51$. The test statistic can then be compared to a Chi-Square distribution with one k-1 degrees of freedom, with k being the number of groups. So, for this example, there is one degree of freedom. If the p-value is less than 0.05, then we can reject the null hypothesis that there is no difference between the survival estimates of the two groups (@sullivan16).
+With all of these values, we can calculate the Chi Square test statistic, $X^2_i = \frac{(\sum{O_{it}} - \sum{E_{it}})^2}{V_{it}}$. We get $X^2_{1} = \frac{(2 - 3.27)^2}{1.07} = 1.51$ and $X^2_2 = \frac{(3 - 1.73)^2}{1.07} = 1.51$. The test statistic can then be compared to a Chi-Square distribution with one k-1 degrees of freedom, with k being the number of groups. So, for this example, k is 2 and there is 1 degree of freedom (@sullivan16).
 
 Clearly, calculating the test statistic is very tedious, even for a data set with 10 observations. The `survdiff` function can be used to run a Log-Rank test in R, making it much easier to run the test. The function takes in the response object created by the `Surv()` function and the grouping variable (@zabor23). It returns a Chi-Square statistic and a p-value. We can see that the p-value is much higher than 0.05, indicating that we do not have evidence to reject the null hypothesis, and thus that there is no difference between the survival estimates of the two groups.
 
@@ -240,7 +237,7 @@ times3 <- Surv(cirrhosis$N_Days, cirrhosis$event)
 survdiff(times3 ~ Drug, data = cirrhosis)
 ```
 
-From the Log-Rank test, we see that the p-value is 0.7, which is mush larger than 0.05. This indicates that the test was not statistically significant at the five percent level. Thus, there was no significant difference between patient outcome between the two treatment groups. For patients with biliary cirrhosis, D-penicillamine is not an effective drug for preventing death.
+From the Log-Rank test, we see that the p-value is 0.7, which is much larger than 0.05. This indicates that the test was not statistically significant at the five percent level. Thus, there was no statistically significant difference between patient outcome between the two treatment groups. So, for patients with biliary cirrhosis, we did not find evidence that D-penicillamine is an effective drug for preventing death.
 
 We can visualize this in @fig-lungstudy, which shows the survival curves for both groups of patients. We can also use the `ggsurvplot` function from the `survminer()` package to plot the survival curves. The curves are very similar and cross multiple times, which makes sense since we know the drug of interest did not have a significant effect on patient survival.
 
@@ -261,17 +258,17 @@ s3 %>% ggsurvplot(
   )
 ```
 
-As we can see, the two survival curves are very similar and cross multiple times, which makes sense since we know the drug of interest did not have a significant effect on patient survival. 
+As we can see, the two survival curves are very similar and cross multiple times, which makes sense since we know the drug of interest did not have a significant effect on patient survival.
 
 ## Case Study: Heart Failure Data
 
-Let's look at another data set which contains information on patients with heart failure. The data set contains data on heart failure patients over 40 years old who were admitted to the Institute of Cardiology at the Allied hospital Faisalabad-Pakistan between April and December of 2015. All of the patients in the data set had left ventricular systolic dysfunction and belonged to NYHA class III and IV stages of heart failure (@plosone). 
+Let's look at another data set which contains information on patients with heart failure. The data set contains data on heart failure patients over 40 years old who were admitted to the Institute of Cardiology at the Allied hospital Faisalabad-Pakistan between April and December of 2015. All of the patients in the data set had left ventricular systolic dysfunction and belonged to NYHA class III and IV stages of heart failure (@plosone).
 
 ```{r}
 heart <- read_csv("data/S1Data.csv") 
 ```
 
-Let's view the Kaplan Meier survival curves to see if there is a visual difference in survival probabilities for individuals with normal versus high blood pressure. In this data set, blood pressure is a binary variable where 0 indicates normal blood pressure and 1 indicates high blood pressure. It is called BP in the data set. We can view the curve in @fig-heartstudy. 
+Let's view the Kaplan Meier survival curves to see if there is a visual difference in survival probabilities for individuals with normal versus high blood pressure. In this data set, blood pressure is a binary variable where 0 indicates normal blood pressure and 1 indicates high blood pressure. It is called BP in the data set. We can view the curve in @fig-heartstudy.
 
 ```{r}
 #| label: fig-heartstudy
@@ -297,10 +294,11 @@ From the curves, it seems like there will be a difference in survival probabilit
 # Run a log rank test based on blood pressure group
 survdiff(times_heart ~ BP, data = heart)
 ```
-The p-value from the Log-Rank test is 0.04, so we can conclude that blood pressure is a significant predictor of survival probability in heart failure patients. 
+
+The p-value from the Log-Rank test is 0.04, so we can conclude that blood pressure is a significant predictor of survival probability in heart failure patients.
 
 ## Limitations
 
-It is important to note the limitations of this analysis. The Kaplan Meier Curve is not a suitable fit for a complex, real-world data set such as the `cirrhosis` data. It is a nonparametric method of analysis, which means that it assumes no form of distribution and no additional factors influencing the outcome of interest. To create a Kaplan Meier curve and run the Log-Rank test, we ignored all other factors included int the data. In the next section, we will discuss other methods that can be used for survival analysis that can account for other factors.
+It is important to note the limitations of this analysis. The Kaplan Meier Curve is not a suitable fit for a complex, real-world data set such as the `cirrhosis` data. It is a nonparametric method of analysis, which means that it assumes no form of distribution and no additional factors influencing the outcome of interest. To create a Kaplan Meier curve and run the Log-Rank test, we ignored all other factors included in the data. In the next section, we will discuss other methods that can be used for survival analysis that can account for other factors.
 
 ## References

@@ -235,6 +235,13 @@
     "href": "Discussion.html#other-applications",
     "title": "4  Discussion",
     "section": "4.3 Other Applications",
-    "text": "4.3 Other Applications\nSurvival Analysis can be used for any time-to-event data, not just medical data. Some of these disciplines include: Epidemiology, Finance, Engineering, Marketing, Insurance, and more. For example, in marketing, survival analysis can be used to predict how long a customer will remain a customer. In epidemiology, it can be used for predicting time until disease reoccurrence. In engineering, survival analysis can be used to predict how long a machine will last. Survival analysis can be very useful in many disciplines other than medical data and future work can use it for these disciplines.\n\n\n\n\nCollet, David. 2003. Modelling Survival Data in Medical Research. Chapman & Hall/CRC.\n\n\nFedesoriano. 2021. “Cirrhosis Prediction Dataset.” www.kaggle.com/datasets/fedesoriano/cirrhosis-prediction-dataset/data."
+    "text": "4.3 Other Applications\nSurvival Analysis can be used for any time-to-event data, not just medical data. Some of these disciplines include: Epidemiology, Finance, Engineering, Marketing, Insurance, and more. For example, in marketing, survival analysis can be used to predict how long a customer will remain a customer. In epidemiology, it can be used for predicting time until disease reoccurrence. In engineering, survival analysis can be used to predict how long a machine will last. Survival analysis can be very useful in many disciplines other than medical data and future work can use it for these disciplines."
+  },
+  {
+    "objectID": "Discussion.html#references",
+    "href": "Discussion.html#references",
+    "title": "4  Discussion",
+    "section": "4.4 References",
+    "text": "4.4 References\n\n\n\n\nCollet, David. 2003. Modelling Survival Data in Medical Research. Chapman & Hall/CRC.\n\n\nFedesoriano. 2021. “Cirrhosis Prediction Dataset.” www.kaggle.com/datasets/fedesoriano/cirrhosis-prediction-dataset/data."
   }
 ]
