@@ -3,8 +3,9 @@ project:
   output-dir: docs
 
 book:
-  title: "Survival Analysis Senior Project"
-  author: "Kristen Varin"
+  title: "Introduction to Survival Analysis"
+  subtitle: "Modeling Medical Time-to-Event Data Using R Software Packages"
+  author: Kristen Varin
   date: "9/6/2023"
   chapters:
     - index.qmd
@@ -23,4 +24,3 @@ format:
     documentclass: scrreprt
   
 editor: visual
-

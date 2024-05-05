@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Survival Analysis Senior Project - 2&nbsp; Kaplan Meier</title>
+<title>Introduction to Survival Analysis - 2&nbsp; Kaplan Meier</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -146,7 +146,7 @@ div.csl-indent {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Survival Analysis Senior Project</a> 
+      <a href="./">Introduction to Survival Analysis</a> 
         <div class="sidebar-tools-main">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
@@ -230,7 +230,7 @@ div.csl-indent {
 </section>
 <section id="descriptive-statistics-and-the-kaplan-meier-curve" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="descriptive-statistics-and-the-kaplan-meier-curve"><span class="header-section-number">2.2</span> Descriptive Statistics and the Kaplan Meier Curve</h2>
-<p>Summary statistics can be used to understand Kaplan Meier survival estimates. For example, a 95% confidence interval for the survival probability can be found for each time in the data set using the formula <span class="math inline">\(S(t_j) ± 1.96 * SE(S(t_j))\)</span> <span class="citation" data-cites="lamorte16">Sullivan (<a href="#ref-lamorte16" role="doc-biblioref">2016b</a>)</span>. This interval will output a range that, with 95% confidence, contains the true survival probability for an individual in the data set at that time. Another commonly reported descriptive statistic is the median of the survival function, <span class="math inline">\(S(t_j)\)</span>. The median value is the time <span class="math inline">\(t\)</span> at which <span class="math inline">\(S(t_j) = 0.5\)</span>, or when half of the individuals have not yet experienced the outcome (<span class="citation" data-cites="rao23">Rao (<a href="#ref-rao23" role="doc-biblioref">2023</a>)</span>).</p>
+<p>Summary statistics can be used to understand Kaplan Meier survival estimates. For example, a 95% confidence interval for the survival probability can be found for each time in the data set using the formula <span class="math inline">\(S(t_j) ± 1.96 * SE(S(t_j))\)</span> (<span class="citation" data-cites="lamorte16">Sullivan (<a href="#ref-lamorte16" role="doc-biblioref">2016b</a>)</span>). This interval will output a range that, with 95% confidence, contains the true survival probability for an individual in the data set at that time. Another commonly reported descriptive statistic is the median of the survival function, <span class="math inline">\(S(t_j)\)</span>. The median value is the time <span class="math inline">\(t\)</span> at which <span class="math inline">\(S(t_j) = 0.5\)</span>, or when half of the individuals have not yet experienced the outcome (<span class="citation" data-cites="rao23">Rao (<a href="#ref-rao23" role="doc-biblioref">2023</a>)</span>).</p>
 <p>The Kaplan Meier curve is a graphical representation of the survival function. Similar to the survival probabilities discussed in Section 1.2, the Kaplan Meier curve shows the relationships between time, which is typically plotted on the x-axis, and probability of survival, which is typically on the y-axis. The curve always ranges from 0 to 1 and is typically right skewed.</p>
 </section>
 <section id="kaplan-meier-in-r" class="level2" data-number="2.3">
@@ -258,23 +258,23 @@ div.csl-indent {
 <div class="cell-output-display">
 <div id="tbl-censor" class="anchored">
 
-<div id="goblnkgcms" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#goblnkgcms table {
+<div id="jacqsblfoa" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jacqsblfoa table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#goblnkgcms thead, #goblnkgcms tbody, #goblnkgcms tfoot, #goblnkgcms tr, #goblnkgcms td, #goblnkgcms th {
+#jacqsblfoa thead, #jacqsblfoa tbody, #jacqsblfoa tfoot, #jacqsblfoa tr, #jacqsblfoa td, #jacqsblfoa th {
   border-style: none;
 }
 
-#goblnkgcms p {
+#jacqsblfoa p {
   margin: 0;
   padding: 0;
 }
 
-#goblnkgcms .gt_table {
+#jacqsblfoa .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -300,12 +300,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#goblnkgcms .gt_caption {
+#jacqsblfoa .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#goblnkgcms .gt_title {
+#jacqsblfoa .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -317,7 +317,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#goblnkgcms .gt_subtitle {
+#jacqsblfoa .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -329,7 +329,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#goblnkgcms .gt_heading {
+#jacqsblfoa .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -341,13 +341,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#goblnkgcms .gt_bottom_border {
+#jacqsblfoa .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#goblnkgcms .gt_col_headings {
+#jacqsblfoa .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -362,7 +362,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#goblnkgcms .gt_col_heading {
+#jacqsblfoa .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -382,7 +382,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#goblnkgcms .gt_column_spanner_outer {
+#jacqsblfoa .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -394,15 +394,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#goblnkgcms .gt_column_spanner_outer:first-child {
+#jacqsblfoa .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#goblnkgcms .gt_column_spanner_outer:last-child {
+#jacqsblfoa .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#goblnkgcms .gt_column_spanner {
+#jacqsblfoa .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -414,11 +414,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#goblnkgcms .gt_spanner_row {
+#jacqsblfoa .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#goblnkgcms .gt_group_heading {
+#jacqsblfoa .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -444,7 +444,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#goblnkgcms .gt_empty_group_heading {
+#jacqsblfoa .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -459,15 +459,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#goblnkgcms .gt_from_md > :first-child {
+#jacqsblfoa .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#goblnkgcms .gt_from_md > :last-child {
+#jacqsblfoa .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#goblnkgcms .gt_row {
+#jacqsblfoa .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -486,7 +486,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#goblnkgcms .gt_stub {
+#jacqsblfoa .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -499,7 +499,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#goblnkgcms .gt_stub_row_group {
+#jacqsblfoa .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -513,15 +513,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#goblnkgcms .gt_row_group_first td {
+#jacqsblfoa .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#goblnkgcms .gt_row_group_first th {
+#jacqsblfoa .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#goblnkgcms .gt_summary_row {
+#jacqsblfoa .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -531,16 +531,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#goblnkgcms .gt_first_summary_row {
+#jacqsblfoa .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#goblnkgcms .gt_first_summary_row.thick {
+#jacqsblfoa .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#goblnkgcms .gt_last_summary_row {
+#jacqsblfoa .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -550,7 +550,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#goblnkgcms .gt_grand_summary_row {
+#jacqsblfoa .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -560,7 +560,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#goblnkgcms .gt_first_grand_summary_row {
+#jacqsblfoa .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -570,7 +570,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#goblnkgcms .gt_last_grand_summary_row_top {
+#jacqsblfoa .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -580,11 +580,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#goblnkgcms .gt_striped {
+#jacqsblfoa .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#goblnkgcms .gt_table_body {
+#jacqsblfoa .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -593,7 +593,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#goblnkgcms .gt_footnotes {
+#jacqsblfoa .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -607,7 +607,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#goblnkgcms .gt_footnote {
+#jacqsblfoa .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -616,7 +616,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#goblnkgcms .gt_sourcenotes {
+#jacqsblfoa .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -630,7 +630,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#goblnkgcms .gt_sourcenote {
+#jacqsblfoa .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -638,63 +638,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#goblnkgcms .gt_left {
+#jacqsblfoa .gt_left {
   text-align: left;
 }
 
-#goblnkgcms .gt_center {
+#jacqsblfoa .gt_center {
   text-align: center;
 }
 
-#goblnkgcms .gt_right {
+#jacqsblfoa .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#goblnkgcms .gt_font_normal {
+#jacqsblfoa .gt_font_normal {
   font-weight: normal;
 }
 
-#goblnkgcms .gt_font_bold {
+#jacqsblfoa .gt_font_bold {
   font-weight: bold;
 }
 
-#goblnkgcms .gt_font_italic {
+#jacqsblfoa .gt_font_italic {
   font-style: italic;
 }
 
-#goblnkgcms .gt_super {
+#jacqsblfoa .gt_super {
   font-size: 65%;
 }
 
-#goblnkgcms .gt_footnote_marks {
+#jacqsblfoa .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#goblnkgcms .gt_asterisk {
+#jacqsblfoa .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#goblnkgcms .gt_indent_1 {
+#jacqsblfoa .gt_indent_1 {
   text-indent: 5px;
 }
 
-#goblnkgcms .gt_indent_2 {
+#jacqsblfoa .gt_indent_2 {
   text-indent: 10px;
 }
 
-#goblnkgcms .gt_indent_3 {
+#jacqsblfoa .gt_indent_3 {
   text-indent: 15px;
 }
 
-#goblnkgcms .gt_indent_4 {
+#jacqsblfoa .gt_indent_4 {
   text-indent: 20px;
 }
 
-#goblnkgcms .gt_indent_5 {
+#jacqsblfoa .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -803,18 +803,18 @@ div.csl-indent {
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span> ,<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>surv2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(time, status, group)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>To run an analysis, the statistical test called the Log-Rank Test can be used to test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time (<span class="citation" data-cites="rich10">Rich (<a href="#ref-rich10" role="doc-biblioref">2010</a>)</span>). The test is conducted by comparing the observed number of events with an estimated number of events for each group at each time. To calculate expected number of events, the assumption that the two curves are identical is used. The expected number of events at a time t is for group i calculated by the formula <span class="math inline">\(E_{it} = \frac{N_{it} \times O_{t}}{N_{t}}\)</span>, where <span class="math inline">\(N_{it}\)</span> is the observed number of events in group i at time t, <span class="math inline">\(O_{t}\)</span> is the total number of events in all groups at time t, and <span class="math inline">\(N_{t}\)</span> is the total number observations at risk in all groups at time t (<span class="citation" data-cites="sullivan16">Sullivan (<a href="#ref-sullivan16" role="doc-biblioref">2016a</a>)</span>). <a href="#tbl-logrank">Table&nbsp;<span>2.2</span></a> shows the creation of all of these values. The following variables are in the table:</p>
+<p>To run an analysis, the statistical test called the Log-Rank Test can be used to test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time (<span class="citation" data-cites="rich10">Rich (<a href="#ref-rich10" role="doc-biblioref">2010</a>)</span>). The test is conducted by comparing the observed number of events with an estimated number of events for each group at each time. To calculate expected number of events, the assumption that the two curves are identical is used. The expected number of events at a time <span class="math inline">\(t\)</span> is for group <span class="math inline">\(i\)</span> calculated by the formula <span class="math inline">\(E_{it} = \frac{N_{it} \times O_{t}}{N_{t}}\)</span>, where <span class="math inline">\(N_{it}\)</span> is the observed number of events in group <span class="math inline">\(i\)</span> at time <span class="math inline">\(t\)</span>, <span class="math inline">\(O_{t}\)</span> is the total number of events in all groups at time <span class="math inline">\(t\)</span>, and <span class="math inline">\(N_{t}\)</span> is the total number observations at risk in all groups at time <span class="math inline">\(t\)</span> (<span class="citation" data-cites="sullivan16">Sullivan (<a href="#ref-sullivan16" role="doc-biblioref">2016a</a>)</span>). <a href="#tbl-logrank">Table&nbsp;<span>2.2</span></a> shows the creation of all of these values. The following variables are in the table:</p>
 <ul>
-<li>Time: time when the event occurs</li>
-<li><span class="math inline">\(N_{1t}\)</span>: the number of people alive and still in the study (at risk), at time t in group 1</li>
-<li><span class="math inline">\(N_{2t}\)</span>: the number at risk at time t in group 2</li>
-<li><span class="math inline">\(N_t\)</span>: the total number of people at risk in the study at time t</li>
-<li><span class="math inline">\(O_{1t}\)</span>: the number of observed events occurring at time t in group 1</li>
-<li><span class="math inline">\(O_{2t}\)</span>: the number of observed events occurring at time t in group 2</li>
+<li><span class="math inline">\(Time\)</span>: time when the event occurs</li>
+<li><span class="math inline">\(N_{1t}\)</span>: the number of people alive and still in the study (at risk), at time <span class="math inline">\(t\)</span> in group 1</li>
+<li><span class="math inline">\(N_{2t}\)</span>: the number at risk at time <span class="math inline">\(t\)</span> in group 2</li>
+<li><span class="math inline">\(N_t\)</span>: the total number of people at risk in the study at time <span class="math inline">\(t\)</span></li>
+<li><span class="math inline">\(O_{1t}\)</span>: the number of observed events occurring at time <span class="math inline">\(t\)</span> in group 1</li>
+<li><span class="math inline">\(O_{2t}\)</span>: the number of observed events occurring at time <span class="math inline">\(t\)</span> in group 2</li>
 <li><span class="math inline">\(O_t\)</span>: the total observed events across both groups at time t</li>
-<li><span class="math inline">\(E_{1t}\)</span>: the expected number of events at time t in group 1</li>
-<li><span class="math inline">\(E_{2t}\)</span>: the expected number of events at time t in group 2</li>
-<li><span class="math inline">\(Et\)</span>: the total expected number of events across both groups at time t</li>
+<li><span class="math inline">\(E_{1t}\)</span>: the expected number of events at time <span class="math inline">\(t\)</span> in group 1</li>
+<li><span class="math inline">\(E_{2t}\)</span>: the expected number of events at time <span class="math inline">\(t\)</span> in group 2</li>
+<li><span class="math inline">\(Et\)</span>: the total expected number of events across both groups at time <span class="math inline">\(t\)</span></li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Time <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">10</span>)</span>
@@ -837,23 +837,23 @@ div.csl-indent {
 <div class="cell-output-display">
 <div id="tbl-logrank" class="anchored">
 
-<div id="lmgsklyqgp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#lmgsklyqgp table {
+<div id="dtbsdtzldp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#dtbsdtzldp table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#lmgsklyqgp thead, #lmgsklyqgp tbody, #lmgsklyqgp tfoot, #lmgsklyqgp tr, #lmgsklyqgp td, #lmgsklyqgp th {
+#dtbsdtzldp thead, #dtbsdtzldp tbody, #dtbsdtzldp tfoot, #dtbsdtzldp tr, #dtbsdtzldp td, #dtbsdtzldp th {
   border-style: none;
 }
 
-#lmgsklyqgp p {
+#dtbsdtzldp p {
   margin: 0;
   padding: 0;
 }
 
-#lmgsklyqgp .gt_table {
+#dtbsdtzldp .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -879,12 +879,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#lmgsklyqgp .gt_caption {
+#dtbsdtzldp .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#lmgsklyqgp .gt_title {
+#dtbsdtzldp .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -896,7 +896,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#lmgsklyqgp .gt_subtitle {
+#dtbsdtzldp .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -908,7 +908,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#lmgsklyqgp .gt_heading {
+#dtbsdtzldp .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -920,13 +920,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#lmgsklyqgp .gt_bottom_border {
+#dtbsdtzldp .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#lmgsklyqgp .gt_col_headings {
+#dtbsdtzldp .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -941,7 +941,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#lmgsklyqgp .gt_col_heading {
+#dtbsdtzldp .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -961,7 +961,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#lmgsklyqgp .gt_column_spanner_outer {
+#dtbsdtzldp .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -973,15 +973,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#lmgsklyqgp .gt_column_spanner_outer:first-child {
+#dtbsdtzldp .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#lmgsklyqgp .gt_column_spanner_outer:last-child {
+#dtbsdtzldp .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#lmgsklyqgp .gt_column_spanner {
+#dtbsdtzldp .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -993,11 +993,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#lmgsklyqgp .gt_spanner_row {
+#dtbsdtzldp .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#lmgsklyqgp .gt_group_heading {
+#dtbsdtzldp .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1023,7 +1023,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#lmgsklyqgp .gt_empty_group_heading {
+#dtbsdtzldp .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1038,15 +1038,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#lmgsklyqgp .gt_from_md > :first-child {
+#dtbsdtzldp .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#lmgsklyqgp .gt_from_md > :last-child {
+#dtbsdtzldp .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#lmgsklyqgp .gt_row {
+#dtbsdtzldp .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1065,7 +1065,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#lmgsklyqgp .gt_stub {
+#dtbsdtzldp .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1078,7 +1078,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#lmgsklyqgp .gt_stub_row_group {
+#dtbsdtzldp .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1092,15 +1092,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#lmgsklyqgp .gt_row_group_first td {
+#dtbsdtzldp .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#lmgsklyqgp .gt_row_group_first th {
+#dtbsdtzldp .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#lmgsklyqgp .gt_summary_row {
+#dtbsdtzldp .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1110,16 +1110,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#lmgsklyqgp .gt_first_summary_row {
+#dtbsdtzldp .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#lmgsklyqgp .gt_first_summary_row.thick {
+#dtbsdtzldp .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#lmgsklyqgp .gt_last_summary_row {
+#dtbsdtzldp .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1129,7 +1129,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#lmgsklyqgp .gt_grand_summary_row {
+#dtbsdtzldp .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1139,7 +1139,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#lmgsklyqgp .gt_first_grand_summary_row {
+#dtbsdtzldp .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1149,7 +1149,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#lmgsklyqgp .gt_last_grand_summary_row_top {
+#dtbsdtzldp .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1159,11 +1159,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#lmgsklyqgp .gt_striped {
+#dtbsdtzldp .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#lmgsklyqgp .gt_table_body {
+#dtbsdtzldp .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1172,7 +1172,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#lmgsklyqgp .gt_footnotes {
+#dtbsdtzldp .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1186,7 +1186,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#lmgsklyqgp .gt_footnote {
+#dtbsdtzldp .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1195,7 +1195,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#lmgsklyqgp .gt_sourcenotes {
+#dtbsdtzldp .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1209,7 +1209,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#lmgsklyqgp .gt_sourcenote {
+#dtbsdtzldp .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1217,63 +1217,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#lmgsklyqgp .gt_left {
+#dtbsdtzldp .gt_left {
   text-align: left;
 }
 
-#lmgsklyqgp .gt_center {
+#dtbsdtzldp .gt_center {
   text-align: center;
 }
 
-#lmgsklyqgp .gt_right {
+#dtbsdtzldp .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#lmgsklyqgp .gt_font_normal {
+#dtbsdtzldp .gt_font_normal {
   font-weight: normal;
 }
 
-#lmgsklyqgp .gt_font_bold {
+#dtbsdtzldp .gt_font_bold {
   font-weight: bold;
 }
 
-#lmgsklyqgp .gt_font_italic {
+#dtbsdtzldp .gt_font_italic {
   font-style: italic;
 }
 
-#lmgsklyqgp .gt_super {
+#dtbsdtzldp .gt_super {
   font-size: 65%;
 }
 
-#lmgsklyqgp .gt_footnote_marks {
+#dtbsdtzldp .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#lmgsklyqgp .gt_asterisk {
+#dtbsdtzldp .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#lmgsklyqgp .gt_indent_1 {
+#dtbsdtzldp .gt_indent_1 {
   text-indent: 5px;
 }
 
-#lmgsklyqgp .gt_indent_2 {
+#dtbsdtzldp .gt_indent_2 {
   text-indent: 10px;
 }
 
-#lmgsklyqgp .gt_indent_3 {
+#dtbsdtzldp .gt_indent_3 {
   text-indent: 15px;
 }
 
-#lmgsklyqgp .gt_indent_4 {
+#dtbsdtzldp .gt_indent_4 {
   text-indent: 20px;
 }
 
-#lmgsklyqgp .gt_indent_5 {
+#dtbsdtzldp .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1376,10 +1376,10 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>To test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time, a test statistics is needed. For the Log-Rank test, a Chi-Square test statistic is used because the data follows a Chi-Square curve rather than a normal distribution. The Chi-Square test statistic is calculated by the formula <span class="math inline">\(X^2 = \sum_{i=1}^k \frac{(\sum{O_{it}} - \sum{E_{it}})^2}{\sum{Vi}}\)</span>, where <span class="math inline">\(\sum_{0}^T{O_{it}}\)</span> is the sum of the observed number of events in group i over the entire time interval and <span class="math inline">\(\sum_{0}^T{E_{it}}\)</span> is the sum of the expected number of events in group i over the entire time interval. The difference of the sums of these two values are divided by the sum of the variance. The variance for group 1 at time t is calculated by the formula <span class="math inline">\(V_{1t} = \frac{N_{1t} \times N_{2t} \times O_{t} \times (N_{t} - O_{t})}{N_{t}^2 \times (N_{t} - 1)}\)</span> (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). The variance for group 2 is calculated similarly, and the total variance is calculated by the formula <span class="math inline">\(V_{t} = V_{1t} + V_{2t}\)</span>. <a href="#tbl-logrank2">Table&nbsp;<span>2.3</span></a> shows the calculation of the Chi-Square test statistic for the data set. Two new variables are calculated from the previous table:</p>
+<p>To test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time, a test statistics is needed. For the Log-Rank test, a Chi-Square test statistic is used because the data follows a Chi-Square curve rather than a normal distribution. The Chi-Square test statistic is calculated by the formula <span class="math inline">\(X^2 = \sum_{i=1}^k \frac{(\sum{O_{it}} - \sum{E_{it}})^2}{\sum{Vi}}\)</span>, where <span class="math inline">\(\sum_{0}^T{O_{it}}\)</span> is the sum of the observed number of events in group <span class="math inline">\(i\)</span> over the entire time interval and <span class="math inline">\(\sum_{0}^T{E_{it}}\)</span> is the sum of the expected number of events in group <span class="math inline">\(i\)</span> over the entire time interval. The difference of the sums of these two values are divided by the sum of the variance. The variance for group 1 at time <span class="math inline">\(t\)</span> is calculated by the formula <span class="math inline">\(V_{1t} = \frac{N_{1t} \times N_{2t} \times O_{t} \times (N_{t} - O_{t})}{N_{t}^2 \times (N_{t} - 1)}\)</span> (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). The variance for group 2 is calculated similarly, and the total variance is calculated by the formula <span class="math inline">\(V_{t} = V_{1t} + V_{2t}\)</span>. <a href="#tbl-logrank2">Table&nbsp;<span>2.3</span></a> shows the calculation of the Chi-Square test statistic for the data set. Two new variables are calculated from the previous table:</p>
 <ul>
-<li><span class="math inline">\(V_{1t}\)</span>: the variance of the number of events at time t in group 1</li>
-<li><span class="math inline">\(V_{2t}\)</span>: the variance of the number of events at time t in group 2</li>
+<li><span class="math inline">\(V_{1t}\)</span>: the variance of the number of events at time <span class="math inline">\(t\)</span> in group 1</li>
+<li><span class="math inline">\(V_{2t}\)</span>: the variance of the number of events at time <span class="math inline">\(t\)</span> in group 2</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>log_rank<span class="sc">$</span>V1t <span class="ot">&lt;-</span> (log_rank<span class="sc">$</span>N1t <span class="sc">*</span> log_rank<span class="sc">$</span>N2t <span class="sc">*</span> log_rank<span class="sc">$</span>Ot <span class="sc">*</span> </span>
@@ -1396,23 +1396,23 @@ div.csl-indent {
 <div class="cell-output-display">
 <div id="tbl-logrank2" class="anchored">
 
-<div id="tssogpvjwg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#tssogpvjwg table {
+<div id="iwxsauhqdv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#iwxsauhqdv table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#tssogpvjwg thead, #tssogpvjwg tbody, #tssogpvjwg tfoot, #tssogpvjwg tr, #tssogpvjwg td, #tssogpvjwg th {
+#iwxsauhqdv thead, #iwxsauhqdv tbody, #iwxsauhqdv tfoot, #iwxsauhqdv tr, #iwxsauhqdv td, #iwxsauhqdv th {
   border-style: none;
 }
 
-#tssogpvjwg p {
+#iwxsauhqdv p {
   margin: 0;
   padding: 0;
 }
 
-#tssogpvjwg .gt_table {
+#iwxsauhqdv .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1438,12 +1438,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#tssogpvjwg .gt_caption {
+#iwxsauhqdv .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#tssogpvjwg .gt_title {
+#iwxsauhqdv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1455,7 +1455,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#tssogpvjwg .gt_subtitle {
+#iwxsauhqdv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1467,7 +1467,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#tssogpvjwg .gt_heading {
+#iwxsauhqdv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1479,13 +1479,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#tssogpvjwg .gt_bottom_border {
+#iwxsauhqdv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#tssogpvjwg .gt_col_headings {
+#iwxsauhqdv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1500,7 +1500,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#tssogpvjwg .gt_col_heading {
+#iwxsauhqdv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1520,7 +1520,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#tssogpvjwg .gt_column_spanner_outer {
+#iwxsauhqdv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1532,15 +1532,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#tssogpvjwg .gt_column_spanner_outer:first-child {
+#iwxsauhqdv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#tssogpvjwg .gt_column_spanner_outer:last-child {
+#iwxsauhqdv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#tssogpvjwg .gt_column_spanner {
+#iwxsauhqdv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1552,11 +1552,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#tssogpvjwg .gt_spanner_row {
+#iwxsauhqdv .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#tssogpvjwg .gt_group_heading {
+#iwxsauhqdv .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1582,7 +1582,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#tssogpvjwg .gt_empty_group_heading {
+#iwxsauhqdv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1597,15 +1597,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#tssogpvjwg .gt_from_md > :first-child {
+#iwxsauhqdv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#tssogpvjwg .gt_from_md > :last-child {
+#iwxsauhqdv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#tssogpvjwg .gt_row {
+#iwxsauhqdv .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1624,7 +1624,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#tssogpvjwg .gt_stub {
+#iwxsauhqdv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1637,7 +1637,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#tssogpvjwg .gt_stub_row_group {
+#iwxsauhqdv .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1651,15 +1651,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#tssogpvjwg .gt_row_group_first td {
+#iwxsauhqdv .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#tssogpvjwg .gt_row_group_first th {
+#iwxsauhqdv .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#tssogpvjwg .gt_summary_row {
+#iwxsauhqdv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1669,16 +1669,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#tssogpvjwg .gt_first_summary_row {
+#iwxsauhqdv .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#tssogpvjwg .gt_first_summary_row.thick {
+#iwxsauhqdv .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#tssogpvjwg .gt_last_summary_row {
+#iwxsauhqdv .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1688,7 +1688,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#tssogpvjwg .gt_grand_summary_row {
+#iwxsauhqdv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1698,7 +1698,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#tssogpvjwg .gt_first_grand_summary_row {
+#iwxsauhqdv .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1708,7 +1708,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#tssogpvjwg .gt_last_grand_summary_row_top {
+#iwxsauhqdv .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1718,11 +1718,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#tssogpvjwg .gt_striped {
+#iwxsauhqdv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#tssogpvjwg .gt_table_body {
+#iwxsauhqdv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1731,7 +1731,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#tssogpvjwg .gt_footnotes {
+#iwxsauhqdv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1745,7 +1745,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#tssogpvjwg .gt_footnote {
+#iwxsauhqdv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1754,7 +1754,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#tssogpvjwg .gt_sourcenotes {
+#iwxsauhqdv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1768,7 +1768,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#tssogpvjwg .gt_sourcenote {
+#iwxsauhqdv .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1776,63 +1776,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#tssogpvjwg .gt_left {
+#iwxsauhqdv .gt_left {
   text-align: left;
 }
 
-#tssogpvjwg .gt_center {
+#iwxsauhqdv .gt_center {
   text-align: center;
 }
 
-#tssogpvjwg .gt_right {
+#iwxsauhqdv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#tssogpvjwg .gt_font_normal {
+#iwxsauhqdv .gt_font_normal {
   font-weight: normal;
 }
 
-#tssogpvjwg .gt_font_bold {
+#iwxsauhqdv .gt_font_bold {
   font-weight: bold;
 }
 
-#tssogpvjwg .gt_font_italic {
+#iwxsauhqdv .gt_font_italic {
   font-style: italic;
 }
 
-#tssogpvjwg .gt_super {
+#iwxsauhqdv .gt_super {
   font-size: 65%;
 }
 
-#tssogpvjwg .gt_footnote_marks {
+#iwxsauhqdv .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#tssogpvjwg .gt_asterisk {
+#iwxsauhqdv .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#tssogpvjwg .gt_indent_1 {
+#iwxsauhqdv .gt_indent_1 {
   text-indent: 5px;
 }
 
-#tssogpvjwg .gt_indent_2 {
+#iwxsauhqdv .gt_indent_2 {
   text-indent: 10px;
 }
 
-#tssogpvjwg .gt_indent_3 {
+#iwxsauhqdv .gt_indent_3 {
   text-indent: 15px;
 }
 
-#tssogpvjwg .gt_indent_4 {
+#iwxsauhqdv .gt_indent_4 {
   text-indent: 20px;
 }
 
-#tssogpvjwg .gt_indent_5 {
+#iwxsauhqdv .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1959,8 +1959,8 @@ div.csl-indent {
 <li><span class="math inline">\(SumO_{2t}\)</span>: the sum of the observed number of events in group 2 over the entire time interval</li>
 <li><span class="math inline">\(SumE_{1t}\)</span>: the sum of the expected number of events in group 1 over the entire time interval</li>
 <li><span class="math inline">\(SumE_{2t}\)</span>: the sum of the expected number of events in group 2 over the entire time interval</li>
-<li><span class="math inline">\(SumV_{1t}\)</span>: the sum of the variance of the number of events at time t in group 1</li>
-<li><span class="math inline">\(SumV_{2t}\)</span>: the sum of the variance of the number of events at time t in group 2</li>
+<li><span class="math inline">\(SumV_{1t}\)</span>: the sum of the variance of the number of events at time <span class="math inline">\(t\)</span> in group 1</li>
+<li><span class="math inline">\(SumV_{2t}\)</span>: the sum of the variance of the number of events at time <span class="math inline">\(t\)</span> in group 2</li>
 <li><span class="math inline">\(X_1\)</span>: the Chi-Square test statistic for group 1</li>
 <li><span class="math inline">\(X_2\)</span>: the Chi-Square test statistic for group 2</li>
 </ul>
@@ -1988,23 +1988,23 @@ div.csl-indent {
 <div class="cell-output-display">
 <div id="tbl-chi-square" class="anchored">
 
-<div id="cbfvszkewd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#cbfvszkewd table {
+<div id="jezehjbdov" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jezehjbdov table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#cbfvszkewd thead, #cbfvszkewd tbody, #cbfvszkewd tfoot, #cbfvszkewd tr, #cbfvszkewd td, #cbfvszkewd th {
+#jezehjbdov thead, #jezehjbdov tbody, #jezehjbdov tfoot, #jezehjbdov tr, #jezehjbdov td, #jezehjbdov th {
   border-style: none;
 }
 
-#cbfvszkewd p {
+#jezehjbdov p {
   margin: 0;
   padding: 0;
 }
 
-#cbfvszkewd .gt_table {
+#jezehjbdov .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2030,12 +2030,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#cbfvszkewd .gt_caption {
+#jezehjbdov .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#cbfvszkewd .gt_title {
+#jezehjbdov .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2047,7 +2047,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#cbfvszkewd .gt_subtitle {
+#jezehjbdov .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2059,7 +2059,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#cbfvszkewd .gt_heading {
+#jezehjbdov .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2071,13 +2071,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#cbfvszkewd .gt_bottom_border {
+#jezehjbdov .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#cbfvszkewd .gt_col_headings {
+#jezehjbdov .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2092,7 +2092,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#cbfvszkewd .gt_col_heading {
+#jezehjbdov .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2112,7 +2112,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#cbfvszkewd .gt_column_spanner_outer {
+#jezehjbdov .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2124,15 +2124,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#cbfvszkewd .gt_column_spanner_outer:first-child {
+#jezehjbdov .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#cbfvszkewd .gt_column_spanner_outer:last-child {
+#jezehjbdov .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#cbfvszkewd .gt_column_spanner {
+#jezehjbdov .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2144,11 +2144,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#cbfvszkewd .gt_spanner_row {
+#jezehjbdov .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#cbfvszkewd .gt_group_heading {
+#jezehjbdov .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2174,7 +2174,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#cbfvszkewd .gt_empty_group_heading {
+#jezehjbdov .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2189,15 +2189,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#cbfvszkewd .gt_from_md > :first-child {
+#jezehjbdov .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#cbfvszkewd .gt_from_md > :last-child {
+#jezehjbdov .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#cbfvszkewd .gt_row {
+#jezehjbdov .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2216,7 +2216,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#cbfvszkewd .gt_stub {
+#jezehjbdov .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2229,7 +2229,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#cbfvszkewd .gt_stub_row_group {
+#jezehjbdov .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2243,15 +2243,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#cbfvszkewd .gt_row_group_first td {
+#jezehjbdov .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#cbfvszkewd .gt_row_group_first th {
+#jezehjbdov .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#cbfvszkewd .gt_summary_row {
+#jezehjbdov .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2261,16 +2261,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#cbfvszkewd .gt_first_summary_row {
+#jezehjbdov .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#cbfvszkewd .gt_first_summary_row.thick {
+#jezehjbdov .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#cbfvszkewd .gt_last_summary_row {
+#jezehjbdov .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2280,7 +2280,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#cbfvszkewd .gt_grand_summary_row {
+#jezehjbdov .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2290,7 +2290,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#cbfvszkewd .gt_first_grand_summary_row {
+#jezehjbdov .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2300,7 +2300,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#cbfvszkewd .gt_last_grand_summary_row_top {
+#jezehjbdov .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2310,11 +2310,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#cbfvszkewd .gt_striped {
+#jezehjbdov .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#cbfvszkewd .gt_table_body {
+#jezehjbdov .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2323,7 +2323,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#cbfvszkewd .gt_footnotes {
+#jezehjbdov .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2337,7 +2337,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#cbfvszkewd .gt_footnote {
+#jezehjbdov .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2346,7 +2346,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#cbfvszkewd .gt_sourcenotes {
+#jezehjbdov .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2360,7 +2360,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#cbfvszkewd .gt_sourcenote {
+#jezehjbdov .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2368,63 +2368,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#cbfvszkewd .gt_left {
+#jezehjbdov .gt_left {
   text-align: left;
 }
 
-#cbfvszkewd .gt_center {
+#jezehjbdov .gt_center {
   text-align: center;
 }
 
-#cbfvszkewd .gt_right {
+#jezehjbdov .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#cbfvszkewd .gt_font_normal {
+#jezehjbdov .gt_font_normal {
   font-weight: normal;
 }
 
-#cbfvszkewd .gt_font_bold {
+#jezehjbdov .gt_font_bold {
   font-weight: bold;
 }
 
-#cbfvszkewd .gt_font_italic {
+#jezehjbdov .gt_font_italic {
   font-style: italic;
 }
 
-#cbfvszkewd .gt_super {
+#jezehjbdov .gt_super {
   font-size: 65%;
 }
 
-#cbfvszkewd .gt_footnote_marks {
+#jezehjbdov .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#cbfvszkewd .gt_asterisk {
+#jezehjbdov .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#cbfvszkewd .gt_indent_1 {
+#jezehjbdov .gt_indent_1 {
   text-indent: 5px;
 }
 
-#cbfvszkewd .gt_indent_2 {
+#jezehjbdov .gt_indent_2 {
   text-indent: 10px;
 }
 
-#cbfvszkewd .gt_indent_3 {
+#jezehjbdov .gt_indent_3 {
   text-indent: 15px;
 }
 
-#cbfvszkewd .gt_indent_4 {
+#jezehjbdov .gt_indent_4 {
   text-indent: 20px;
 }
 
-#cbfvszkewd .gt_indent_5 {
+#jezehjbdov .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2462,7 +2462,7 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>With all of these values, we can calculate the Chi Square test statistic, <span class="math inline">\(X^2_i = \frac{(\sum{O_{it}} - \sum{E_{it}})^2}{V_{it}}\)</span>. We get <span class="math inline">\(X^2_{1} = \frac{(2 - 3.27)^2}{1.07} = 1.51\)</span> and <span class="math inline">\(X^2_2 = \frac{(3 - 1.73)^2}{1.07} = 1.51\)</span>. The test statistic can then be compared to a Chi-Square distribution with one k-1 degrees of freedom, with k being the number of groups. So, for this example, k is 2 and there is 1 degree of freedom (<span class="citation" data-cites="sullivan16">Sullivan (<a href="#ref-sullivan16" role="doc-biblioref">2016a</a>)</span>).</p>
+<p>With all of these values, we can calculate the Chi Square test statistic, <span class="math inline">\(X^2_i = \frac{(\sum{O_{it}} - \sum{E_{it}})^2}{V_{it}}\)</span>. We get <span class="math inline">\(X^2_{1} = \frac{(2 - 3.27)^2}{1.07} = 1.51\)</span> and <span class="math inline">\(X^2_2 = \frac{(3 - 1.73)^2}{1.07} = 1.51\)</span>. The test statistic can then be compared to a Chi-Square distribution with one <span class="math inline">\(k-1\)</span> degrees of freedom, with <span class="math inline">\(k\)</span> being the number of groups. So, for this example, <span class="math inline">\(k\)</span> is 2 and there is 1 degree of freedom (<span class="citation" data-cites="sullivan16">Sullivan (<a href="#ref-sullivan16" role="doc-biblioref">2016a</a>)</span>).</p>
 <p>Clearly, calculating the test statistic is very tedious, even for a data set with 10 observations. The <code>survdiff</code> function can be used to run a Log-Rank test in R, making it much easier to run the test. The function takes in the response object created by the <code>Surv()</code> function and the grouping variable (<span class="citation" data-cites="zabor23">Zabor (<a href="#ref-zabor23" role="doc-biblioref">2023</a>)</span>). It returns a Chi-Square statistic and a p-value. We can see that the p-value is much higher than 0.05, indicating that we do not have evidence to reject the null hypothesis, and thus that there is no difference between the survival estimates of the two groups.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate times for events in this data set</span></span>
@@ -2616,7 +2616,7 @@ BP=1 105       39     29.6      3.00      4.41
 </section>
 <section id="limitations" class="level2" data-number="2.7">
 <h2 data-number="2.7" class="anchored" data-anchor-id="limitations"><span class="header-section-number">2.7</span> Limitations</h2>
-<p>It is important to note the limitations of this analysis. The Kaplan Meier Curve is not a suitable fit for a complex, real-world data set such as the <code>cirrhosis</code> data. It is a nonparametric method of analysis, which means that it assumes no form of distribution and no additional factors influencing the outcome of interest. To create a Kaplan Meier curve and run the Log-Rank test, we ignored all other factors included in the data. In the next section, we will discuss other methods that can be used for survival analysis that can account for other factors.</p>
+<p>It is important to note the limitations of this analysis. First, the Kaplan Meier function does not allow for the use of continuous variables or multiple predictors in the model. Instead, it is limited to one categorical predictor, such as blood pressure in our cirrhosis model. Additionally, the Log-Rank test only tells us whether there is a difference in survival probabilities, but it does not tell us how big this difference is. So, to gain more understanding on how big the effect of blood pressure is on patient survival, we would need to use other methods of analysis. The next section will discuss other methods that can be used for creating more complex models and learning more about how much of an effect the predictors have on survival.</p>
 </section>
 <section id="references" class="level2" data-number="2.8">
 <h2 data-number="2.8" class="anchored" data-anchor-id="references"><span class="header-section-number">2.8</span> References</h2>

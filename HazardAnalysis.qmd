@@ -2,49 +2,21 @@
 
 ## Introduction
 
-So far, we have dealt with calculating survival probability using a Kaplan Meier curve. While a Kaplan Meier curve is useful for predicting survival probability for simple data, it can not always be used since its a nonparametric method, meaning it follows no prior assumptions about the data. When data becomes more complex and variables about individuals need to be considered, other methods need to be used. One of these methods, proportional hazard analysis, similarly focuses on time-to-event data, but can be used for more realistic scenarios that deal with additional explanatory variables for the event of interest (@clark03). For example, we can use hazard analysis to calculate the probability of a person recovering from a disease based on type of treatment, while also including variables that could affect the outcome such as age, sex or history of drugs. A hazard function can be more useful during real-world analysis than the Kaplan Meier curve previously discussed.
+So far, we have only dealt with calculating survival probabilities. While the Kaplan Meier survival function is useful for predicting survival probability for simple cases, the number of possible predictors and output interpretation are limited as discussed in section 2.7. When looking to include multiple predictors in the model or to learn about the size of effect predictors have on survival, other methods need to be used. One of these methods, hazard analysis, allows for these things.
 
-We will again create a simple data set to demonstrate the process. Let's recall the `surv2` data set we created earlier, now with an additional variable, age @tbl-surv3.
-
-```{r}
-# Load Packages
-library(tidyverse) |> suppressPackageStartupMessages()
-library(knitr)
-library(survival)
-library(ggsurvfit)
-library(survminer) |> suppressPackageStartupMessages()
-library(gt)
-```
-
-```{r}
-# Recreate surv2 and add age variable
-time <- c(2, 7, 9, 8, 5, 3, 4, 10, 6, 1)
-status <- c(0, 1, 0, 1, 0, 1, 0, 0, 1, 1)
-group <- c(1, 1, 1, 1, 1, 2, 2 ,2, 2, 2)
-age <- c(40, 62, 37, 67, 44, 70, 50, 45, 61, 62)
-surv3 <- data.frame(time, status, group, age) 
-```
-
-```{r}
-#| label: tbl-surv3
-#| tbl-cap: "Example Data Set with Status, Time, Group, and Age"
-
-surv3 %>% 
-  gt(caption = "Example Data Set with Status, Time, Group, and Age") %>%
-  cols_label(time = "Time", status = "Status", group = "Group", age = "Age") 
-```
-
-## Proportional Hazards
-
-The proportional hazards model, also known as the Cox regression model, is a semi-parametric model. This is because it assumes proportional hazards, or that the hazard of an event occurring is constant over time, yet does not assume a specific distribution (@collet). The proportional hazard model also assumes that the hazard ratio between two groups is constant over time. This means that the hazard ratio between two groups is the same at any time $t$, thus making the model proportional. In other words, the instantaneous hazard of an event occurring between two individuals of different groups will remain constant at all times, or the effect of the predictors is the same at all times (@sthda).
-
-## Hazard Ratios
+## Hazard Analysis
 
 The goal of hazard analysis is to create a hazard function for modelling time to event data, where the outcome $h(t)$ or $λ(t)$ is the probability of the event occurring for a subject who has lasted until time $t$ (@clark03). The hazard function is modeled using hazard ratios, which express the ratio between the hazard of an event between two groups at a time. The hazard ratio between two groups can be expressed as $v = \frac{h_1(t)}{h_2(t)}$ (@collet).
 
+Hazard analysis can be used for more realistic scenarios that deal with additional explanatory variables for the event of interest (@clark03). For example, we can use hazard analysis to calculate the chance of a person recovering from a disease based on type of treatment, while also including variables such as age, sex or history of drugs. Hazard analysis can therefore be more useful during real-world analysis than the survival functions previously discussed.
+
+## Proportional Hazards
+
+The proportional hazards model, also known as the Cox regression model, is a semi-parametric model that can be used to predict the hazard, or risk, of the event occurring over time (@collet). One key assumption about the proportional hazard model is that the hazard ratio between two groups is constant over time. This means that the hazard ratio between two groups is the same at any time $t$, thus making the model proportional. In other words, the instantaneous hazard of an event occurring between two individuals of different groups will remain constant at all times, or the effect of the predictors is the same at all times (@sthda).
+
 ## Cox Proportional Hazards Model
 
-The Cox proportional hazards model is expressed in terms of the hazard function on an individual $i$ at time $t$. This function is expressed as $h_i(t) = vh_0(t)$, where $h_0(t)$ is the baseline hazard function and $v$ is the hazard ratio (@collet). The baseline hazard function is the hazard function for a subject with all explanatory variables equal to zero. For the models we will discuss, the hazard ratio $v$ is set to equal $exp(\beta)$ since the hazard ratio cannot be a negative value. The parameter $beta$ is thus the log of the hazard ratio, expressed $\beta = log(v)$. Any value of $\beta$ will output a positive value $v$. We can include many explanatory variables in the hazard function such as factors, which can take on different levels, or variates, which can be any value on a continuous scale. With many predictors, the Cox proportional hazards model can be expressed as $h_i(t) = h_0(t)exp(\beta_1x_{1i} + \beta_2x_{2i} + ... + \beta_px_{pi})$, where $h_0(t)$ is the baseline hazard function, $x_1$ to $x_p$ are the values of the explanatory variables for individual $i$, and $\beta_1$ to $\beta_p$ are the regression coefficients. The model can also be expressed as a linear model in terms of the log of the ratios between the two hazard functions, looking like $log(\frac{h_i(t)}{h_0(t)}) = \beta_1x_{1i} + \beta_2x_{2i} + ... + \beta_px_{pi}$ (@collet).
+The Cox proportional hazards model is expressed in terms of the hazard function on an individual $i$ at time $t$. This function is expressed as $h_i(t) = vh_0(t)$, where $h_0(t)$ is the baseline hazard function and $v$ is the hazard ratio (@collet). The baseline hazard function is the hazard function for a subject with all explanatory variables equal to zero. For the models we will discuss, the hazard ratio $v$ is set to equal $exp(\beta)$ since the hazard ratio cannot be a negative value. The parameter $beta$ is thus the log of the hazard ratio, expressed $\beta = log(v)$. Any value of $\beta$ will output a positive value $v$. We can include many explanatory variables in the hazard function such as factors, which can take on different levels, or covariates, which can be any value on a continuous scale. With many predictors, the Cox proportional hazards model can be expressed as $h_i(t) = h_0(t)exp(\beta_1x_{1i} + \beta_2x_{2i} + ... + \beta_px_{pi})$, where $h_0(t)$ is the baseline hazard function, $x_1$ to $x_p$ are the values of the explanatory variables for individual $i$, and $\beta_1$ to $\beta_p$ are the regression coefficients. The model can also be expressed as a linear model in terms of the log of the ratios between the two hazard functions, looking like $log(\frac{h_i(t)}{h_0(t)}) = \beta_1x_{1i} + \beta_2x_{2i} + ... + \beta_px_{pi}$ (@collet).
 
 ## Method of Maximum Likelihood
 
@@ -58,7 +30,11 @@ The method of partial likelihood, first discovered by Cox himself, allows us to 
 
 The method of partial likelihood is based on the assumption that the time intervals between events gives no information about the model parameters. Instead, the method uses the order of the events to estimate the hazard ratio. The method uses the idea of conditional probability that a certain individual has an event at time $t_j$ given that they have survived until time $t_i$ and that an event has occurred at time $t_j$.
 
-The definition of conditional probability is given by: $P(A|B) = \frac{P(A ∩ B)}{P(B)}$. This is saying that the probability of some event A given that an event B has occurred is equal to the probability that both events A and B occur divided by the probability that event B occurs. In the context of the Cox proportional hazards model, the conditional probability would look like: $P(\text{individual with variables } x_i \text{ experiences event at time } t_j | \text{one event at time } t_j )$ = $\frac{P(\text{individual with variables } x_i \text{ experiences event at time } t_j)}{P(\text{an event happens at time } t_j)}$.
+The definition of conditional probability is given by: $P(A|B) = \frac{P(A ∩ B)}{P(B)}$. This is saying that the probability of some event A given that an event B has occurred is equal to the probability that both events A and B occur divided by the probability that event B occurs. In the context of the Cox proportional hazards model, the conditional probability would look like:
+
+$P(\text{individual with variables } x_i \text{ experiences event at time } t_j | \text{one event at time } t_j )$ =
+
+$\frac{P(\text{individual with variables } x_i \text{ experiences event at time } t_j)}{P(\text{an event happens at time } t_j)}$.
 
 The probability of an event happening at $t_j$ can be represented numerically as the sum of the probabilities of event for all of the individuals at risk at time $t_j$, or ${\sum_{l \in R(t_j)} P(\text{individual l dies at time j}})$. Now, we can replace these terms with the hazard functions, $h_i(t_j)$ and $h_lt_j)$, for the numerator and denominator, making the new probability $\frac{h_i(t_j)}{\sum_{l \in R(t_j)} h_l(t_j)}$ (@collet).
 
@@ -70,20 +46,37 @@ The partial likelihood function can then be written as the natural logarithm of 
 
 ## Example Data
 
-For the first example, lets only use one predictor variable, group. The data we will use is shown in @tbl-surv4.
+To demonstrate hazard analysis, we will need to create another simple data set. Let's recall the `surv2` data set we created in section 2.4 now with an additional variable, age, as shown in @tbl-surv3.
 
 ```{r}
-#| label: tbl-surv4
-#| tbl-cap: "Example Data Set with ID, Time, Status, and Group"
+# Load Packages
+library(tidyverse) |> suppressPackageStartupMessages()
+library(knitr)
+library(survival)
+library(ggsurvfit)
+library(survminer) |> suppressPackageStartupMessages()
+library(gt)
+```
 
-surv4 <- surv3 %>% 
-  mutate(id = row_number()) %>%
-  select(id, time, status, group) %>% 
-  arrange(group, time)
+```{r}
+# Recreate surv2 and add age variable
+id <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+time <- c(2, 7, 9, 8, 5, 3, 4, 10, 6, 1)
+status <- c(0, 1, 0, 1, 0, 1, 0, 0, 1, 1)
+group <- c(1, 1, 1, 1, 1, 2, 2 ,2, 2, 2)
+age <- c(40, 62, 37, 67, 44, 70, 50, 45, 61, 62)
+surv3 <- data.frame(id, time, status, group, age) 
+```
 
-surv4 %>%
-  gt(caption = "Example Data Set with ID, Time, Status, and Group") %>%
-  cols_label(id = "ID", time = "Time", status = "Status", group = "Group")
+```{r}
+#| label: tbl-surv3
+#| tbl-cap: "Example Data Set with Status, Time, Group, and Age"
+
+surv3 %>% 
+  arrange(group, time) %>%
+  gt(caption = "Example Data Set with Status, Time, Group, and Age") %>%
+  cols_label(id = "ID", time = "Time", status = "Status", 
+             group = "Group", age = "Age") 
 ```
 
 Let's start by calculating a hazard function between groups 1 and 2. To do this, we will assume that the baseline hazard function is constant, or $h_0(t) = h_0$.
@@ -102,38 +95,43 @@ One of the key assumptions we are making is that there are no ties in event or c
 
 ## Fitting the Partial Log Likelihood Equation
 
-To fit our likelihood function, we must order all of the event times. For group 1, there are only two times of event, time t = 7 for individual 2 and time t = 8 for individual 4. So, we will order the event times as $t_{(1)} < t_{(2)}$, where $t_{(1)}$ represents the event time for individual 2 and $t_{(2)}$ represents the event time for individual 4. Similarly for group 2, there are events at times 1, 3, and 6, so we will order the event times as $t_{(1)} < t_{(2)} < t_{(3)}$, representing the event times for individuals 10, 6, and 9. We will also need to calculate the risk set at each time, which is shown below in @tbl-surv5.
+To fit our likelihood function, we must order all of the event times. For group 1, there are only two times of event, time $t = 7$ for individual 2 and time $t = 8$ for individual 4. So, we will order the event times as $t_{(1)} < t_{(2)}$, where $t_{(1)}$ represents the event time for individual 2 and $t_{(2)}$ represents the event time for individual 4. Similarly for group 2, there are events at times 1, 3, and 6, so we will order the event times as $t_{(1)} < t_{(2)} < t_{(3)}$, representing the event times for individuals 10, 6, and 9. We will also need to calculate the risk set at each time, which is shown below in @tbl-surv5.
 
 ```{r}
 #| label: tbl-surv5
-#| tbl-cap: "Example Data Set with Status, Group, Time, and Risk Set"
+#| tbl-cap: "Example Data Set with Status, Group, Time, Age, and Risk Set"
 
 risk <- c(10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
 
-surv5 <- surv4 %>% 
-  arrange(time) %>% 
-  mutate(risk_set = risk) %>%
-  select(id, group, time, status, risk_set) 
+surv3 <- surv3 %>% arrange(time) %>% 
+  mutate(risk_set = risk)
 
-surv5 %>%
-  gt(caption = "Example Data Set with Status, Group, Time, and Risk Set") %>%
+surv3 %>%
+  gt(caption = "Example Data Set with Status, Group, Time, 
+     Age, and Risk Set") %>%
   cols_label(id = "ID", group = "Group", time = "Time", status = "Status", 
-             risk_set = "Risk Set")
+             age = "Age", risk_set = "Risk Set")
 ```
 
 To estimate the parameters, we will need to use the natural log of our partial likelihood function, which we derived as: $log(L(\beta)) = \sum_{i=1}^r δ_i [\beta' x_i - log \sum_{l \in R(t_i)} exp(\beta' x_l)]$.
 
-At time $t=1$, the risk set will include all 10 individuals because at the tie just before t=1, there are no individuals who have experienced the event or been censored. At time $t=2$, the risk set will include all individuals except for individuals with ID 10 because they experienced the event at time 1. We can continue this process for each time, and the risk set will be the same for both groups.
+At time $t = 1$, the risk set will include all 10 individuals because at the tie just before $t = 1$, there are no individuals who have experienced the event or been censored. At time $t = 2$, the risk set will include all individuals except for individuals with ID 10 because they experienced the event at time 1. We can continue this process for each time, and the risk set will be the same for both groups.
 
-Now that we know the risk sets and the event times, we can calculate the partial likelihood function. Recall that the partial likelihood function is $L(\beta) = \prod_{i=1}^{n} \frac{exp(\beta x_i)}{\sum_{j \in R(t_i)} exp(\beta x_j)}$. So, for our data set, we will need to calculate the partial likelihood function for each event time. For each relevant time, we can calculate the risk score for individual i, $v(i) = B'{x_i}$ (@collet). This risk score represents the numerator of the partial likelihood equation. For time $t = 1$, in which individual 10 experiences the event of interest, the risk score is denoted $v(10)$. The denominator of the partial likelihood equation is the sum of the risk scores for all individuals in the risk set at time $t_i$, so all individuals 1 through 10. The denominator is then $v(1) + v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9) + v(10)$. The partial likelihood function for time $t = 1$ is then $\frac{v(10)}{v(1) + v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9) + v(10)}$.
+Now that we know the risk sets and the event times, we can calculate the partial likelihood function. Recall that the partial likelihood function is $L(\beta) = \prod_{i=1}^{n} \frac{exp(\beta x_i)}{\sum_{j \in R(t_i)} exp(\beta x_j)}$. So, for our data set, we will need to calculate the partial likelihood function for each event time. For each relevant time, we can calculate the risk score for individual $i$, $v(i) = B'{x_i}$ (@collet). This risk score represents the numerator of the partial likelihood equation. For time $t = 1$, in which individual 10 experiences the event of interest, the risk score is denoted $v(10)$. The denominator of the partial likelihood equation is the sum of the risk scores for all individuals in the risk set at time $t_i$, so all individuals 1 through 10. The denominator is then $v(1) + v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9) + v(10)$. The partial likelihood function for time $t = 1$ is then $\frac{v(10)}{v(1) + v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9) + v(10)}$.
 
-After doing this for each event time, we get the partial likelihood equation to be $\frac{v(10)}{v(1) + v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9) + v(10)}$ \* $\frac{v(6)}{v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9)}$ \* $\frac{v(9)}{v(2) + v(3) + v(4) + v(8) + v(9)}$ \* $\frac{v(2)}{v(2) + v(3) + v(4) + v(8)}$ \* $\frac{v(4)}{v(3) + v(4) + v(8)}$.
+After doing this for each event time, we get the partial likelihood equation to be:
+
+$\frac{v(10)}{v(1) + v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9) + v(10)}$ \* $\frac{v(6)}{v(2) + v(3) + v(4) + v(5) + v(6) + v(7) + v(8) + v(9)}$ \*
+
+$\frac{v(9)}{v(2) + v(3) + v(4) + v(8) + v(9)}$ \* $\frac{v(2)}{v(2) + v(3) + v(4) + v(8)}$ \* $\frac{v(4)}{v(3) + v(4) + v(8)}$.
 
 We can then take the log of the partial likelihood function to get the log partial likelihood function: $log(L(B)) = 3\beta x_2 + 2\beta x_1 - log(5exp(\beta x_1) + 5exp(\beta x_2))$ - $log(4exp(\beta x_1) + 4exp(\beta x_2)) - log(3exp(\beta x_1) + 2exp(\beta x_2)) - log(3exp(\beta x_1)$ + $exp(\beta x_2)) - log(2exp(\beta x_1) + exp(\beta x_2))$.
 
 ## Estimating B'
 
-We can then take the derivative of the log partial likelihood function with respect to $\beta$ and set it equal to 0 to find the value of $\beta$ that maximizes the partial likelihood function. The derivative will be: $\frac{\partial log(L(\beta))}{\partial \beta}$ = $3x_2 + 2x_1 - \frac{5x_1exp(\beta x_1)}{5exp(\beta x_1) + 5exp(\beta x_2)} - \frac{5x_2exp(\beta x_2)}{5exp(\beta x_1) + 5exp(\beta x_2)} - \frac{4x_1exp(\beta x_1)}{4exp(\beta x_1) + 4exp(\beta x_2)} - \frac{4x_2exp(\beta x_2)}{4exp(\beta x_1) + 4exp(\beta x_2)}$ - $\frac{3x_1exp(\beta x_1)}{3exp(\beta x_1) + 2exp(\beta x_2)} - \frac{2x_2exp(\beta x_2)}{3exp(\beta x_1) + 2exp(\beta x_2)} - \frac{3x_1exp(\beta x_1)}{3exp(\beta x_1) + exp(\beta x_2)} - \frac{x_2exp(\beta x_2)}{3exp(\beta x_1) + exp(\beta x_2)} - \frac{2x_1exp(\beta x_1)}{2exp(\beta x_1) + exp(\beta x_2)}$ - $\frac{x_2exp(\beta x_2)}{2exp(\beta x_1) + exp(\beta x_2)}$.
+We can then take the derivative of the log partial likelihood function with respect to $\beta$ and set it equal to 0 to find the value of $\beta$ that maximizes the partial likelihood function. The derivative will be:
+
+$\frac{\partial log(L(\beta))}{\partial \beta}$ = $3x_2 + 2x_1$ - $\frac{5x_1exp(\beta x_1)}{5exp(\beta x_1) + 5exp(\beta x_2)}$ - $\frac{5x_2exp(\beta x_2)}{5exp(\beta x_1) + 5exp(\beta x_2)}$ - $\frac{4x_1exp(\beta x_1)}{4exp(\beta x_1) + 4exp(\beta x_2)}$ - $\frac{4x_2exp(\beta x_2)}{4exp(\beta x_1) + 4exp(\beta x_2)}$ - $\frac{3x_1exp(\beta x_1)}{3exp(\beta x_1) + 2exp(\beta x_2)}$ - $\frac{2x_2exp(\beta x_2)}{3exp(\beta x_1) + 2exp(\beta x_2)}$ - $\frac{3x_1exp(\beta x_1)}{3exp(\beta x_1) + exp(\beta x_2)}$ - $\frac{x_2exp(\beta x_2)}{3exp(\beta x_1) + exp(\beta x_2)}$ - $\frac{2x_1exp(\beta x_1)}{2exp(\beta x_1) + exp(\beta x_2)}$ - $\frac{x_2exp(\beta x_2)}{2exp(\beta x_1) + exp(\beta x_2)}$.
 
 Setting this equation equal to zero and solving for $\beta$ would theoretically give us the value of $\beta$ that maximizes the partial likelihood function. However, because this equation is not solvable, we can use numerical methods to approximate the value of $\beta$. One of the most common methods is called the Newton Raphson method.
 
@@ -141,7 +139,7 @@ Setting this equation equal to zero and solving for $\beta$ would theoretically 
 
 The Newton Raphson method is an iterative method that is used to find the root of a function, f(x). In our case, we case use this method to find the value of $\beta$ that maximizes the partial likelihood function. We do this by starting with an initial estimate, ${x_0}$, for the root, and repeating a series of steps to improve this estimation. We will first chose a value for x, $x_0$, and then find the equation of the tangent line to the function at the point $(x_0, f(x_0))$. We can then find the x-intercept of the tangent line at $x_0$ by setting our function equal to 0. This x-intercept is our next estimate, $x_1$, for the root (@anstee).
 
-Let f(x) be the function we want to find the root of and r be the root of the equation when f(x) = 0. Suppose $r = {x_0} + h$. The value of h is the distance from the true root, r, and our initial estimate, $x_0$. A key assumption of this method is that ${x_0}$ is a good estimate and therefore h is close to the true value. Because h is small, we can use the linear approximation of the tangent line. To do this, we know that the slope of the tangent line is the derivative of the function at the point $(x_0, f(x_0))$. Thus we can estimate $0 = f(r) = f({x_0} + h) = f({x_0}) + f'({x_0})h$. Solving for h we get $h = -\frac{f({x_0})}{f'({x_0})}$. Thus, $r = {x_0} + h = {x_0} - \frac{f({x_0})}{f'({x_0})}$. The new value of r will be a better estimate for the root, $x_1$ (@anstee).
+Let f(x) be the function we want to find the root of and r be the root of the equation when $f(x) = 0$. Suppose $r = {x_0} + h$. The value of $h$ is the distance from the true root, $r$, and our initial estimate, $x_0$. A key assumption of this method is that ${x_0}$ is a good estimate and therefore h is close to the true value. Because $h$ is small, we can use the linear approximation of the tangent line. To do this, we know that the slope of the tangent line is the derivative of the function at the point $(x_0, f(x_0))$. Thus we can estimate $0 = f(r) = f({x_0} + h) = f({x_0}) + f'({x_0})h$. Solving for $h$ we get $h = -\frac{f({x_0})}{f'({x_0})}$. Thus, $r = {x_0} + h = {x_0} - \frac{f({x_0})}{f'({x_0})}$. The new value of r will be a better estimate for the root, $x_1$ (@anstee).
 
 The equation used for this iteration looks like: $x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$. We can repeat this step until the difference between ${x_n+1}$ and ${x_n}$ is less than a certain tolerance level, meaning that our estimate is not changing much with new iterations (@anstee).
 
@@ -321,7 +319,63 @@ results %>%
   cols_label(iteration = "Iteration", a = "Alpha", L = "Lambda")
 ```
 
-As we can see, we didn't quite reach the original values of a = 3 and L = 0.5, but with a tolerance of 0.005, we stayed close to these values. Usually, a lower tolerance such at 0.0001 is used and many more iterations are used to get the estimates closer to the true values.
+As we can see, we didn't quite reach the original values of $a = 3$ and $L = 0.5$. This is because we started with a small sample. Let's use a larger sample and a lower tolerance level to see if we can get closer.
+
+```{r}
+# Generate random gamma distribution with sample of 10000
+set.seed(1)
+gamma2 <- rgamma(10000, shape = 3, rate = .5)
+```
+
+```{r}
+#| label: tbl-nr3
+#| tbl-cap: "Newton Raphson for Gamma Distribution with Larger Sample"
+
+# Define functions using a for alpha and L for lambda
+afunc = function(a, L, n, sum_ln_x) a - 
+  ((n*log(L) - n * digamma(a) + sum_ln_x) / (-n * trigamma(a)))
+
+Lfunc = function(a, L, n, sum_x) L - (((n*a/L) - sum_x) / (-n * a / L^2))
+
+# Choose initial estimates
+a = 3.7
+L = 0.7
+n = 10000
+sum_ln_x = sum(log(gamma2))
+sum_x = sum(gamma2)
+
+# Use tolerance level of 0.0001
+tol = 0.0001
+
+# Initialize a vector to store the results
+iterations <- c(a, L)
+
+# While loop to repeat the process until the difference between a and a1 and 
+# L and L1 is less than the tolerance level
+while (TRUE) {
+  a1 <- afunc(a, L, n, sum_ln_x)
+  L1 <- Lfunc(a, L, n, sum_x)
+  if (abs(a - a1) < tol & abs(L - L1) < tol) {
+    break
+  }
+  a <- a1
+  L <- L1
+  iterations <- c(iterations, a, L)  # Store the current values of a and L
+}
+
+# Find out how many iterations were needed
+iterations <- length(iterations)
+
+# put the last 10 results into a table
+results2 <- data.frame(iterations, a, L)
+
+# print the table
+results2 %>%
+  gt(caption = "Alpha and Lambda Estimates with Larger Sample") %>%
+  cols_label(iterations = "Numer of Iterations", a = "Alpha", L = "Lambda")
+```
+
+As we can see, a larger sample size and lower tolerance level allowed us to get extremely close to the true values of $a = 3$ and $L = 0.5$, although it did take many more iterations. This demonstrates the importance of sample size and tolerance level in the Newton-Raphson method. Now that we understand the Newton-Raphson method for estimating the model coefficients, let's use R to model the hazard function.
 
 ## Hazard Analysis in R
 
@@ -331,7 +385,7 @@ Similarly to before with the Kaplan Meier curve, we can use R to model the hazar
 coxph(Surv(time, status) ~ group, data = surv3, ties = "breslow")
 ```
 
-As we can see, the coefficient for group is not significant, meaning that the hazard of the event occurring is not significantly different between the two groups. Let's add another predictor and see what happens:
+As we can see, the coefficient for group is not significant, meaning that the hazard of the event occurring is not significantly different between the two groups. Let's add another predictor and see what happens.
 
 ```{r}
 coxph(Surv(time, status) ~ group + age, data = surv3, ties = "breslow")
@@ -387,7 +441,8 @@ As we can see from the output, the p-value for the test of the proportional haza
 heart_fit = survfit(times_heart ~ BP, data = heart)
 
 # Plot Cumulative Hazard Function
-ggsurvplot(heart_fit, data = heart, fun = "cumhaz", palette = c("darkgreen", "maroon"), 
+ggsurvplot(heart_fit, data = heart, 
+           fun = "cumhaz", palette = c("darkgreen", "maroon"), 
     legend.labs = c("Normal BP", "High BP"),
     xlab = "Time (Days)",
     ylab = "Cummulative Hazard",
