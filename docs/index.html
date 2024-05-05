@@ -199,7 +199,8 @@ div.csl-indent {
   <li><a href="#survival-analysis-background" id="toc-survival-analysis-background" class="nav-link" data-scroll-target="#survival-analysis-background"><span class="header-section-number">1.1</span> Survival Analysis Background</a></li>
   <li><a href="#example-data-set-in-r" id="toc-example-data-set-in-r" class="nav-link" data-scroll-target="#example-data-set-in-r"><span class="header-section-number">1.2</span> Example data set in R</a></li>
   <li><a href="#censoring-background" id="toc-censoring-background" class="nav-link" data-scroll-target="#censoring-background"><span class="header-section-number">1.3</span> Censoring Background</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">1.4</span> References</a></li>
+  <li><a href="#paper-outline" id="toc-paper-outline" class="nav-link" data-scroll-target="#paper-outline"><span class="header-section-number">1.4</span> Paper Outline</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">1.5</span> References</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -240,11 +241,18 @@ div.csl-indent {
 <h1 data-number="1"><span class="header-section-number">1</span> Survival Analysis</h1>
 <section id="survival-analysis-background" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="survival-analysis-background"><span class="header-section-number">1.1</span> Survival Analysis Background</h2>
-<p>Survival analysis is a type of statistical analysis used for analyzing the relationship between time and an event of interest occurring for individuals. The name survival analysis implies that the most common outcome analyzed is death, but many other events can be analyzed including: time it takes to begin recovering from treatment or time until a disease is contracted. These analyses are specifically helpful when comparing groups of people such as treatment groups in a clinical trial. Survival analysis can reveal whether certain treatments are more effective than others in helping individuals to live longer or avoid certain outcomes of interest, such as heart attacks.</p>
+<p>Survival analysis is a type of statistical analysis used for analyzing the relationship between time and an event of interest occurring for individuals. In medical applications, the most common event analyzed is death, but many other events can be analyzed such as time it takes to begin recovering from treatment or time until a disease is contracted. These analyses are specifically helpful when comparing groups of people such as treatment groups in a clinical trial. Survival analysis can reveal whether certain treatments are more effective than others in helping individuals to live longer or avoid certain outcomes of interest, such as heart attacks.</p>
+<p>Survival analysis can be used for any time-to-event data, not just medical data. Some of these disciplines include: Epidemiology, Finance, Engineering, Marketing, Insurance, and more. For example, in marketing, survival analysis can be used to predict how long a customer will remain a customer. In epidemiology, it can be used for predicting time until disease recurrence. In engineering, survival analysis can be used to predict how long a machine will last. We will focus on medical applications in this paper. Let’s begin by creating a simple data set.</p>
 </section>
 <section id="example-data-set-in-r" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="example-data-set-in-r"><span class="header-section-number">1.2</span> Example data set in R</h2>
-<p>To demonstrate survival analysis, an example data set was created including ten observations with the following columns: a. <span class="math inline">\(id\)</span> variable for each observation, a <span class="math inline">\(time\)</span> variable ranging from 1 to 10, and a <span class="math inline">\(status\)</span> variable that was either a 1, which represented the event occurrence, or a 0, representing no event occurrence. For those assigned a 1, a survival time was assigned in the range of 1 to 9, representing the time that individual survived until the event occurred for them. For those assigned a 0, a time of t = 10 was assigned, suggesting that they lasted until the end of the hypothetical study without the event occurring. <a href="#tbl-surv">Table&nbsp;<span>1.1</span></a> shows these data.</p>
+<p>To demonstrate survival analysis, an example data set was created including ten observations with the following columns:</p>
+<ul>
+<li><span class="math inline">\(id\)</span>: number of each observation ranging from 1 to 10</li>
+<li><span class="math inline">\(time\)</span>: time variable ranging from 1 to 10</li>
+<li><span class="math inline">\(status\)</span>: 1 if the event occurs at that time for that individual, 0 if no event occurs</li>
+</ul>
+<p>For those assigned a 1, a survival time was assigned in the range of 1 to 9, representing the time that individual survived until the event occurred for them. For those assigned a 0, a time of t = 10 was assigned, suggesting that they lasted until the end of the hypothetical study without the event occurring. <a href="#tbl-surv">Table&nbsp;<span>1.1</span></a> shows these data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="sc">|&gt;</span> <span class="fu">suppressPackageStartupMessages</span>()</span>
@@ -266,23 +274,23 @@ div.csl-indent {
 <div class="cell-output-display">
 <div id="tbl-surv" class="anchored">
 
-<div id="iplfrcmjsp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#iplfrcmjsp table {
+<div id="dkybozgfhx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#dkybozgfhx table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#iplfrcmjsp thead, #iplfrcmjsp tbody, #iplfrcmjsp tfoot, #iplfrcmjsp tr, #iplfrcmjsp td, #iplfrcmjsp th {
+#dkybozgfhx thead, #dkybozgfhx tbody, #dkybozgfhx tfoot, #dkybozgfhx tr, #dkybozgfhx td, #dkybozgfhx th {
   border-style: none;
 }
 
-#iplfrcmjsp p {
+#dkybozgfhx p {
   margin: 0;
   padding: 0;
 }
 
-#iplfrcmjsp .gt_table {
+#dkybozgfhx .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -308,12 +316,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#iplfrcmjsp .gt_caption {
+#dkybozgfhx .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#iplfrcmjsp .gt_title {
+#dkybozgfhx .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -325,7 +333,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#iplfrcmjsp .gt_subtitle {
+#dkybozgfhx .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -337,7 +345,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#iplfrcmjsp .gt_heading {
+#dkybozgfhx .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -349,13 +357,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#iplfrcmjsp .gt_bottom_border {
+#dkybozgfhx .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#iplfrcmjsp .gt_col_headings {
+#dkybozgfhx .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -370,7 +378,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#iplfrcmjsp .gt_col_heading {
+#dkybozgfhx .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -390,7 +398,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#iplfrcmjsp .gt_column_spanner_outer {
+#dkybozgfhx .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -402,15 +410,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#iplfrcmjsp .gt_column_spanner_outer:first-child {
+#dkybozgfhx .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#iplfrcmjsp .gt_column_spanner_outer:last-child {
+#dkybozgfhx .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#iplfrcmjsp .gt_column_spanner {
+#dkybozgfhx .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -422,11 +430,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#iplfrcmjsp .gt_spanner_row {
+#dkybozgfhx .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#iplfrcmjsp .gt_group_heading {
+#dkybozgfhx .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -452,7 +460,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#iplfrcmjsp .gt_empty_group_heading {
+#dkybozgfhx .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -467,15 +475,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#iplfrcmjsp .gt_from_md > :first-child {
+#dkybozgfhx .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#iplfrcmjsp .gt_from_md > :last-child {
+#dkybozgfhx .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#iplfrcmjsp .gt_row {
+#dkybozgfhx .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -494,7 +502,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#iplfrcmjsp .gt_stub {
+#dkybozgfhx .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -507,7 +515,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#iplfrcmjsp .gt_stub_row_group {
+#dkybozgfhx .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -521,15 +529,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#iplfrcmjsp .gt_row_group_first td {
+#dkybozgfhx .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#iplfrcmjsp .gt_row_group_first th {
+#dkybozgfhx .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#iplfrcmjsp .gt_summary_row {
+#dkybozgfhx .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -539,16 +547,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#iplfrcmjsp .gt_first_summary_row {
+#dkybozgfhx .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#iplfrcmjsp .gt_first_summary_row.thick {
+#dkybozgfhx .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#iplfrcmjsp .gt_last_summary_row {
+#dkybozgfhx .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -558,7 +566,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#iplfrcmjsp .gt_grand_summary_row {
+#dkybozgfhx .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -568,7 +576,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#iplfrcmjsp .gt_first_grand_summary_row {
+#dkybozgfhx .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -578,7 +586,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#iplfrcmjsp .gt_last_grand_summary_row_top {
+#dkybozgfhx .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -588,11 +596,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#iplfrcmjsp .gt_striped {
+#dkybozgfhx .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#iplfrcmjsp .gt_table_body {
+#dkybozgfhx .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -601,7 +609,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#iplfrcmjsp .gt_footnotes {
+#dkybozgfhx .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -615,7 +623,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#iplfrcmjsp .gt_footnote {
+#dkybozgfhx .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -624,7 +632,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#iplfrcmjsp .gt_sourcenotes {
+#dkybozgfhx .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -638,7 +646,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#iplfrcmjsp .gt_sourcenote {
+#dkybozgfhx .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -646,63 +654,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#iplfrcmjsp .gt_left {
+#dkybozgfhx .gt_left {
   text-align: left;
 }
 
-#iplfrcmjsp .gt_center {
+#dkybozgfhx .gt_center {
   text-align: center;
 }
 
-#iplfrcmjsp .gt_right {
+#dkybozgfhx .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#iplfrcmjsp .gt_font_normal {
+#dkybozgfhx .gt_font_normal {
   font-weight: normal;
 }
 
-#iplfrcmjsp .gt_font_bold {
+#dkybozgfhx .gt_font_bold {
   font-weight: bold;
 }
 
-#iplfrcmjsp .gt_font_italic {
+#dkybozgfhx .gt_font_italic {
   font-style: italic;
 }
 
-#iplfrcmjsp .gt_super {
+#dkybozgfhx .gt_super {
   font-size: 65%;
 }
 
-#iplfrcmjsp .gt_footnote_marks {
+#dkybozgfhx .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#iplfrcmjsp .gt_asterisk {
+#dkybozgfhx .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#iplfrcmjsp .gt_indent_1 {
+#dkybozgfhx .gt_indent_1 {
   text-indent: 5px;
 }
 
-#iplfrcmjsp .gt_indent_2 {
+#dkybozgfhx .gt_indent_2 {
   text-indent: 10px;
 }
 
-#iplfrcmjsp .gt_indent_3 {
+#dkybozgfhx .gt_indent_3 {
   text-indent: 15px;
 }
 
-#iplfrcmjsp .gt_indent_4 {
+#dkybozgfhx .gt_indent_4 {
   text-indent: 20px;
 }
 
-#iplfrcmjsp .gt_indent_5 {
+#dkybozgfhx .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -755,7 +763,7 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>To perform survival analysis on these data, the probability of survival at each time from t = 0 to t = 10 can be calculated by dividing the amount of people surviving until that time by the total amount of people in the study. For the first observation in the example data, probability of survival is equal to 1, or 100%, because every participant would presumably begin the study alive. To calculate the probability of survival for time t = 1, the number of participants that did not experience the outcome of interest by t = 1 would be divided by 10, the total number of observations in the study. In this case, 9 participants survived until time t = 1, because only one observation was assigned a 1 between times t = 0 and t = 1. Dividing this total by the 10 total observations in the study shows that the probability of surviving to time 1 is 0.9, or 90%. As time increases, the total probability of survival for the group will decrease in the range of 1 to 0 because more people will be experiencing the outcome. This is why survival curves have a rightly skewed distribution. <a href="#tbl-probabilities">Table&nbsp;<span>1.2</span></a> shows the survival probabilities for each observation.</p>
+<p>To perform survival analysis on these data, the probability of survival at each time from t = 0 to t = 10 can be calculated by dividing the amount of people surviving until that time by the total amount of people in the study. For the first observation in the example data, probability of survival is equal to 1, or 100%, because every participant would presumably begin the study alive. To calculate the probability of survival for time t = 1, the number of participants that did not experience the outcome of interest by t = 1 would be divided by 10, the total number of observations in the study. In this case, 9 participants survived until time t = 1, because only one observation was assigned a 1 between times t = 0 and t = 1. Dividing this total by the 10 total observations in the study shows that the probability of surviving to time 1 is 0.9, or 90%. As time increases, the total probability of survival for the group will decrease in the range of 1 to 0 because more people will be experiencing the outcome. This is why survival curves typically have a rightly skewed distribution. <a href="#tbl-probabilities">Table&nbsp;<span>1.2</span></a> shows the survival probabilities for each observation.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate survival probabilities</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>probabilities <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
@@ -770,23 +778,23 @@ div.csl-indent {
 <div class="cell-output-display">
 <div id="tbl-probabilities" class="anchored">
 
-<div id="dyfwmrrget" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dyfwmrrget table {
+<div id="vohkpjpjnk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#vohkpjpjnk table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#dyfwmrrget thead, #dyfwmrrget tbody, #dyfwmrrget tfoot, #dyfwmrrget tr, #dyfwmrrget td, #dyfwmrrget th {
+#vohkpjpjnk thead, #vohkpjpjnk tbody, #vohkpjpjnk tfoot, #vohkpjpjnk tr, #vohkpjpjnk td, #vohkpjpjnk th {
   border-style: none;
 }
 
-#dyfwmrrget p {
+#vohkpjpjnk p {
   margin: 0;
   padding: 0;
 }
 
-#dyfwmrrget .gt_table {
+#vohkpjpjnk .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -812,12 +820,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#dyfwmrrget .gt_caption {
+#vohkpjpjnk .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#dyfwmrrget .gt_title {
+#vohkpjpjnk .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -829,7 +837,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#dyfwmrrget .gt_subtitle {
+#vohkpjpjnk .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -841,7 +849,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#dyfwmrrget .gt_heading {
+#vohkpjpjnk .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -853,13 +861,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#dyfwmrrget .gt_bottom_border {
+#vohkpjpjnk .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dyfwmrrget .gt_col_headings {
+#vohkpjpjnk .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -874,7 +882,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#dyfwmrrget .gt_col_heading {
+#vohkpjpjnk .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -894,7 +902,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#dyfwmrrget .gt_column_spanner_outer {
+#vohkpjpjnk .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -906,15 +914,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#dyfwmrrget .gt_column_spanner_outer:first-child {
+#vohkpjpjnk .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dyfwmrrget .gt_column_spanner_outer:last-child {
+#vohkpjpjnk .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dyfwmrrget .gt_column_spanner {
+#vohkpjpjnk .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -926,11 +934,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#dyfwmrrget .gt_spanner_row {
+#vohkpjpjnk .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#dyfwmrrget .gt_group_heading {
+#vohkpjpjnk .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -956,7 +964,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#dyfwmrrget .gt_empty_group_heading {
+#vohkpjpjnk .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -971,15 +979,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#dyfwmrrget .gt_from_md > :first-child {
+#vohkpjpjnk .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dyfwmrrget .gt_from_md > :last-child {
+#vohkpjpjnk .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dyfwmrrget .gt_row {
+#vohkpjpjnk .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -998,7 +1006,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#dyfwmrrget .gt_stub {
+#vohkpjpjnk .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1011,7 +1019,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#dyfwmrrget .gt_stub_row_group {
+#vohkpjpjnk .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1025,15 +1033,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#dyfwmrrget .gt_row_group_first td {
+#vohkpjpjnk .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dyfwmrrget .gt_row_group_first th {
+#vohkpjpjnk .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#dyfwmrrget .gt_summary_row {
+#vohkpjpjnk .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1043,16 +1051,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#dyfwmrrget .gt_first_summary_row {
+#vohkpjpjnk .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dyfwmrrget .gt_first_summary_row.thick {
+#vohkpjpjnk .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dyfwmrrget .gt_last_summary_row {
+#vohkpjpjnk .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1062,7 +1070,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#dyfwmrrget .gt_grand_summary_row {
+#vohkpjpjnk .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1072,7 +1080,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#dyfwmrrget .gt_first_grand_summary_row {
+#vohkpjpjnk .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1082,7 +1090,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#dyfwmrrget .gt_last_grand_summary_row_top {
+#vohkpjpjnk .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1092,11 +1100,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#dyfwmrrget .gt_striped {
+#vohkpjpjnk .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dyfwmrrget .gt_table_body {
+#vohkpjpjnk .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1105,7 +1113,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#dyfwmrrget .gt_footnotes {
+#vohkpjpjnk .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1119,7 +1127,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#dyfwmrrget .gt_footnote {
+#vohkpjpjnk .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1128,7 +1136,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#dyfwmrrget .gt_sourcenotes {
+#vohkpjpjnk .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1142,7 +1150,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#dyfwmrrget .gt_sourcenote {
+#vohkpjpjnk .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1150,63 +1158,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#dyfwmrrget .gt_left {
+#vohkpjpjnk .gt_left {
   text-align: left;
 }
 
-#dyfwmrrget .gt_center {
+#vohkpjpjnk .gt_center {
   text-align: center;
 }
 
-#dyfwmrrget .gt_right {
+#vohkpjpjnk .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dyfwmrrget .gt_font_normal {
+#vohkpjpjnk .gt_font_normal {
   font-weight: normal;
 }
 
-#dyfwmrrget .gt_font_bold {
+#vohkpjpjnk .gt_font_bold {
   font-weight: bold;
 }
 
-#dyfwmrrget .gt_font_italic {
+#vohkpjpjnk .gt_font_italic {
   font-style: italic;
 }
 
-#dyfwmrrget .gt_super {
+#vohkpjpjnk .gt_super {
   font-size: 65%;
 }
 
-#dyfwmrrget .gt_footnote_marks {
+#vohkpjpjnk .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#dyfwmrrget .gt_asterisk {
+#vohkpjpjnk .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dyfwmrrget .gt_indent_1 {
+#vohkpjpjnk .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dyfwmrrget .gt_indent_2 {
+#vohkpjpjnk .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dyfwmrrget .gt_indent_3 {
+#vohkpjpjnk .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dyfwmrrget .gt_indent_4 {
+#vohkpjpjnk .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dyfwmrrget .gt_indent_5 {
+#vohkpjpjnk .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1265,10 +1273,19 @@ div.csl-indent {
 </section>
 <section id="censoring-background" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="censoring-background"><span class="header-section-number">1.3</span> Censoring Background</h2>
-<p>One issue with survival analysis data is the problem of an individual being lost to follow-up, meaning data could not be collected for them at some point during the study. This causes the outcome of interest to not be recorded for that individual, so the survival time for that individual can not be analyzed as it would not be accurate. When this happens, the survival times for those individuals are recorded as censored, causing standard analysis techniques to be inappropriate for these data. There are three types of censoring that can occur. The first type of censoring is called right censoring, which happens if an individual begins the study but then is lost to follow-up at some point during the study before it ends. The censored survival time for these individuals is thus equal to the total time they were known to be alive in the study’s observation period before they were lost to follow-up. Some common examples of when right censoring is needed include: an individual moving away from the study and not being able to participate or when an individual dies due to a non-related event after the study begins. Another type of censoring is called left censoring. In this type, the individual experiences lost to follow-up before the observation period begins. This would happen, for example, in a study that tracks patient recovery from a surgery, but with an observation period beginning one a month after the surgery took place. If a patient died less than a month after surgery, their survival time would need to be left censored. The final type of censoring is called interval censoring, which happens when a patient comes in and out of the study, making it possible for them to experience the outcome of interest during a period of time when they aren’t being observed. This often happens when recurrence is being tracked in a study. One example could be if recurrence of cancer is being tracked and the study checks in with patients every month. If an individual does not have cancer after the first month but then does after the second month, the recurrence time is somewhere between one and two months, and it therefore needs to be interval censored (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). Out of the three types, right censoring is the most common and will be demonstrated in the example data-set.</p>
+<p>One issue with survival analysis data is the problem of an individual being lost to follow-up, meaning data could not be collected for them at some point during the study. This causes the outcome of interest to not be recorded for that individual, so the survival time for that individual can not be analyzed as it would not be accurate. When this happens, the survival times for those individuals are recorded as <em>censored</em>, causing standard analysis techniques to be inappropriate for these data. There are three types of censoring that can occur. The first type of censoring is called <em>right censoring</em>, which happens if an individual begins the study but then is lost to follow-up at some point during the study before it ends. The censored survival time for these individuals is thus equal to the total time they were known to be alive in the study’s observation period before they were lost to follow-up. Some common examples of when right censoring is needed include: an individual moving away from the study and not being able to participate or when an individual dies due to a non-related event after the study begins. Another type of censoring is called <em>left censoring</em>. In this type, the individual experiences lost to follow-up before the observation period begins. This would happen, for example, in a study that tracks patient recovery from a surgery, but with an observation period beginning one a month after the surgery took place. If a patient died less than a month after surgery, their survival time would need to be left censored. The final type of censoring is called <em>interval censoring</em>, which happens when a patient comes in and out of the study, making it possible for them to experience the outcome of interest during a period of time when they aren’t being observed. This often happens when recurrence is being tracked in a study. One example could be if recurrence of cancer is being tracked and the study checks in with patients every month. If an individual does not have cancer after the first month but then does after the second month, the recurrence time is somewhere between one and two months, and it therefore needs to be interval censored (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). Out of the three types, right censoring is the most common and will be demonstrated in the next example data-set used in section 2.3.</p>
 </section>
-<section id="references" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="references"><span class="header-section-number">1.4</span> References</h2>
+<section id="paper-outline" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="paper-outline"><span class="header-section-number">1.4</span> Paper Outline</h2>
+<p>The rest of the paper will be divided into the following sections:</p>
+<ol type="1">
+<li><em>Kaplan Meier Survival Curves</em>: This section will introduce how to model survival probabilities using the Kaplan Meier survival estimate. It will walk through how to plot survival curves in R, how to run a Log-Rank test for difference in survival curves, and then two sets of case study data.</li>
+<li><em>Cox Proportional Hazards Regression</em>: This section will introduce modeling survival hazard rates using Cox Proportional Hazards Regression. It will walk through how to run a Cox Proportional Hazards Regression in R, how to interpret the output, and then applying the ideas to the same two case studies.</li>
+<li><em>Discussion</em>: This section will summarize the paper findings.</li>
+</ol>
+</section>
+<section id="references" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="references"><span class="header-section-number">1.5</span> References</h2>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">

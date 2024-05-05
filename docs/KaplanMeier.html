@@ -194,7 +194,7 @@ div.csl-indent {
    
   <ul>
   <li><a href="#kaplan-meier-survival-estimate" id="toc-kaplan-meier-survival-estimate" class="nav-link active" data-scroll-target="#kaplan-meier-survival-estimate"><span class="header-section-number">2.1</span> Kaplan Meier Survival Estimate</a></li>
-  <li><a href="#kaplan-meier-curve-and-descriptive-statistics" id="toc-kaplan-meier-curve-and-descriptive-statistics" class="nav-link" data-scroll-target="#kaplan-meier-curve-and-descriptive-statistics"><span class="header-section-number">2.2</span> Kaplan Meier Curve and Descriptive Statistics</a></li>
+  <li><a href="#descriptive-statistics-and-the-kaplan-meier-curve" id="toc-descriptive-statistics-and-the-kaplan-meier-curve" class="nav-link" data-scroll-target="#descriptive-statistics-and-the-kaplan-meier-curve"><span class="header-section-number">2.2</span> Descriptive Statistics and the Kaplan Meier Curve</a></li>
   <li><a href="#kaplan-meier-in-r" id="toc-kaplan-meier-in-r" class="nav-link" data-scroll-target="#kaplan-meier-in-r"><span class="header-section-number">2.3</span> Kaplan Meier in R</a></li>
   <li><a href="#log-rank-test" id="toc-log-rank-test" class="nav-link" data-scroll-target="#log-rank-test"><span class="header-section-number">2.4</span> Log-Rank Test</a></li>
   <li><a href="#case-study-cirrhosis-data" id="toc-case-study-cirrhosis-data" class="nav-link" data-scroll-target="#case-study-cirrhosis-data"><span class="header-section-number">2.5</span> Case Study: Cirrhosis Data</a></li>
@@ -228,9 +228,10 @@ div.csl-indent {
 <h2 data-number="2.1" class="anchored" data-anchor-id="kaplan-meier-survival-estimate"><span class="header-section-number">2.1</span> Kaplan Meier Survival Estimate</h2>
 <p>The Kaplan Meier survival estimate is how survival probabilities can be calculated while factoring in censored times. The Kaplan Meier survival estimate is used to calculate probability of survival at a given time where <span class="math inline">\(S(t_j)\)</span> is the probability of being alive at time <span class="math inline">\(t_j\)</span>, <span class="math inline">\(S(t_{j-1})\)</span> is the probability of being alive at <span class="math inline">\(t_{j-1}\)</span>, <span class="math inline">\(n_j\)</span> is the number of patients alive just before <span class="math inline">\(t_j\)</span>, <span class="math inline">\(d_j\)</span> is the number of events at <span class="math inline">\(t_j\)</span>, and <span class="math inline">\(j\)</span> is the time interval of interest. The equation is <span class="math inline">\(S(t_j)=S(t_{j-1})(1-\frac{d_j}{n_j})\)</span> (<span class="citation" data-cites="clark03">Clark (<a href="#ref-clark03" role="doc-biblioref">2003</a>)</span>). The equation essentially divides the surviving individuals by the individuals at risk, similar to the previous calculations shown. However, Kaplan Meier curves adjust for right-censored times by dropping observations from the total number of individuals at risk, <span class="math inline">\(n_j\)</span>, after their censored time has been reached. This adjustment prevents overestimating the survival probability because it no longer assumes censored individuals are still alive or and at risk (<span class="citation" data-cites="goel10">Goel (<a href="#ref-goel10" role="doc-biblioref">2010</a>)</span>).</p>
 </section>
-<section id="kaplan-meier-curve-and-descriptive-statistics" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="kaplan-meier-curve-and-descriptive-statistics"><span class="header-section-number">2.2</span> Kaplan Meier Curve and Descriptive Statistics</h2>
-<p>The Kaplan Meier curve is a graphical representation of survival analysis. Similar to the survival probabilities discussed previously, the Kaplan Meier curve shows the relationships between time, which is typically plotted on the x-axis, and probability of survival, which is typically on the y-axis. The curve always ranges from 0 to 1 and is right skewed. Useful summary statistics for a Kaplan Meier Survival curve include confidence intervals and the median. A 95% confidence interval for each point can be found by using the formula <span class="math inline">\(S_t ± 1.96 * SE(S_t)\)</span>. The median value is typically reported rather than the mean because mean survival time cannot be reported reliably for those who have not experienced the outcome of interest yet. The median can be found by finding the time when probability of survival is equal to 0.5. Thus, the median can only be reported when at least half of the participants experienced the outcome of interest during the study (<span class="citation" data-cites="rao23">Rao (<a href="#ref-rao23" role="doc-biblioref">2023</a>)</span>).</p>
+<section id="descriptive-statistics-and-the-kaplan-meier-curve" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="descriptive-statistics-and-the-kaplan-meier-curve"><span class="header-section-number">2.2</span> Descriptive Statistics and the Kaplan Meier Curve</h2>
+<p>Summary statistics can be used to understand Kaplan Meier survival estimates. For example, a 95% confidence interval for the survival probability can be found for each time in the data set using the formula <span class="math inline">\(S(t_j) ± 1.96 * SE(S(t_j))\)</span> <span class="citation" data-cites="lamorte16">Sullivan (<a href="#ref-lamorte16" role="doc-biblioref">2016b</a>)</span>. This interval will output a range that, with 95% confidence, contains the true survival probability for an individual in the data set at that time. Another commonly reported descriptive statistic is the median of the survival function, <span class="math inline">\(S(t_j)\)</span>. The median value is the time <span class="math inline">\(t\)</span> at which <span class="math inline">\(S(t_j) = 0.5\)</span>, or when half of the individuals have not yet experienced the outcome (<span class="citation" data-cites="rao23">Rao (<a href="#ref-rao23" role="doc-biblioref">2023</a>)</span>).</p>
+<p>The Kaplan Meier curve is a graphical representation of the survival function. Similar to the survival probabilities discussed in Section 1.2, the Kaplan Meier curve shows the relationships between time, which is typically plotted on the x-axis, and probability of survival, which is typically on the y-axis. The curve always ranges from 0 to 1 and is typically right skewed.</p>
 </section>
 <section id="kaplan-meier-in-r" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="kaplan-meier-in-r"><span class="header-section-number">2.3</span> Kaplan Meier in R</h2>
@@ -257,23 +258,23 @@ div.csl-indent {
 <div class="cell-output-display">
 <div id="tbl-censor" class="anchored">
 
-<div id="cdnotwpyqs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#cdnotwpyqs table {
+<div id="goblnkgcms" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#goblnkgcms table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#cdnotwpyqs thead, #cdnotwpyqs tbody, #cdnotwpyqs tfoot, #cdnotwpyqs tr, #cdnotwpyqs td, #cdnotwpyqs th {
+#goblnkgcms thead, #goblnkgcms tbody, #goblnkgcms tfoot, #goblnkgcms tr, #goblnkgcms td, #goblnkgcms th {
   border-style: none;
 }
 
-#cdnotwpyqs p {
+#goblnkgcms p {
   margin: 0;
   padding: 0;
 }
 
-#cdnotwpyqs .gt_table {
+#goblnkgcms .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -299,12 +300,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#cdnotwpyqs .gt_caption {
+#goblnkgcms .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#cdnotwpyqs .gt_title {
+#goblnkgcms .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -316,7 +317,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#cdnotwpyqs .gt_subtitle {
+#goblnkgcms .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -328,7 +329,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#cdnotwpyqs .gt_heading {
+#goblnkgcms .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -340,13 +341,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#cdnotwpyqs .gt_bottom_border {
+#goblnkgcms .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#cdnotwpyqs .gt_col_headings {
+#goblnkgcms .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -361,7 +362,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#cdnotwpyqs .gt_col_heading {
+#goblnkgcms .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -381,7 +382,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#cdnotwpyqs .gt_column_spanner_outer {
+#goblnkgcms .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -393,15 +394,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#cdnotwpyqs .gt_column_spanner_outer:first-child {
+#goblnkgcms .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#cdnotwpyqs .gt_column_spanner_outer:last-child {
+#goblnkgcms .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#cdnotwpyqs .gt_column_spanner {
+#goblnkgcms .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -413,11 +414,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#cdnotwpyqs .gt_spanner_row {
+#goblnkgcms .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#cdnotwpyqs .gt_group_heading {
+#goblnkgcms .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -443,7 +444,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#cdnotwpyqs .gt_empty_group_heading {
+#goblnkgcms .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -458,15 +459,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#cdnotwpyqs .gt_from_md > :first-child {
+#goblnkgcms .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#cdnotwpyqs .gt_from_md > :last-child {
+#goblnkgcms .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#cdnotwpyqs .gt_row {
+#goblnkgcms .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -485,7 +486,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#cdnotwpyqs .gt_stub {
+#goblnkgcms .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -498,7 +499,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#cdnotwpyqs .gt_stub_row_group {
+#goblnkgcms .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -512,15 +513,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#cdnotwpyqs .gt_row_group_first td {
+#goblnkgcms .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#cdnotwpyqs .gt_row_group_first th {
+#goblnkgcms .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#cdnotwpyqs .gt_summary_row {
+#goblnkgcms .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -530,16 +531,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#cdnotwpyqs .gt_first_summary_row {
+#goblnkgcms .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#cdnotwpyqs .gt_first_summary_row.thick {
+#goblnkgcms .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#cdnotwpyqs .gt_last_summary_row {
+#goblnkgcms .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -549,7 +550,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#cdnotwpyqs .gt_grand_summary_row {
+#goblnkgcms .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -559,7 +560,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#cdnotwpyqs .gt_first_grand_summary_row {
+#goblnkgcms .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -569,7 +570,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#cdnotwpyqs .gt_last_grand_summary_row_top {
+#goblnkgcms .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -579,11 +580,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#cdnotwpyqs .gt_striped {
+#goblnkgcms .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#cdnotwpyqs .gt_table_body {
+#goblnkgcms .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -592,7 +593,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#cdnotwpyqs .gt_footnotes {
+#goblnkgcms .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -606,7 +607,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#cdnotwpyqs .gt_footnote {
+#goblnkgcms .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -615,7 +616,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#cdnotwpyqs .gt_sourcenotes {
+#goblnkgcms .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -629,7 +630,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#cdnotwpyqs .gt_sourcenote {
+#goblnkgcms .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -637,63 +638,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#cdnotwpyqs .gt_left {
+#goblnkgcms .gt_left {
   text-align: left;
 }
 
-#cdnotwpyqs .gt_center {
+#goblnkgcms .gt_center {
   text-align: center;
 }
 
-#cdnotwpyqs .gt_right {
+#goblnkgcms .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#cdnotwpyqs .gt_font_normal {
+#goblnkgcms .gt_font_normal {
   font-weight: normal;
 }
 
-#cdnotwpyqs .gt_font_bold {
+#goblnkgcms .gt_font_bold {
   font-weight: bold;
 }
 
-#cdnotwpyqs .gt_font_italic {
+#goblnkgcms .gt_font_italic {
   font-style: italic;
 }
 
-#cdnotwpyqs .gt_super {
+#goblnkgcms .gt_super {
   font-size: 65%;
 }
 
-#cdnotwpyqs .gt_footnote_marks {
+#goblnkgcms .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#cdnotwpyqs .gt_asterisk {
+#goblnkgcms .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#cdnotwpyqs .gt_indent_1 {
+#goblnkgcms .gt_indent_1 {
   text-indent: 5px;
 }
 
-#cdnotwpyqs .gt_indent_2 {
+#goblnkgcms .gt_indent_2 {
   text-indent: 10px;
 }
 
-#cdnotwpyqs .gt_indent_3 {
+#goblnkgcms .gt_indent_3 {
   text-indent: 15px;
 }
 
-#cdnotwpyqs .gt_indent_4 {
+#goblnkgcms .gt_indent_4 {
   text-indent: 20px;
 }
 
-#cdnotwpyqs .gt_indent_5 {
+#goblnkgcms .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -755,7 +756,7 @@ div.csl-indent {
 <pre><code> [1]  1   2  10+  4+  5   6+ 10+  8   9  10+</code></pre>
 </div>
 </div>
-<p>The <code>survfit()</code> function can be used to calculate the Kaplan Meier survival estimate for each time that a new event occurs. The function takes in the response object created by the <code>Surv()</code> function in order to drop censored observations from the regression. We use ~ 1 because we are not including predictor variables in the model. The function returns a survival object that can be used to plot the Kaplan Meier curve and calculate summary statistics. The <code>time</code> variable in the object created by the <code>survfit()</code> function shows the time of each event, and the <code>surv</code> variable shows the survival probability for the remaining individuals after each event occurs.</p>
+<p>The <code>survfit()</code> function can be used to calculate the Kaplan Meier survival estimate for each time that a new event occurs. The function takes in the response object created by the <code>Surv()</code> function in order to drop censored observations from the regression. We use ‘times ~ 1’ because we are not including predictor variables in the model. The function returns a survival object that can be used to plot the Kaplan Meier curve and calculate summary statistics. The <code>time</code> variable in the object created by the <code>survfit()</code> function shows the time of each event, and the <code>surv</code> variable shows the survival probability for the remaining individuals after each event occurs.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate survival object</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> <span class="fu">survfit</span>(times <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> censor)</span>
@@ -802,7 +803,19 @@ div.csl-indent {
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>group <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span> ,<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>surv2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(time, status, group)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>To run analysis, the statistical test called the Log-Rank Test can be used to test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time (<span class="citation" data-cites="rich10">Rich (<a href="#ref-rich10" role="doc-biblioref">2010</a>)</span>). The test is conducted by comparing the observed number of events with an estimated number of events for each group at each time. To model this, we need to record some values of interest from our existing data. The first, <span class="math inline">\(n1t\)</span>, represents the number of people alive and still in the study, or at risk, at time t in group 1. Similarly, <span class="math inline">\(n2t\)</span> is the number at risk in group 2 at time t. <span class="math inline">\(nt\)</span> is the sum of these two values at time t, representing the total number of people at risk in the study at time t. <span class="math inline">\(o1t\)</span> is the number of observed events occurring at time t in group 1, <span class="math inline">\(o2t\)</span> is observed events occurring at time t in group 2, and <span class="math inline">\(ot\)</span> is the total observed events across both groups at time t. To calculate expected number of events, the assumption that the two curves are identical is used. The expected number of events at a time t is for group i calculated by the formula <span class="math inline">\(E_{it} = \frac{N_{it} \times O_{t}}{N_{t}}\)</span>, where <span class="math inline">\(N_{it}\)</span> is the observed number of events in group i at time t, <span class="math inline">\(O_{t}\)</span> is the total number of events in all groups at time t, and <span class="math inline">\(N_{t}\)</span> is the total number observations at risk in all groups at time t (<span class="citation" data-cites="sullivan16">Sullivan (<a href="#ref-sullivan16" role="doc-biblioref">2016</a>)</span>). <a href="#tbl-logrank">Table&nbsp;<span>2.2</span></a> shows the creation of all of these values, where <span class="math inline">\(e1t\)</span> is the expected number of events at time t in group 1, <span class="math inline">\(e2t\)</span> is the expected number of events at time t in group 2, and <span class="math inline">\(et\)</span> is the total expected number of events across both groups at time t. Cumulative sums are also calculated for each of these values.</p>
+<p>To run an analysis, the statistical test called the Log-Rank Test can be used to test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time (<span class="citation" data-cites="rich10">Rich (<a href="#ref-rich10" role="doc-biblioref">2010</a>)</span>). The test is conducted by comparing the observed number of events with an estimated number of events for each group at each time. To calculate expected number of events, the assumption that the two curves are identical is used. The expected number of events at a time t is for group i calculated by the formula <span class="math inline">\(E_{it} = \frac{N_{it} \times O_{t}}{N_{t}}\)</span>, where <span class="math inline">\(N_{it}\)</span> is the observed number of events in group i at time t, <span class="math inline">\(O_{t}\)</span> is the total number of events in all groups at time t, and <span class="math inline">\(N_{t}\)</span> is the total number observations at risk in all groups at time t (<span class="citation" data-cites="sullivan16">Sullivan (<a href="#ref-sullivan16" role="doc-biblioref">2016a</a>)</span>). <a href="#tbl-logrank">Table&nbsp;<span>2.2</span></a> shows the creation of all of these values. The following variables are in the table:</p>
+<ul>
+<li>Time: time when the event occurs</li>
+<li><span class="math inline">\(N_{1t}\)</span>: the number of people alive and still in the study (at risk), at time t in group 1</li>
+<li><span class="math inline">\(N_{2t}\)</span>: the number at risk at time t in group 2</li>
+<li><span class="math inline">\(N_t\)</span>: the total number of people at risk in the study at time t</li>
+<li><span class="math inline">\(O_{1t}\)</span>: the number of observed events occurring at time t in group 1</li>
+<li><span class="math inline">\(O_{2t}\)</span>: the number of observed events occurring at time t in group 2</li>
+<li><span class="math inline">\(O_t\)</span>: the total observed events across both groups at time t</li>
+<li><span class="math inline">\(E_{1t}\)</span>: the expected number of events at time t in group 1</li>
+<li><span class="math inline">\(E_{2t}\)</span>: the expected number of events at time t in group 2</li>
+<li><span class="math inline">\(Et\)</span>: the total expected number of events across both groups at time t</li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Time <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">10</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>N1t <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">1</span>)</span>
@@ -820,36 +833,27 @@ div.csl-indent {
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(log_rank, <span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="st">"Values Needed to Calculate Chi-Square Statistic"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">Time =</span> <span class="st">"Time"</span>, </span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>             <span class="at">N1t =</span> <span class="st">"Number at Risk in Group 1"</span>, </span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>             <span class="at">N2t =</span> <span class="st">"Number at Risk in Group 2"</span>, </span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>             <span class="at">Nt =</span> <span class="st">"Total Number at Risk"</span>, </span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>             <span class="at">O1t =</span> <span class="st">"Observed Events in Group 1"</span>, </span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>             <span class="at">O2t =</span> <span class="st">"Observed Events in Group 2"</span>, </span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>             <span class="at">Ot =</span> <span class="st">"Total Observed Events"</span>, </span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>             <span class="at">E1t =</span> <span class="st">"Expected Events in Group 1"</span>, </span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>             <span class="at">E2t =</span> <span class="st">"Expected Events in Group 2"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="st">"Values Needed to Calculate Chi-Square Statistic"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="tbl-logrank" class="anchored">
 
-<div id="ffozhubwyf" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ffozhubwyf table {
+<div id="lmgsklyqgp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#lmgsklyqgp table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#ffozhubwyf thead, #ffozhubwyf tbody, #ffozhubwyf tfoot, #ffozhubwyf tr, #ffozhubwyf td, #ffozhubwyf th {
+#lmgsklyqgp thead, #lmgsklyqgp tbody, #lmgsklyqgp tfoot, #lmgsklyqgp tr, #lmgsklyqgp td, #lmgsklyqgp th {
   border-style: none;
 }
 
-#ffozhubwyf p {
+#lmgsklyqgp p {
   margin: 0;
   padding: 0;
 }
 
-#ffozhubwyf .gt_table {
+#lmgsklyqgp .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -875,12 +879,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#ffozhubwyf .gt_caption {
+#lmgsklyqgp .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#ffozhubwyf .gt_title {
+#lmgsklyqgp .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -892,7 +896,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#ffozhubwyf .gt_subtitle {
+#lmgsklyqgp .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -904,7 +908,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#ffozhubwyf .gt_heading {
+#lmgsklyqgp .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -916,13 +920,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#ffozhubwyf .gt_bottom_border {
+#lmgsklyqgp .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ffozhubwyf .gt_col_headings {
+#lmgsklyqgp .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -937,7 +941,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#ffozhubwyf .gt_col_heading {
+#lmgsklyqgp .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -957,7 +961,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#ffozhubwyf .gt_column_spanner_outer {
+#lmgsklyqgp .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -969,15 +973,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#ffozhubwyf .gt_column_spanner_outer:first-child {
+#lmgsklyqgp .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ffozhubwyf .gt_column_spanner_outer:last-child {
+#lmgsklyqgp .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ffozhubwyf .gt_column_spanner {
+#lmgsklyqgp .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -989,11 +993,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#ffozhubwyf .gt_spanner_row {
+#lmgsklyqgp .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#ffozhubwyf .gt_group_heading {
+#lmgsklyqgp .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1019,7 +1023,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#ffozhubwyf .gt_empty_group_heading {
+#lmgsklyqgp .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1034,15 +1038,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#ffozhubwyf .gt_from_md > :first-child {
+#lmgsklyqgp .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ffozhubwyf .gt_from_md > :last-child {
+#lmgsklyqgp .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ffozhubwyf .gt_row {
+#lmgsklyqgp .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1061,7 +1065,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#ffozhubwyf .gt_stub {
+#lmgsklyqgp .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1074,7 +1078,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#ffozhubwyf .gt_stub_row_group {
+#lmgsklyqgp .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1088,15 +1092,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#ffozhubwyf .gt_row_group_first td {
+#lmgsklyqgp .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ffozhubwyf .gt_row_group_first th {
+#lmgsklyqgp .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#ffozhubwyf .gt_summary_row {
+#lmgsklyqgp .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1106,16 +1110,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#ffozhubwyf .gt_first_summary_row {
+#lmgsklyqgp .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ffozhubwyf .gt_first_summary_row.thick {
+#lmgsklyqgp .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ffozhubwyf .gt_last_summary_row {
+#lmgsklyqgp .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1125,7 +1129,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#ffozhubwyf .gt_grand_summary_row {
+#lmgsklyqgp .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1135,7 +1139,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#ffozhubwyf .gt_first_grand_summary_row {
+#lmgsklyqgp .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1145,7 +1149,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#ffozhubwyf .gt_last_grand_summary_row_top {
+#lmgsklyqgp .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1155,11 +1159,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#ffozhubwyf .gt_striped {
+#lmgsklyqgp .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ffozhubwyf .gt_table_body {
+#lmgsklyqgp .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1168,7 +1172,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#ffozhubwyf .gt_footnotes {
+#lmgsklyqgp .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1182,7 +1186,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#ffozhubwyf .gt_footnote {
+#lmgsklyqgp .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1191,7 +1195,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#ffozhubwyf .gt_sourcenotes {
+#lmgsklyqgp .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1205,7 +1209,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#ffozhubwyf .gt_sourcenote {
+#lmgsklyqgp .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1213,63 +1217,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#ffozhubwyf .gt_left {
+#lmgsklyqgp .gt_left {
   text-align: left;
 }
 
-#ffozhubwyf .gt_center {
+#lmgsklyqgp .gt_center {
   text-align: center;
 }
 
-#ffozhubwyf .gt_right {
+#lmgsklyqgp .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ffozhubwyf .gt_font_normal {
+#lmgsklyqgp .gt_font_normal {
   font-weight: normal;
 }
 
-#ffozhubwyf .gt_font_bold {
+#lmgsklyqgp .gt_font_bold {
   font-weight: bold;
 }
 
-#ffozhubwyf .gt_font_italic {
+#lmgsklyqgp .gt_font_italic {
   font-style: italic;
 }
 
-#ffozhubwyf .gt_super {
+#lmgsklyqgp .gt_super {
   font-size: 65%;
 }
 
-#ffozhubwyf .gt_footnote_marks {
+#lmgsklyqgp .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#ffozhubwyf .gt_asterisk {
+#lmgsklyqgp .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ffozhubwyf .gt_indent_1 {
+#lmgsklyqgp .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ffozhubwyf .gt_indent_2 {
+#lmgsklyqgp .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ffozhubwyf .gt_indent_3 {
+#lmgsklyqgp .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ffozhubwyf .gt_indent_4 {
+#lmgsklyqgp .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ffozhubwyf .gt_indent_5 {
+#lmgsklyqgp .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1281,14 +1285,14 @@ div.csl-indent {
     
     <tr class="gt_col_headings">
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Time">Time</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Number at Risk in Group 1">Number at Risk in Group 1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Number at Risk in Group 2">Number at Risk in Group 2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Observed Events in Group 1">Observed Events in Group 1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Observed Events in Group 2">Observed Events in Group 2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Total Number at Risk">Total Number at Risk</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Total Observed Events">Total Observed Events</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Expected Events in Group 1">Expected Events in Group 1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Expected Events in Group 2">Expected Events in Group 2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="N1t">N1t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="N2t">N2t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="O1t">O1t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="O2t">O2t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Nt">Nt</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Ot">Ot</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="E1t">E1t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="E2t">E2t</th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
@@ -1372,7 +1376,11 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>To test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time, a test statistics is needed. For the Log-Rank test, a Chi-Square test statistic is used because the data follows a Chi-Square curve rather than a normal distribution. The Chi-Square test statistic is calculated by the formula <span class="math inline">\(X^2 = \sum_{i=1}^k \frac{(\sum{O_{it}} - \sum{E_{it}})^2}{\sum{Vi}}\)</span>, where <span class="math inline">\(\sum_{0}^T{O_{it}}\)</span> is the sum of the observed number of events in group i over the entire time interval and <span class="math inline">\(\sum_{0}^T{E_{it}}\)</span> is the sum of the expected number of events in group i over the entire time interval. The difference of the sums of these two values are divided by the sum of the variance. The variance for group 1 at time t is calculated by the formula <span class="math inline">\(V_{1t} = \frac{N_{1t} \times N_{2t} \times O_{t} \times (N_{t} - O_{t})}{N_{t}^2 \times (N_{t} - 1)}\)</span> (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). The variance for group 2 is calculated similarly, and the total variance is calculated by the formula <span class="math inline">\(V_{t} = V_{1t} + V_{2t}\)</span>. <a href="#tbl-logrank2">Table&nbsp;<span>2.3</span></a> shows the calculation of the Chi-Square test statistic for the data set. In the table, <span class="math inline">\(V1t\)</span> is the variance of the number of events at time t in group 1, <span class="math inline">\(V2t\)</span> is the variance of the number of events at time t in group 2, <span class="math inline">\(Vt\)</span> is the total variance of the number of events across both groups at time t, <span class="math inline">\(sum_{Vt}\)</span> is the cumulative sum of the total variance across all times, and <span class="math inline">\(X2\)</span> is the Chi-Square test statistic.</p>
+<p>To test the null hypothesis that there is no difference between the survival estimates of two groups at any point in time, a test statistics is needed. For the Log-Rank test, a Chi-Square test statistic is used because the data follows a Chi-Square curve rather than a normal distribution. The Chi-Square test statistic is calculated by the formula <span class="math inline">\(X^2 = \sum_{i=1}^k \frac{(\sum{O_{it}} - \sum{E_{it}})^2}{\sum{Vi}}\)</span>, where <span class="math inline">\(\sum_{0}^T{O_{it}}\)</span> is the sum of the observed number of events in group i over the entire time interval and <span class="math inline">\(\sum_{0}^T{E_{it}}\)</span> is the sum of the expected number of events in group i over the entire time interval. The difference of the sums of these two values are divided by the sum of the variance. The variance for group 1 at time t is calculated by the formula <span class="math inline">\(V_{1t} = \frac{N_{1t} \times N_{2t} \times O_{t} \times (N_{t} - O_{t})}{N_{t}^2 \times (N_{t} - 1)}\)</span> (<span class="citation" data-cites="collet">Collet (<a href="#ref-collet" role="doc-biblioref">2003</a>)</span>). The variance for group 2 is calculated similarly, and the total variance is calculated by the formula <span class="math inline">\(V_{t} = V_{1t} + V_{2t}\)</span>. <a href="#tbl-logrank2">Table&nbsp;<span>2.3</span></a> shows the calculation of the Chi-Square test statistic for the data set. Two new variables are calculated from the previous table:</p>
+<ul>
+<li><span class="math inline">\(V_{1t}\)</span>: the variance of the number of events at time t in group 1</li>
+<li><span class="math inline">\(V_{2t}\)</span>: the variance of the number of events at time t in group 2</li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>log_rank<span class="sc">$</span>V1t <span class="ot">&lt;-</span> (log_rank<span class="sc">$</span>N1t <span class="sc">*</span> log_rank<span class="sc">$</span>N2t <span class="sc">*</span> log_rank<span class="sc">$</span>Ot <span class="sc">*</span> </span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                   (log_rank<span class="sc">$</span>Nt <span class="sc">-</span> log_rank<span class="sc">$</span>Ot)) <span class="sc">/</span> </span>
@@ -1384,38 +1392,27 @@ div.csl-indent {
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(log_rank, <span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="st">"Calculation of Variance"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">Time =</span> <span class="st">"Time"</span>, </span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">N1t =</span> <span class="st">"Number at Risk in Group 1"</span>, </span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">N2t =</span> <span class="st">"Number at Risk in Group 2"</span>, </span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">Nt =</span> <span class="st">"Total Number at Risk"</span>, </span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">O1t =</span> <span class="st">"Observed Events in Group 1"</span>, </span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>             <span class="at">O2t =</span> <span class="st">"Observed Events in Group 2"</span>, </span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>             <span class="at">Ot =</span> <span class="st">"Total Observed Events"</span>, </span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>             <span class="at">E1t =</span> <span class="st">"Expected Events in Group 1"</span>, </span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>             <span class="at">E2t =</span> <span class="st">"Expected Events in Group 2"</span>, </span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>             <span class="at">V1t =</span> <span class="st">"Variance of Number of Events in Group 1"</span>, </span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>             <span class="at">V2t =</span> <span class="st">"Variance of Number of Events in Group 2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="st">"Calculation of Variance"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="tbl-logrank2" class="anchored">
 
-<div id="mxccpflqcy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#mxccpflqcy table {
+<div id="tssogpvjwg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#tssogpvjwg table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#mxccpflqcy thead, #mxccpflqcy tbody, #mxccpflqcy tfoot, #mxccpflqcy tr, #mxccpflqcy td, #mxccpflqcy th {
+#tssogpvjwg thead, #tssogpvjwg tbody, #tssogpvjwg tfoot, #tssogpvjwg tr, #tssogpvjwg td, #tssogpvjwg th {
   border-style: none;
 }
 
-#mxccpflqcy p {
+#tssogpvjwg p {
   margin: 0;
   padding: 0;
 }
 
-#mxccpflqcy .gt_table {
+#tssogpvjwg .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1441,12 +1438,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#mxccpflqcy .gt_caption {
+#tssogpvjwg .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#mxccpflqcy .gt_title {
+#tssogpvjwg .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1458,7 +1455,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#mxccpflqcy .gt_subtitle {
+#tssogpvjwg .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1470,7 +1467,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#mxccpflqcy .gt_heading {
+#tssogpvjwg .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1482,13 +1479,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#mxccpflqcy .gt_bottom_border {
+#tssogpvjwg .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mxccpflqcy .gt_col_headings {
+#tssogpvjwg .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1503,7 +1500,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#mxccpflqcy .gt_col_heading {
+#tssogpvjwg .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1523,7 +1520,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#mxccpflqcy .gt_column_spanner_outer {
+#tssogpvjwg .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1535,15 +1532,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#mxccpflqcy .gt_column_spanner_outer:first-child {
+#tssogpvjwg .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mxccpflqcy .gt_column_spanner_outer:last-child {
+#tssogpvjwg .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mxccpflqcy .gt_column_spanner {
+#tssogpvjwg .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1555,11 +1552,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#mxccpflqcy .gt_spanner_row {
+#tssogpvjwg .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#mxccpflqcy .gt_group_heading {
+#tssogpvjwg .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1585,7 +1582,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#mxccpflqcy .gt_empty_group_heading {
+#tssogpvjwg .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1600,15 +1597,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#mxccpflqcy .gt_from_md > :first-child {
+#tssogpvjwg .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mxccpflqcy .gt_from_md > :last-child {
+#tssogpvjwg .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mxccpflqcy .gt_row {
+#tssogpvjwg .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1627,7 +1624,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#mxccpflqcy .gt_stub {
+#tssogpvjwg .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1640,7 +1637,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#mxccpflqcy .gt_stub_row_group {
+#tssogpvjwg .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1654,15 +1651,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#mxccpflqcy .gt_row_group_first td {
+#tssogpvjwg .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#mxccpflqcy .gt_row_group_first th {
+#tssogpvjwg .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#mxccpflqcy .gt_summary_row {
+#tssogpvjwg .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1672,16 +1669,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#mxccpflqcy .gt_first_summary_row {
+#tssogpvjwg .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#mxccpflqcy .gt_first_summary_row.thick {
+#tssogpvjwg .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#mxccpflqcy .gt_last_summary_row {
+#tssogpvjwg .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1691,7 +1688,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#mxccpflqcy .gt_grand_summary_row {
+#tssogpvjwg .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1701,7 +1698,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#mxccpflqcy .gt_first_grand_summary_row {
+#tssogpvjwg .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1711,7 +1708,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#mxccpflqcy .gt_last_grand_summary_row_top {
+#tssogpvjwg .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1721,11 +1718,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#mxccpflqcy .gt_striped {
+#tssogpvjwg .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mxccpflqcy .gt_table_body {
+#tssogpvjwg .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1734,7 +1731,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#mxccpflqcy .gt_footnotes {
+#tssogpvjwg .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1748,7 +1745,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#mxccpflqcy .gt_footnote {
+#tssogpvjwg .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1757,7 +1754,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#mxccpflqcy .gt_sourcenotes {
+#tssogpvjwg .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1771,7 +1768,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#mxccpflqcy .gt_sourcenote {
+#tssogpvjwg .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1779,63 +1776,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#mxccpflqcy .gt_left {
+#tssogpvjwg .gt_left {
   text-align: left;
 }
 
-#mxccpflqcy .gt_center {
+#tssogpvjwg .gt_center {
   text-align: center;
 }
 
-#mxccpflqcy .gt_right {
+#tssogpvjwg .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mxccpflqcy .gt_font_normal {
+#tssogpvjwg .gt_font_normal {
   font-weight: normal;
 }
 
-#mxccpflqcy .gt_font_bold {
+#tssogpvjwg .gt_font_bold {
   font-weight: bold;
 }
 
-#mxccpflqcy .gt_font_italic {
+#tssogpvjwg .gt_font_italic {
   font-style: italic;
 }
 
-#mxccpflqcy .gt_super {
+#tssogpvjwg .gt_super {
   font-size: 65%;
 }
 
-#mxccpflqcy .gt_footnote_marks {
+#tssogpvjwg .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#mxccpflqcy .gt_asterisk {
+#tssogpvjwg .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#mxccpflqcy .gt_indent_1 {
+#tssogpvjwg .gt_indent_1 {
   text-indent: 5px;
 }
 
-#mxccpflqcy .gt_indent_2 {
+#tssogpvjwg .gt_indent_2 {
   text-indent: 10px;
 }
 
-#mxccpflqcy .gt_indent_3 {
+#tssogpvjwg .gt_indent_3 {
   text-indent: 15px;
 }
 
-#mxccpflqcy .gt_indent_4 {
+#tssogpvjwg .gt_indent_4 {
   text-indent: 20px;
 }
 
-#mxccpflqcy .gt_indent_5 {
+#tssogpvjwg .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1847,16 +1844,16 @@ div.csl-indent {
     
     <tr class="gt_col_headings">
       <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Time">Time</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Number at Risk in Group 1">Number at Risk in Group 1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Number at Risk in Group 2">Number at Risk in Group 2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Observed Events in Group 1">Observed Events in Group 1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Observed Events in Group 2">Observed Events in Group 2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Total Number at Risk">Total Number at Risk</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Total Observed Events">Total Observed Events</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Expected Events in Group 1">Expected Events in Group 1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Expected Events in Group 2">Expected Events in Group 2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Variance of Number of Events in Group 1">Variance of Number of Events in Group 1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Variance of Number of Events in Group 2">Variance of Number of Events in Group 2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="N1t">N1t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="N2t">N2t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="O1t">O1t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="O2t">O2t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Nt">Nt</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Ot">Ot</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="E1t">E1t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="E2t">E2t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="V1t">V1t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="V2t">V2t</th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
@@ -1956,56 +1953,58 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>For group 1 at time 1, we would calculate <span class="math inline">\(E_{1t} = \frac{5 \times 1}{10} = 0.50\)</span> and for group 2 at time 1, <span class="math inline">\(E_{2t} = \frac{5 \times 1}{10} = 0.50\)</span>. We would repeat for each group at each time and then sum the values to get <span class="math inline">\(\sum_{t=1}^t{E_{i}}\)</span> for each group. For group 1, <span class="math inline">\(\sum_{t=1}^t{E_{1}} = 0.50 + 0.56 + 0 + 0 + 0.67 + 0.80 + 0.75 + 0 = 3.27\)</span> and for group 2, <span class="math inline">\(\sum_{t=0}^t{E_{2}} = 0.50 + 0.44 + 0 + 0 + 0.33 + 0.20 + 0.25 + 0 = 1.73\)</span>. The sum of the observed events for group 1 is 2 and for group 2 is 3. For group 1 at time 1, we would calculate <span class="math inline">\(V_1t = \frac{5 \times 5 \times 1 \times (10-1)}{10^2 \times (10-1)} = 0.25\)</span> <a href="#tbl-chi-square">Table&nbsp;<span>2.4</span></a> shows the rest of the variances calculated for both groups for the <code>surv2</code> data set.</p>
+<p>For group 1 at time 1, we would calculate <span class="math inline">\(E_{1t} = \frac{5 \times 1}{10} = 0.50\)</span> and for group 2 at time 1, <span class="math inline">\(E_{2t} = \frac{5 \times 1}{10} = 0.50\)</span>. We would repeat for each group at each time and then sum the values to get <span class="math inline">\(\sum_{t=1}^t{E_{i}}\)</span> for each group. For group 1, <span class="math inline">\(\sum_{t=1}^t{E_{1}} = 0.50 + 0.56 + 0 + 0 + 0.67 + 0.80 + 0.75 + 0 = 3.27\)</span> and for group 2, <span class="math inline">\(\sum_{t=0}^t{E_{2}} = 0.50 + 0.44 + 0 + 0 + 0.33 + 0.20 + 0.25 + 0 = 1.73\)</span>. The sum of the observed events for group 1 is 2 and for group 2 is 3. For group 1 at time 1, we would calculate <span class="math inline">\(V_1t = \frac{5 \times 5 \times 1 \times (10-1)}{10^2 \times (10-1)} = 0.25\)</span> <a href="#tbl-chi-square">Table&nbsp;<span>2.4</span></a> shows the rest of the variances calculated for both groups for the <code>surv2</code> data set. The table includes the following new variables:</p>
+<ul>
+<li><span class="math inline">\(SumO_{1t}\)</span>: the sum of the observed number of events in group 1 over the entire time interval</li>
+<li><span class="math inline">\(SumO_{2t}\)</span>: the sum of the observed number of events in group 2 over the entire time interval</li>
+<li><span class="math inline">\(SumE_{1t}\)</span>: the sum of the expected number of events in group 1 over the entire time interval</li>
+<li><span class="math inline">\(SumE_{2t}\)</span>: the sum of the expected number of events in group 2 over the entire time interval</li>
+<li><span class="math inline">\(SumV_{1t}\)</span>: the sum of the variance of the number of events at time t in group 1</li>
+<li><span class="math inline">\(SumV_{2t}\)</span>: the sum of the variance of the number of events at time t in group 2</li>
+<li><span class="math inline">\(X_1\)</span>: the Chi-Square test statistic for group 1</li>
+<li><span class="math inline">\(X_2\)</span>: the Chi-Square test statistic for group 2</li>
+</ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sum_O1t <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(log_rank<span class="sc">$</span>O1t)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>sum_O2t <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(log_rank<span class="sc">$</span>O2t)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>sum_E1t <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(log_rank<span class="sc">$</span>E1t)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>sum_E2t <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(log_rank<span class="sc">$</span>E2t)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>sum_V1t <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(log_rank<span class="sc">$</span>V1t)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>sum_V2t <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(log_rank<span class="sc">$</span>V2t)</span>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>SumO1t <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(log_rank<span class="sc">$</span>O1t)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>SumO2t <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(log_rank<span class="sc">$</span>O2t)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>SumE1t <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(log_rank<span class="sc">$</span>E1t)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>SumE2t <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(log_rank<span class="sc">$</span>E2t)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>SumV1t <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(log_rank<span class="sc">$</span>V1t)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>SumV2t <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(log_rank<span class="sc">$</span>V2t)</span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create table with each of the last values </span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>sum_stats <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(sum_O1t, sum_O2t, </span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>                        sum_E1t, sum_E2t, sum_V1t, sum_V2t)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>sum_stats <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(SumO1t, SumO2t, </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>                        SumE1t, SumE2t, SumV1t, SumV2t)</span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the last row of summary statistics</span></span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>sum_stats <span class="ot">&lt;-</span> sum_stats[<span class="fu">nrow</span>(sum_stats), ]</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>sum_stats<span class="sc">$</span>X2_group1 <span class="ot">&lt;-</span> ((sum_stats<span class="sc">$</span>sum_O1t <span class="sc">-</span> sum_stats<span class="sc">$</span>sum_E1t)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> </span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>                          sum_stats<span class="sc">$</span>sum_V1t)</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>sum_stats<span class="sc">$</span>X2_group2 <span class="ot">&lt;-</span> ((sum_stats<span class="sc">$</span>sum_O2t <span class="sc">-</span> sum_stats<span class="sc">$</span>sum_E2t)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> </span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>                          sum_stats<span class="sc">$</span>sum_V2t)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>sum_stats<span class="sc">$</span>X1 <span class="ot">&lt;-</span> ((sum_stats<span class="sc">$</span>SumO1t <span class="sc">-</span> sum_stats<span class="sc">$</span>SumE1t)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> </span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>                          sum_stats<span class="sc">$</span>SumV1t)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>sum_stats<span class="sc">$</span>X2 <span class="ot">&lt;-</span> ((sum_stats<span class="sc">$</span>SumO2t <span class="sc">-</span> sum_stats<span class="sc">$</span>SumE2t)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> </span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>                          sum_stats<span class="sc">$</span>SumV2t)</span>
 <span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(sum_stats, <span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="st">"Calculation of Chi Square Statistic"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">sum_O1t =</span> <span class="st">"Sum of Observed Events in Group 1"</span>, </span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>             <span class="at">sum_O2t =</span> <span class="st">"Sum of Observed Events in Group 2"</span>, </span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>             <span class="at">sum_E1t =</span> <span class="st">"Sum of Expected Events in Group 1"</span>, </span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>             <span class="at">sum_E2t =</span> <span class="st">"Sum of Expected Events in Group 2"</span>, </span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>             <span class="at">sum_V1t =</span> <span class="st">"Sum of Variance of Number of Events in Group 1"</span>, </span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>             <span class="at">sum_V2t =</span> <span class="st">"Sum of Variance of Number of Events in Group 2"</span>, </span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>             <span class="at">X2_group1 =</span> <span class="st">"Chi Square Statistic for Group 1"</span>, </span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>             <span class="at">X2_group2 =</span> <span class="st">"Chi Square Statistic for Group 2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="st">"Calculation of Chi Square Statistic"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="tbl-chi-square" class="anchored">
 
-<div id="kbgzaugkre" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#kbgzaugkre table {
+<div id="cbfvszkewd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#cbfvszkewd table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#kbgzaugkre thead, #kbgzaugkre tbody, #kbgzaugkre tfoot, #kbgzaugkre tr, #kbgzaugkre td, #kbgzaugkre th {
+#cbfvszkewd thead, #cbfvszkewd tbody, #cbfvszkewd tfoot, #cbfvszkewd tr, #cbfvszkewd td, #cbfvszkewd th {
   border-style: none;
 }
 
-#kbgzaugkre p {
+#cbfvszkewd p {
   margin: 0;
   padding: 0;
 }
 
-#kbgzaugkre .gt_table {
+#cbfvszkewd .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2031,12 +2030,12 @@ div.csl-indent {
   border-left-color: #D3D3D3;
 }
 
-#kbgzaugkre .gt_caption {
+#cbfvszkewd .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#kbgzaugkre .gt_title {
+#cbfvszkewd .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2048,7 +2047,7 @@ div.csl-indent {
   border-bottom-width: 0;
 }
 
-#kbgzaugkre .gt_subtitle {
+#cbfvszkewd .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2060,7 +2059,7 @@ div.csl-indent {
   border-top-width: 0;
 }
 
-#kbgzaugkre .gt_heading {
+#cbfvszkewd .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2072,13 +2071,13 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#kbgzaugkre .gt_bottom_border {
+#cbfvszkewd .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#kbgzaugkre .gt_col_headings {
+#cbfvszkewd .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2093,7 +2092,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#kbgzaugkre .gt_col_heading {
+#cbfvszkewd .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2113,7 +2112,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#kbgzaugkre .gt_column_spanner_outer {
+#cbfvszkewd .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2125,15 +2124,15 @@ div.csl-indent {
   padding-right: 4px;
 }
 
-#kbgzaugkre .gt_column_spanner_outer:first-child {
+#cbfvszkewd .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#kbgzaugkre .gt_column_spanner_outer:last-child {
+#cbfvszkewd .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#kbgzaugkre .gt_column_spanner {
+#cbfvszkewd .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2145,11 +2144,11 @@ div.csl-indent {
   width: 100%;
 }
 
-#kbgzaugkre .gt_spanner_row {
+#cbfvszkewd .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#kbgzaugkre .gt_group_heading {
+#cbfvszkewd .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2175,7 +2174,7 @@ div.csl-indent {
   text-align: left;
 }
 
-#kbgzaugkre .gt_empty_group_heading {
+#cbfvszkewd .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2190,15 +2189,15 @@ div.csl-indent {
   vertical-align: middle;
 }
 
-#kbgzaugkre .gt_from_md > :first-child {
+#cbfvszkewd .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#kbgzaugkre .gt_from_md > :last-child {
+#cbfvszkewd .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#kbgzaugkre .gt_row {
+#cbfvszkewd .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2217,7 +2216,7 @@ div.csl-indent {
   overflow-x: hidden;
 }
 
-#kbgzaugkre .gt_stub {
+#cbfvszkewd .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2230,7 +2229,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#kbgzaugkre .gt_stub_row_group {
+#cbfvszkewd .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2244,15 +2243,15 @@ div.csl-indent {
   vertical-align: top;
 }
 
-#kbgzaugkre .gt_row_group_first td {
+#cbfvszkewd .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#kbgzaugkre .gt_row_group_first th {
+#cbfvszkewd .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#kbgzaugkre .gt_summary_row {
+#cbfvszkewd .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2262,16 +2261,16 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#kbgzaugkre .gt_first_summary_row {
+#cbfvszkewd .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#kbgzaugkre .gt_first_summary_row.thick {
+#cbfvszkewd .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#kbgzaugkre .gt_last_summary_row {
+#cbfvszkewd .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2281,7 +2280,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#kbgzaugkre .gt_grand_summary_row {
+#cbfvszkewd .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2291,7 +2290,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#kbgzaugkre .gt_first_grand_summary_row {
+#cbfvszkewd .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2301,7 +2300,7 @@ div.csl-indent {
   border-top-color: #D3D3D3;
 }
 
-#kbgzaugkre .gt_last_grand_summary_row_top {
+#cbfvszkewd .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2311,11 +2310,11 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#kbgzaugkre .gt_striped {
+#cbfvszkewd .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#kbgzaugkre .gt_table_body {
+#cbfvszkewd .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2324,7 +2323,7 @@ div.csl-indent {
   border-bottom-color: #D3D3D3;
 }
 
-#kbgzaugkre .gt_footnotes {
+#cbfvszkewd .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2338,7 +2337,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#kbgzaugkre .gt_footnote {
+#cbfvszkewd .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2347,7 +2346,7 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#kbgzaugkre .gt_sourcenotes {
+#cbfvszkewd .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2361,7 +2360,7 @@ div.csl-indent {
   border-right-color: #D3D3D3;
 }
 
-#kbgzaugkre .gt_sourcenote {
+#cbfvszkewd .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2369,63 +2368,63 @@ div.csl-indent {
   padding-right: 5px;
 }
 
-#kbgzaugkre .gt_left {
+#cbfvszkewd .gt_left {
   text-align: left;
 }
 
-#kbgzaugkre .gt_center {
+#cbfvszkewd .gt_center {
   text-align: center;
 }
 
-#kbgzaugkre .gt_right {
+#cbfvszkewd .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#kbgzaugkre .gt_font_normal {
+#cbfvszkewd .gt_font_normal {
   font-weight: normal;
 }
 
-#kbgzaugkre .gt_font_bold {
+#cbfvszkewd .gt_font_bold {
   font-weight: bold;
 }
 
-#kbgzaugkre .gt_font_italic {
+#cbfvszkewd .gt_font_italic {
   font-style: italic;
 }
 
-#kbgzaugkre .gt_super {
+#cbfvszkewd .gt_super {
   font-size: 65%;
 }
 
-#kbgzaugkre .gt_footnote_marks {
+#cbfvszkewd .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#kbgzaugkre .gt_asterisk {
+#cbfvszkewd .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#kbgzaugkre .gt_indent_1 {
+#cbfvszkewd .gt_indent_1 {
   text-indent: 5px;
 }
 
-#kbgzaugkre .gt_indent_2 {
+#cbfvszkewd .gt_indent_2 {
   text-indent: 10px;
 }
 
-#kbgzaugkre .gt_indent_3 {
+#cbfvszkewd .gt_indent_3 {
   text-indent: 15px;
 }
 
-#kbgzaugkre .gt_indent_4 {
+#cbfvszkewd .gt_indent_4 {
   text-indent: 20px;
 }
 
-#kbgzaugkre .gt_indent_5 {
+#cbfvszkewd .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2436,25 +2435,25 @@ div.csl-indent {
     </tr>
     
     <tr class="gt_col_headings">
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Sum of Observed Events in Group 1">Sum of Observed Events in Group 1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Sum of Observed Events in Group 2">Sum of Observed Events in Group 2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Sum of Expected Events in Group 1">Sum of Expected Events in Group 1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Sum of Expected Events in Group 2">Sum of Expected Events in Group 2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Sum of Variance of Number of Events in Group 1">Sum of Variance of Number of Events in Group 1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Sum of Variance of Number of Events in Group 2">Sum of Variance of Number of Events in Group 2</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Chi Square Statistic for Group 1">Chi Square Statistic for Group 1</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Chi Square Statistic for Group 2">Chi Square Statistic for Group 2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="SumO1t">SumO1t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="SumO2t">SumO2t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="SumE1t">SumE1t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="SumE2t">SumE2t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="SumV1t">SumV1t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="SumV2t">SumV2t</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="X1">X1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="X2">X2</th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
-    <tr><td headers="sum_O1t" class="gt_row gt_right">2</td>
-<td headers="sum_O2t" class="gt_row gt_right">3</td>
-<td headers="sum_E1t" class="gt_row gt_right">3.27</td>
-<td headers="sum_E2t" class="gt_row gt_right">1.73</td>
-<td headers="sum_V1t" class="gt_row gt_right">1.07</td>
-<td headers="sum_V2t" class="gt_row gt_right">1.07</td>
-<td headers="X2_group1" class="gt_row gt_right">1.52</td>
-<td headers="X2_group2" class="gt_row gt_right">1.52</td></tr>
+    <tr><td headers="SumO1t" class="gt_row gt_right">2</td>
+<td headers="SumO2t" class="gt_row gt_right">3</td>
+<td headers="SumE1t" class="gt_row gt_right">3.27</td>
+<td headers="SumE2t" class="gt_row gt_right">1.73</td>
+<td headers="SumV1t" class="gt_row gt_right">1.07</td>
+<td headers="SumV2t" class="gt_row gt_right">1.07</td>
+<td headers="X1" class="gt_row gt_right">1.52</td>
+<td headers="X2" class="gt_row gt_right">1.52</td></tr>
   </tbody>
   
   
@@ -2463,7 +2462,7 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>With all of these values, we can calculate the Chi Square test statistic, <span class="math inline">\(X^2i = \frac{(\sum{O_{it}} - \sum{E_{it}})^2}{V_{it}}\)</span>. We get <span class="math inline">\(X^2group1 = \frac{(2 - 3.27)^2}{1.07} = 1.51\)</span> and <span class="math inline">\(X^2group1 = \frac{(3 - 1.73)^2}{1.07} = 1.51\)</span>. The test statistic can then be compared to a Chi-Square distribution with one k-1 degrees of freedom, with k being the number of groups. So, for this example, there is one degree of freedom. If the p-value is less than 0.05, then we can reject the null hypothesis that there is no difference between the survival estimates of the two groups (<span class="citation" data-cites="sullivan16">Sullivan (<a href="#ref-sullivan16" role="doc-biblioref">2016</a>)</span>).</p>
+<p>With all of these values, we can calculate the Chi Square test statistic, <span class="math inline">\(X^2_i = \frac{(\sum{O_{it}} - \sum{E_{it}})^2}{V_{it}}\)</span>. We get <span class="math inline">\(X^2_{1} = \frac{(2 - 3.27)^2}{1.07} = 1.51\)</span> and <span class="math inline">\(X^2_2 = \frac{(3 - 1.73)^2}{1.07} = 1.51\)</span>. The test statistic can then be compared to a Chi-Square distribution with one k-1 degrees of freedom, with k being the number of groups. So, for this example, k is 2 and there is 1 degree of freedom (<span class="citation" data-cites="sullivan16">Sullivan (<a href="#ref-sullivan16" role="doc-biblioref">2016a</a>)</span>).</p>
 <p>Clearly, calculating the test statistic is very tedious, even for a data set with 10 observations. The <code>survdiff</code> function can be used to run a Log-Rank test in R, making it much easier to run the test. The function takes in the response object created by the <code>Surv()</code> function and the grouping variable (<span class="citation" data-cites="zabor23">Zabor (<a href="#ref-zabor23" role="doc-biblioref">2023</a>)</span>). It returns a Chi-Square statistic and a p-value. We can see that the p-value is much higher than 0.05, indicating that we do not have evidence to reject the null hypothesis, and thus that there is no difference between the survival estimates of the two groups.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate times for events in this data set</span></span>
@@ -2535,7 +2534,7 @@ Drug=Placebo         154       60     61.8    0.0513     0.102
  Chisq= 0.1  on 1 degrees of freedom, p= 0.7 </code></pre>
 </div>
 </div>
-<p>From the Log-Rank test, we see that the p-value is 0.7, which is mush larger than 0.05. This indicates that the test was not statistically significant at the five percent level. Thus, there was no significant difference between patient outcome between the two treatment groups. For patients with biliary cirrhosis, D-penicillamine is not an effective drug for preventing death.</p>
+<p>From the Log-Rank test, we see that the p-value is 0.7, which is much larger than 0.05. This indicates that the test was not statistically significant at the five percent level. Thus, there was no statistically significant difference between patient outcome between the two treatment groups. So, for patients with biliary cirrhosis, we did not find evidence that D-penicillamine is an effective drug for preventing death.</p>
 <p>We can visualize this in <a href="#fig-lungstudy">Figure&nbsp;<span>2.3</span></a>, which shows the survival curves for both groups of patients. We can also use the <code>ggsurvplot</code> function from the <code>survminer()</code> package to plot the survival curves. The curves are very similar and cross multiple times, which makes sense since we know the drug of interest did not have a significant effect on patient survival.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Survival Object</span></span>
@@ -2617,7 +2616,7 @@ BP=1 105       39     29.6      3.00      4.41
 </section>
 <section id="limitations" class="level2" data-number="2.7">
 <h2 data-number="2.7" class="anchored" data-anchor-id="limitations"><span class="header-section-number">2.7</span> Limitations</h2>
-<p>It is important to note the limitations of this analysis. The Kaplan Meier Curve is not a suitable fit for a complex, real-world data set such as the <code>cirrhosis</code> data. It is a nonparametric method of analysis, which means that it assumes no form of distribution and no additional factors influencing the outcome of interest. To create a Kaplan Meier curve and run the Log-Rank test, we ignored all other factors included int the data. In the next section, we will discuss other methods that can be used for survival analysis that can account for other factors.</p>
+<p>It is important to note the limitations of this analysis. The Kaplan Meier Curve is not a suitable fit for a complex, real-world data set such as the <code>cirrhosis</code> data. It is a nonparametric method of analysis, which means that it assumes no form of distribution and no additional factors influencing the outcome of interest. To create a Kaplan Meier curve and run the Log-Rank test, we ignored all other factors included in the data. In the next section, we will discuss other methods that can be used for survival analysis that can account for other factors.</p>
 </section>
 <section id="references" class="level2" data-number="2.8">
 <h2 data-number="2.8" class="anchored" data-anchor-id="references"><span class="header-section-number">2.8</span> References</h2>
@@ -2646,7 +2645,10 @@ Rao, &amp; Schoenfeld, S. R. 2023. <span>“Statistical Primer for Cardiovascula
 Rich, Neely, J. T. 2010. <span>“A Practical Guide to Understanding Kaplan-Meier Curves.”</span> <em>Otolaryngology–Head and Neck Surgery: Official Journal of American Academy of Otolaryngology-Head and Neck Surgery</em>. <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3932959/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3932959/</a>.
 </div>
 <div id="ref-sullivan16" class="csl-entry" role="listitem">
-Sullivan, LaMorte, L. 2016. <span>“Comparing Survival Curves.”</span> <a href="https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_survival/BS704_Survival5.html">sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_survival/BS704_Survival5.html</a>.
+Sullivan, LaMorte, L. 2016a. <span>“Comparing Survival Curves.”</span> <a href="https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_survival/BS704_Survival5.html">sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_survival/BS704_Survival5.html</a>.
+</div>
+<div id="ref-lamorte16" class="csl-entry" role="listitem">
+———. 2016b. <span>“Estimating the Survival Function.”</span> <a href="https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_survival/bs704_survival4.html">https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_survival/bs704_survival4.html</a>.
 </div>
 <div id="ref-zabor23" class="csl-entry" role="listitem">
 Zabor, E. C. 2023. <span>“Survival Analysis in r.”</span> <a href="https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html">https://www.emilyzabor.com/tutorials/survival_analysis_in_r_tutorial.html</a>.
