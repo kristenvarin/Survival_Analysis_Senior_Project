@@ -5,13 +5,31 @@ project:
 book:
   title: "Introduction to Survival Analysis"
   subtitle: "Modeling Medical Time-to-Event Data Using R Software Packages"
-  author: Kristen Varin
+  author:
+  - name: Kristen Varin
+    affiliations:
+      - name: St. Lawrence University
+        department: Department of Mathematics, Statistics, and Computer Science
+        city: Canton
+        state: NY
   date: "9/6/2023"
   chapters:
     - index.qmd
     - KaplanMeier.qmd
     - HazardAnalysis.qmd
     - Discussion.qmd
+  abstract: "Survival analysis is a type of statistical analysis that is used for 
+  modeling time-to-event data, or data that summarizes how long it will take for 
+  a certain event to occur. Depending on the data and the goal of the analysis, 
+  survival analysis can be used in various ways including Kaplan Meier Curves, 
+  Log Rank tests, Cox Proportional Hazard analysis, and more. One of the most 
+  common applications of survival analysis is comparing groups of patients in 
+  medical research. This paper demonstrates examples of survival analysis with 
+  medical case study data sets, looking at the difference in survival 
+  probabilities and hazard ratios for patients with liver disease and 
+  heart failure patients. It also demonstrates how different R packages can be 
+  used to make the computation easier for fitting models, running statistical 
+  tests, and plotting data."
 
 bibliography: references.bib
 
@@ -20,7 +38,5 @@ format:
     theme: 
       light: cosmo
       dark: darkly
-  pdf:
-    documentclass: scrreprt
   
 editor: visual
