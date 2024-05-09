@@ -8,10 +8,8 @@ book:
   author:
   - name: Kristen Varin
     affiliations:
-      - name: St. Lawrence University
-        department: Department of Mathematics, Statistics, and Computer Science
-        city: Canton
-        state: NY
+      - Department of Mathematics, Statistics, and Computer Science at St. Lawrence University
+  - name: Advised by Dr. Ivan Ramler
   date: "9/6/2023"
   chapters:
     - index.qmd
